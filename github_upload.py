@@ -6,5 +6,4 @@ def upload_github():
     os.system('git push')
     print("upload success")
 
-
 upload_github()
