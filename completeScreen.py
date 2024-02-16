@@ -15,8 +15,6 @@ def main(page: Page):
     def handle_play_or_pause(e):
         video.play_or_pause()
         print("Video.play_or_pause()")
-        # print(video.playlist[0].resource)
-        
 
     def handle_stop(e):
         video.stop()
@@ -34,12 +32,8 @@ def main(page: Page):
 
     def save_video_url(video_url):
         savename = 'save_completed_video.mp4'
-        urllib.request.urlretrieve(video_url, 'uploads/' + savename)
+        urllib.request.urlretrieve(video_url, 'finish/' + savename)
         print("save success")
-        os.system('git add .')
-        os.system('git commit -m "Video change"')
-        os.system('git push')
-        print("upload success")
 
     def upload_github():
         os.system('git add .')
@@ -49,7 +43,7 @@ def main(page: Page):
 
     sample_media = [
         VideoMedia(
-            "https://github.com/nadayoung/storage/raw/main/assets/197898_(1080p).mp4",
+            "https://github.com/nadayoung/storage/raw/main/original/197898_(1080p).mp4",
         ),
     ]
 
@@ -82,8 +76,8 @@ def main(page: Page):
                 ElevatedButton(
                     "Save file",
                     icon=icons.SAVE,
-                    on_click=save_video_url(video.playlist[0].resource), #upload_github), #lambda _: saveme.save_file(),
-                    # disabled=page.web,
+                    on_click={save_video_url(video.playlist[0].resource),
+                              upload_github()},
                 ),
                 # save_file_path,
             ]
