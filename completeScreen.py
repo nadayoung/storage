@@ -76,8 +76,8 @@ def main(page: Page):
                 ElevatedButton(
                     "Save file",
                     icon=icons.SAVE,
-                    on_click={save_video_url(video.playlist[0].resource),
-                              upload_github()},
+                    on_click={ # save_video_url(video.playlist[0].resource),
+                              upload_github},
                 ),
                 # save_file_path,
             ]
