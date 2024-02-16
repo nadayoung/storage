@@ -2,7 +2,7 @@ import flet
 from flet import *
 import cv2
 import urllib.request
-import os
+from os import system
 
 def main(page: Page):
     page.theme_mode = ThemeMode.LIGHT
@@ -35,10 +35,14 @@ def main(page: Page):
         urllib.request.urlretrieve(video_url, 'finish/' + savename)
         print("save success")
 
+    # def upload_state():
+    #     if UploadState == 1:
+
+
     def upload_github():
-        os.system('git add .')
-        os.system('git commit -m "Video change"')
-        os.system('git push')
+        system('git add .')
+        system('git commit -m "Video change"')
+        system('git push')
         print("upload success")
 
     sample_media = [
@@ -76,9 +80,9 @@ def main(page: Page):
                 ElevatedButton(
                     "Save file",
                     icon=icons.SAVE,
-                    on_click=save_video_url(video.playlist[0].resource),
+                    on_click={save_video_url(video.playlist[0].resource),
+                              upload_github()}
                 ),
-                upload_github()
             ]
         ),
         Slider(
