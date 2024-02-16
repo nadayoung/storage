@@ -76,10 +76,7 @@ def main(page: Page):
                 ElevatedButton(
                     "Save file",
                     icon=icons.SAVE,
-                    on_click={save_video_url(video.playlist[0].resource),
-                              os.system('git add .'),
-                              os.system('git commit -m "Video change"'),
-                              os.system('git push')},
+                    on_click=save_video_url(video.playlist[0].resource),
                 ),
                 # save_file_path,
             ]

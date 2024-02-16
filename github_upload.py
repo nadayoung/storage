@@ -1,8 +1,10 @@
 import os
 
-# os.system('git add .')
-# os.system('git commit -m "Video change"')
-# os.system('git push')
+def upload_github():
+    os.system('git add .')
+    os.system('git commit -m "Video change"')
+    os.system('git push')
+    print("upload success")
 
 
-os.system('git add . '+'\n'+ 'git commit -m "Video change"' + '\n' + 'git push')
+upload_github()
