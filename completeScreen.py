@@ -36,13 +36,16 @@ def main(page: Page):
         savename = 'save_completed_video.mp4'
         urllib.request.urlretrieve(video_url, 'uploads/' + savename)
         print("save success")
-        upload_github()
+        os.system('git add .')
+        os.system('git commit -m "Video change"')
+        os.system('git push')
         print("upload success")
 
     def upload_github():
         os.system('git add .')
         os.system('git commit -m "Video change"')
         os.system('git push')
+        print("upload success")
 
     sample_media = [
         VideoMedia(
@@ -79,7 +82,7 @@ def main(page: Page):
                 ElevatedButton(
                     "Save file",
                     icon=icons.SAVE,
-                    on_click=save_video_url(video.playlist[0].resource) #lambda _: saveme.save_file(),
+                    on_click=save_video_url(video.playlist[0].resource), #upload_github), #lambda _: saveme.save_file(),
                     # disabled=page.web,
                 ),
                 # save_file_path,
