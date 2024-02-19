@@ -141,13 +141,6 @@ def main(page: Page):
                 page.update()
                 print(f"Video.playback_rate = {e.control.value}")
             
-            def handle_seek(e):
-                video.seek(5000)
-                print(f"Video.seek(5000)")
-
-            #def set_point_a(e):
-            #def set_point_b(e):
-            
             page.views.append(
                 View(
                     "/select",
@@ -173,7 +166,6 @@ def main(page: Page):
                             controls=[
                                 ElevatedButton("Play Or Pause", on_click=handle_play_or_pause),
                                 ElevatedButton("Stop", on_click=handle_stop),
-                                ElevatedButton("Skip 5 Seconds", on_click=handle_seek)
                             ],
                         ),
                         Slider(
