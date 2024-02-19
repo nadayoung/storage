@@ -118,7 +118,7 @@ def main(page: Page):
             original_media = [
                 VideoMedia(
                     # "https://github.com/nadayoung/storage/raw/da0/original/dog.mp4"
-                    "https://github.com/nadayoung/storage/raw/da0/original/"+select_file_name,
+                    "https://github.com/nadayoung/storage/tree/main/original/"+select_file_name,
                 ),
             ]
 
@@ -198,7 +198,7 @@ def main(page: Page):
         if page.route == "/modified":
             modified_media = [
                 VideoMedia(
-                    "https://github.com/nadayoung/storage/raw/main/original/197898_(1080p).mp4",
+                    "https://github.com/nadayoung/storage/tree/main/original/197898_(1080p).mp4",
                 ),
             ]
 
