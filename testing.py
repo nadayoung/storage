@@ -120,8 +120,8 @@ def main(page: Page):
         if page.route == "/select":
             original_media = [
                 VideoMedia(
-                    # "https://github.com/nadayoung/storage/raw/da0/original/dog.mp4"
-                    "https://github.com/nadayoung/storage/tree/main/original/"+select_file_name,
+                
+                    "https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,
                 ),
             ]
 
