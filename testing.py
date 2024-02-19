@@ -135,10 +135,15 @@ def main(page: Page):
                 page.update()
                 print(f"Video.volume = {e.control.value}")
 
-            def handle_playback_rate_change(e):
-                video.playback_rate = e.control.value
+            def handle_trim_start(e):
+                video.volume = e.control.value
                 page.update()
-                print(f"Video.playback_rate = {e.control.value}")
+                print(f"Video.trim_start = {e.control.value}")
+            
+            def handle_trim_end(e):
+                video.volume = e.control.value
+                page.update()
+                print(f"Video.trim_end = {e.control.value}")
             
             page.views.append(
                 View(
@@ -177,13 +182,22 @@ def main(page: Page):
                             on_change=handle_volume_change,
                         ),
                         Slider(
-                            min=1,
-                            value=1,
-                            max=3,
-                            label="PlaybackRate = {value}X",
-                            divisions=6,
+                            min=0,
+                            value=100,
+                            max=100,
+                            label="Trim Start = {value}%",
+                            divisions=100,
                             width=400,
-                            on_change=handle_playback_rate_change,
+                            on_change=handle_trim_start,
+                        ),
+                        Slider(
+                            min=0,
+                            value=100,
+                            max=100,
+                            label="Trim End = {value}%",
+                            divisions=100,
+                            width=400,
+                            on_change=handle_trim_end,
                         ),
                         ElevatedButton(
                             "변환하기", 
@@ -215,13 +229,8 @@ def main(page: Page):
                 page.update()
                 print(f"Video.volume = {e.control.value}")
 
-            def handle_trim_start(e):
-                video.volume = e.control.value
-                page.update()
-                print(f"Video.playback_rate = {e.control.value}")
-
-            def handle_trim_end(e):
-                video.volume = e.control.value
+            def handle_playback_rate_change(e):
+                video.playback_rate = e.control.value
                 page.update()
                 print(f"Video.playback_rate = {e.control.value}")
 
@@ -277,22 +286,13 @@ def main(page: Page):
                         on_change=handle_volume_change,
                     ),
                     Slider(
-                        min=0,
-                        value=100,
-                        max=100,
-                        label="Volume = {value}%",
-                        divisions=100,
+                        min=1,
+                        value=1,
+                        max=3,
+                        label="PlaybackRate = {value}X",
+                        divisions=6,
                         width=400,
-                        on_change=handle_trim_start,
-                    ),
-                    Slider(
-                        min=0,
-                        value=100,
-                        max=100,
-                        label="Volume = {value}%",
-                        divisions=100,
-                        width=400,
-                        on_change=handle_trim_end,
+                        on_change=handle_playback_rate_change,
                     ),
                     ElevatedButton(
                         "돌아가기", 
