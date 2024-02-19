@@ -308,7 +308,7 @@ def main(page: Page):
                         ElevatedButton(
                             "변환하기", 
                             ref = next_button,
-                            on_click = (handle_save_trimmed_file(), page.go("/modified")),
+                            on_click=lambda _: (handle_save_trimmed_file, page.go("/modified")),
                             width=200,
                             bgcolor=colors.PURPLE_200,
                             color=colors.WHITE,
