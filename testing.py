@@ -204,6 +204,7 @@ def main(page: Page):
                                     on_change=handle_trim_start,
                                 ),
                                 ElevatedButton(
+                                    "Set Start Point",
                                     icon=icons.START,
                                     on_click=lambda e: save_trim_start_value(video, handle_trim_start),
                                 ),
@@ -222,6 +223,7 @@ def main(page: Page):
                                     on_change=handle_trim_end,
                                 ),
                                 ElevatedButton(
+                                    "Set End Point",
                                     icon=icons.STOP,
                                     on_click=lambda e: save_trim_end_value(video, handle_trim_end),
                                 ),
