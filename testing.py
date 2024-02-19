@@ -143,12 +143,12 @@ def main(page: Page):
 
             def mark_trim_start(e):
                 global trim_start
-                trim_start = video.current_time
+                trim_start = video.iter_frames_with_time()
                 print(f"Trim start set at {trim_start} seconds")
 
             def mark_trim_end(e):
                 global trim_end
-                trim_end = video.current_time if video.playlist else 0
+                trim_end = video.current_time
                 print(f"Trim end set at {trim_end} seconds")
 
 
