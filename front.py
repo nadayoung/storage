@@ -246,10 +246,10 @@ def main(page: Page):
                 video_clip.close()
     
                 trimmed_video_path = f'C:/dev/storage/trimmed/{select_file_name}'
-                #trimmed_video.write_videofile(trimmed_video_path)
+                trimmed_video.write_videofile(trimmed_video_path)
     
                 # Close the trimmed video clip
-                #trimmed_video.close()
+                trimmed_video.close()
     
                 print("Trimmed video saved successfully")
             
