@@ -1,9 +1,10 @@
 from flet import *
 import urllib.request
+import time  # Add this import for time.sleep
+import shutil
 from typing import Dict
 from os import system
 from moviepy.editor import *
-import shutil
 
 global select_file_name
 select_file_name = ""
@@ -120,8 +121,7 @@ def main(page: Page):
         if page.route == "/select":
             original_media = [
                 VideoMedia(
-                    # "https://github.com/nadayoung/storage/raw/da0/original/dog.mp4"
-                    "https://github.com/nadayoung/storage/tree/main/original/"+select_file_name,
+                    "https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,
                 ),
             ]
 
@@ -174,10 +174,6 @@ def main(page: Page):
                             autoplay=False,
                             filter_quality=FilterQuality.HIGH,
                             muted=False,
-                            on_loaded=lambda e: print("Video loaded successfully!"),
-                            on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
-                            on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
-                            on_time_update=lambda e: update_current_time(e.current_time),
                         ),
                         Row(
                             wrap=True,
@@ -230,10 +226,6 @@ def main(page: Page):
     page.on_route_change = route_change
     page.on_view_pop = view_pop
     page.go(page.route)
-
-def update_current_time(time):
-    global current_time
-    current_time = time
 
 def trim_video(file_name, start_time, end_time):
     # Trim the video using MoviePy library
