@@ -1,144 +1,234 @@
-import random
-import flet as ft
-from os import system
-from typing import Dict
 from flet import *
+import urllib.request
+from typing import Dict
+from os import system
+import flet as ft
+from moviepy.editor import *
 
+global select_file_name
+select_file_name = ""
+trim_start = 0
+trim_end = 0
 
-def main(page: ft.Page):
-    page.theme_mode = ft.ThemeMode.LIGHT
-    page.title = "TheEthicalVideo"
-    page.window_always_on_top = True
+def main(page: Page):
+    page.theme_mode = ThemeMode.LIGHT
+    page.title = "Project Modified voice"
+    page.window_width = 500
     page.spacing = 20
-    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.horizontal_alignment = CrossAxisAlignment.CENTER
 
-    def handle_pause(e):
-        video.pause()
-        print("Video.pause()")
+    def route_change(route):
+        global select_file_name
+        global trim_start
+        global trim_end
 
-    def handle_play_or_pause(e):
-        video.play_or_pause()
-        print("Video.play_or_pause()")
+        page.views.clear()
 
-    def handle_play(e):
-        video.play()
-        print("Video.play()")
+        files = Ref[Column]()
 
-    def handle_stop(e):
-        video.stop()
-        print("Video.stop()")
+        if page.route == "/":
+            prog_bars: Dict[str, ProgressRing] = {}
+            upload_button = Ref[ElevatedButton]()
+            next_button = Ref[ElevatedButton]()
 
-    def handle_next(e):
-        video.next()
-        print("Video.next()")
+            def file_picker_result(e: FilePickerResultEvent):
+                global select_file_name
+                prog_bars.clear()
+                files.current.controls.clear()
+                upload_button.current.disabled = True if e.files is None else False
+                next_button.current.disabled = True if e.files is None else False
+                if e.files is not None:
+                    for f in e.files:
+                        prog = ProgressRing(value=0, bgcolor="#eeeeee", width=20, height=20)
+                        prog_bars[f.name] = prog
+                        files.current.controls.append(Row([prog, Text(f.name)]))
+                        select_file_name = f.name
+                page.update()
 
-    def handle_previous(e):
-        video.previous()
-        print("Video.previous()")
+            def on_upload_progress(e: FilePickerUploadEvent):
+                prog_bars[e.file_name].value = e.progress
+                prog_bars[e.file_name].update()
+                print(prog_bars[e.file_name])
 
-    def handle_volume_change(e):
-        video.volume = e.control.value
+            file_picker = FilePicker(on_result=file_picker_result, on_upload=on_upload_progress)
+
+            def upload_files(e):
+                uf = []
+                if file_picker.result is not None and file_picker.result.files is not None:
+                    for f in file_picker.result.files:
+                        uf.append(
+                            FilePickerUploadFile(
+                                f.name,
+                                upload_url=page.get_upload_url(f.name, 600),
+                            )
+                        )
+                    file_picker.upload(uf)
+                print("upload to original folder")
+                upload_github()
+
+            def upload_github():
+                system('git add .')
+                system('git commit -m "Video change"')
+                system('git push origin main')
+                print("upload success")
+
+            page.overlay.append(file_picker)
+            page.views.append( 
+                View(
+                    "/",
+                    [
+                        AppBar(title=Text("Select video"), bgcolor=colors.SURFACE_VARIANT),
+                        Row(
+                            [
+                                ElevatedButton(
+                                    "Select files",
+                                    icon=icons.FOLDER_OPEN,
+                                    on_click=lambda _: file_picker.pick_files(allow_multiple=True),
+                                )
+                            ]
+                        ),
+                        Row(
+                            [
+                                Column(ref=files),
+                                ElevatedButton(
+                                    "Upload",
+                                    ref=upload_button,
+                                    icon=icons.UPLOAD,
+                                    on_click=upload_files,
+                                    disabled=True,
+                                ),   
+                            ]
+                        ),
+                        Row(
+                            [
+                                ElevatedButton(
+                                    "선택완료",
+                                    ref=next_button,
+                                    on_click=lambda _: page.go("/select"),
+                                    disabled=True,
+                                ),
+                            ]
+                        ),
+                    ]
+                )
+            )
+
+        if page.route == "/select":
+            original_media = [
+                VideoMedia(
+                    "https://github.com/nadayoung/storage/raw/da0/original/"+select_file_name,
+                ),
+            ]
+
+            def handle_play_or_pause(e):
+                video.play_or_pause()
+                print("Video.play_or_pause()")
+                print(select_file_name)
+
+            def handle_stop(e):
+                video.stop()
+                print("Video.stop()")
+
+            def handle_volume_change(e):
+                video.volume = e.control.value
+                page.update()
+                print(f"Video.volume = {e.control.value}")
+
+            def handle_playback_rate_change(e):
+                video.playback_rate = e.control.value
+                page.update()
+                print(f"Video.playback_rate = {e.control.value}")
+
+            def handle_seek(e):
+                video.seek(trim_start)
+                print(f"Video.seek({trim_start})")
+
+            def mark_start_point(e):
+                global trim_start
+                trim_start = video.current_time
+                print(f"Start point marked at {trim_start} seconds")
+
+            def mark_end_point(e):
+                global trim_end
+                trim_end = video.current_time
+                print(f"End point marked at {trim_end} seconds")
+
+            def trim_video(e):
+                global trim_start
+                global trim_end
+                trimmed_clip = video_clip.subclip(trim_start, trim_end)
+                trimmed_clip.write_videofile("trimmed_video.mp4", codec='libx264')
+                trimmed_clip.close()
+
+            page.views.append(
+                View(
+                    "/select",
+                    [
+                        AppBar(title = Text("Select video"), bgcolor=colors.SURFACE_VARIANT),
+                        video := Video(
+                            expand=True,
+                            playlist=original_media,
+                            playlist_mode=PlaylistMode.SINGLE,
+                            fill_color=colors.BLUE_400,
+                            aspect_ratio=16/9,
+                            volume=100,
+                            autoplay=False,
+                            filter_quality=FilterQuality.HIGH,
+                            muted=False,
+                            on_loaded=lambda e: print("Video loaded successfully!"),
+                            on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
+                            on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
+                        ),
+                        Row(
+                            wrap=True,
+                            alignment=MainAxisAlignment.CENTER,
+                            controls=[
+                                ElevatedButton("Play Or Pause", on_click=handle_play_or_pause),
+                                ElevatedButton("Stop", on_click=handle_stop),
+                                ElevatedButton("Mark Start Point", on_click=mark_start_point),
+                                ElevatedButton("Mark End Point", on_click=mark_end_point),
+                                ElevatedButton("Trim Video", on_click=trim_video)
+                            ],
+                        ),
+                        Slider(
+                            min=0,
+                            value=100,
+                            max=100,
+                            label="Volume = {value}%",
+                            divisions=10,
+                            width=400,
+                            on_change=handle_volume_change,
+                        ),
+                        Slider(
+                            min=1,
+                            value=1,
+                            max=3,
+                            label="PlaybackRate = {value}X",
+                            divisions=6,
+                            width=400,
+                            on_change=handle_playback_rate_change,
+                        ),
+                        ElevatedButton(
+                            "변환하기", 
+                            on_click = lambda _:page.go("/modified"),
+                        ),
+                    ]
+                )
+            )
+
+        if page.route == "/modified":
+            # Code for modified video view
+            pass
+
         page.update()
-        print(f"Video.volume = {e.control.value}")
 
-    def handle_playback_rate_change(e):
-        video.playback_rate = e.control.value
-        page.update()
-        print(f"Video.playback_rate = {e.control.value}")
+    def view_pop(view):
+        page.views.pop()
+        top_view = page.views[-1]
+        page.go(top_view.route)
 
-    def handle_seek(e):
-        video.seek(5000)
-        print(f"Video.seek(5000)")
-
-    def handle_add_media(e):
-        video.playlist_add(random.choice(sample_media))
-        print(f"Video.playlist_add(random.choice(sample_media))")
-
-    def handle_remove_media(e):
-        r = random.randint(0, len(video.playlist) - 1)
-        video.playlist_remove(r)
-        print(f"Popped Item at index: {r} (position {r+1})")
-
-    def handle_jump(e):
-        print(f"Video.jump_to(0)")
-        video.jump_to(0)
-
-    sample_media = [
-        ft.VideoMedia(
-            "https://user-images.githubusercontent.com/28951144/229373720-14d69157-1a56-4a78-a2f4-d7a134d7c3e9.mp4"
-        ),
-        ft.VideoMedia(
-            "https://user-images.githubusercontent.com/28951144/229373718-86ce5e1d-d195-45d5-baa6-ef94041d0b90.mp4"
-        ),
-        ft.VideoMedia(
-            "https://user-images.githubusercontent.com/28951144/229373716-76da0a4e-225a-44e4-9ee7-3e9006dbc3e3.mp4"
-        ),
-        ft.VideoMedia(
-            "https://user-images.githubusercontent.com/28951144/229373695-22f88f13-d18f-4288-9bf1-c3e078d83722.mp4"
-        ),
-        ft.VideoMedia(
-            "https://user-images.githubusercontent.com/28951144/229373709-603a7a89-2105-4e1b-a5a5-a6c3567c9a59.mp4",
-            extras={
-                "artist": "Thousand Foot Krutch",
-                "album": "The End Is Where We Begin",
-            },
-            http_headers={
-                "Foo": "Bar",
-                "Accept": "*/*",
-            },
-        ),
-    ]
-
-    page.add(
-        video := ft.Video(
-            expand=True,
-            playlist=sample_media[0:2],
-            playlist_mode=ft.PlaylistMode.LOOP,
-            fill_color=ft.colors.BLUE_400,
-            aspect_ratio=16/9,
-            volume=100,
-            autoplay=False,
-            filter_quality=ft.FilterQuality.HIGH,
-            muted=False,
-            on_loaded=lambda e: print("Video loaded successfully!"),
-            on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
-            on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
-        ),
-        ft.Row(
-            wrap=True,
-            alignment=ft.MainAxisAlignment.CENTER,
-            controls=[
-                ft.ElevatedButton("Play", on_click=handle_play),
-                ft.ElevatedButton("Pause", on_click=handle_pause),
-                ft.ElevatedButton("Play Or Pause", on_click=handle_play_or_pause),
-                ft.ElevatedButton("Stop", on_click=handle_stop),
-                ft.ElevatedButton("Next", on_click=handle_next),
-                ft.ElevatedButton("Previous", on_click=handle_previous),
-                ft.ElevatedButton("Seek s=5", on_click=handle_seek),
-                ft.ElevatedButton("Jump to first Media", on_click=handle_jump),
-                ft.ElevatedButton("Add Random Media", on_click=handle_add_media),
-                ft.ElevatedButton("Remove Random Media", on_click=handle_remove_media),
-            ],
-        ),
-        ft.Slider(
-            min=0,
-            value=100,
-            max=100,
-            label="Volume = {value}%",
-            divisions=10,
-            width=400,
-            on_change=handle_volume_change,
-        ),
-        ft.Slider(
-            min=1,
-            value=1,
-            max=3,
-            label="PlaybackRate = {value}X",
-            divisions=6,
-            width=400,
-            on_change=handle_playback_rate_change,
-        ),
-    )
-
+    page.on_route_change = route_change
+    page.on_view_pop = view_pop
+    page.go(page.route)
 
 app(target=main, upload_dir="original", view=AppView.WEB_BROWSER)

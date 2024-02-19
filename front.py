@@ -1,12 +1,12 @@
-# complete front code
 from flet import *
 import urllib.request
 from typing import Dict
 from os import system
+import flet as ft
+from moviepy.editor import *
 
 global select_file_name
 select_file_name = ""
-
 def main(page: Page):
     page.theme_mode = ThemeMode.LIGHT
     page.title = "Project Modified voice"
@@ -71,10 +71,6 @@ def main(page: Page):
                 system('git commit -m "Video change"')
                 system('git push origin main')
                 print("upload success")
-            
-            def handle_seek(e):
-                video.seek(10000)
-                print(f"Video.seek(10000)")
 
             page.overlay.append(file_picker)
             page.views.append( 
@@ -122,7 +118,7 @@ def main(page: Page):
             original_media = [
                 VideoMedia(
                     # "https://github.com/nadayoung/storage/raw/da0/original/dog.mp4"
-                    "https://github.com/nadayoung/storage/tree/main/original/"+select_file_name,
+                    "https://github.com/nadayoung/storage/raw/da0/original/"+select_file_name,
                 ),
             ]
 
@@ -144,6 +140,13 @@ def main(page: Page):
                 video.playback_rate = e.control.value
                 page.update()
                 print(f"Video.playback_rate = {e.control.value}")
+            
+            def handle_seek(e):
+                video.seek(5000)
+                print(f"Video.seek(5000)")
+
+            #def set_point_a(e):
+            #def set_point_b(e):
             
             page.views.append(
                 View(
@@ -170,6 +173,7 @@ def main(page: Page):
                             controls=[
                                 ElevatedButton("Play Or Pause", on_click=handle_play_or_pause),
                                 ElevatedButton("Stop", on_click=handle_stop),
+                                ElevatedButton("Skip 5 Seconds", on_click=handle_seek)
                             ],
                         ),
                         Slider(
@@ -202,7 +206,7 @@ def main(page: Page):
         if page.route == "/modified":
             modified_media = [
                 VideoMedia(
-                    "https://github.com/nadayoung/storage/blob/main/original/197898_(1080p).mp4",
+                    "https://github.com/nadayoung/storage/raw/main/original/197898_(1080p).mp4",
                 ),
             ]
 
@@ -227,7 +231,8 @@ def main(page: Page):
 
             def save_video_url(video_url):
                 savename = 'save_completed_video.mp4'
-                urllib.request.urlretrieve(video_url, 'original/' + savename)
+                urllib.request.urlretrieve(video_url, 'finish/' + savename)
+                print(video_url)
                 print("save by url success")
 
             page.views.append(
@@ -262,7 +267,7 @@ def main(page: Page):
                             ElevatedButton(
                                 "Save file",
                                 icon=icons.SAVE,
-                                on_click=lambda event: [save_video_url(video.playlist[0].resource), upload_github()]
+                                on_click=save_video_url(video.playlist[0].resource),
                             ),
                         ]
                     ),
