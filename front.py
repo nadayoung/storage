@@ -239,13 +239,13 @@ def main(page: Page):
                 global select_file_name, start_point, end_point
                 
 
-                video_clip = VideoFileClip(f'original/{select_file_name}')  
+                video_clip = VideoFileClip('original/'+select_file_name)  
                 trimmed_video = video_clip.subclip(start_point, end_point)
     
                 # Close the original video clip
                 video_clip.close()
     
-                trimmed_video_path = f'C:/dev/storage/trimmed/{select_file_name}'
+                trimmed_video_path = '/trimmed/' + select_file_name
                 trimmed_video.write_videofile(trimmed_video_path)
     
                 # Close the trimmed video clip
