@@ -7,8 +7,8 @@ import shutil
 
 global select_file_name
 select_file_name = ""
-global trim_start, trim_end
-trim_start, trim_end = 0, 0
+global trim_start, trim_end, current_time
+trim_start, trim_end, current_time = 0, 0, 0
 
 def main(page: Page):
     page.theme_mode = ThemeMode.LIGHT
@@ -120,8 +120,8 @@ def main(page: Page):
         if page.route == "/select":
             original_media = [
                 VideoMedia(
-                
-                    "https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,
+                    # "https://github.com/nadayoung/storage/raw/da0/original/dog.mp4"
+                    "https://github.com/nadayoung/storage/tree/main/original/"+select_file_name,
                 ),
             ]
 
@@ -145,13 +145,13 @@ def main(page: Page):
                 print(f"Video.playback_rate = {e.control.value}")
 
             def mark_trim_start(e):
-                global trim_start
-                trim_start = video.current_time
+                global trim_start, current_time
+                trim_start = current_time
                 print(f"Trim start set at {trim_start} seconds")
 
             def mark_trim_end(e):
-                global trim_end
-                trim_end = video.current_time
+                global trim_end, current_time
+                trim_end = current_time
                 print(f"Trim end set at {trim_end} seconds")
 
             def handle_conversion(e):
@@ -177,6 +177,7 @@ def main(page: Page):
                             on_loaded=lambda e: print("Video loaded successfully!"),
                             on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
                             on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
+                            on_time_update=lambda e: update_current_time(e.current_time),
                         ),
                         Row(
                             wrap=True,
@@ -230,6 +231,9 @@ def main(page: Page):
     page.on_view_pop = view_pop
     page.go(page.route)
 
+def update_current_time(time):
+    global current_time
+    current_time = time
 
 def trim_video(file_name, start_time, end_time):
     # Trim the video using MoviePy library
