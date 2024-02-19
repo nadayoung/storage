@@ -3,7 +3,7 @@ import urllib.request
 from typing import Dict
 from os import system
 import flet as ft
-from moviepy.editor import *
+from moviepy.editor import VideoFileClip
 import shutil
 
 global select_file_name
@@ -143,7 +143,7 @@ def main(page: Page):
 
             def mark_trim_start(e):
                 global trim_start
-                trim_start = video.current_time if video.playlist else 0
+                trim_start = video.current_time
                 print(f"Trim start set at {trim_start} seconds")
 
             def mark_trim_end(e):
