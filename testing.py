@@ -68,6 +68,10 @@ def main(page: Page):
                     file_picker.upload(uf)
                 print("upload to original folder")
                 upload_github()
+            
+            def current_time(e):
+                trim_start
+                trim_end
 
             def upload_github():
                 #system('git pull')
