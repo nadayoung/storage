@@ -1,17 +1,19 @@
 from flet import *
 import urllib.request
-import time  # Add this import for time.sleep
-import shutil
 from typing import Dict
 from os import system
+import flet as ft
 from moviepy.editor import *
+import shutil
 
 global select_file_name
 select_file_name = ""
-global trim_start, trim_end, current_time
-trim_start, trim_end, current_time = 0, 0, 0
+global trim_start, trim_end, video
+trim_start, trim_end = 0, 0
+video = None
 
 def main(page: Page):
+    global video, trim_start, trim_end
     page.theme_mode = ThemeMode.LIGHT
     page.title = "Project Modified voice"
     page.window_width = 500
@@ -20,9 +22,6 @@ def main(page: Page):
 
     def route_change(route):
         global select_file_name
-
-        # 화면을 띄우기 위함
-        # page.overlay.append(file_picker)
 
         page.views.clear()
 
@@ -55,7 +54,6 @@ def main(page: Page):
             file_picker = FilePicker(on_result=file_picker_result, on_upload=on_upload_progress)
 
             def upload_files(e):
-                # next_button.current.disabled = True if file_picker.result is None else False
                 uf = []
                 if file_picker.result is not None and file_picker.result.files is not None:
                     for f in file_picker.result.files:
@@ -70,7 +68,6 @@ def main(page: Page):
                 upload_github()
 
             def upload_github():
-                #system('git pull')
                 system('git add .')
                 system('git commit -m "Video change"')
                 system('git push origin main')
@@ -79,7 +76,7 @@ def main(page: Page):
             page.overlay.append(file_picker)
             page.views.append( 
             
-                View( # 첫번째 화면
+                View(
                     "/",
                     [
                         AppBar(title=Text("Select video"), bgcolor=colors.SURFACE_VARIANT),
@@ -145,13 +142,13 @@ def main(page: Page):
                 print(f"Video.playback_rate = {e.control.value}")
 
             def mark_trim_start(e):
-                global trim_start, current_time
-                trim_start = current_time
+                global trim_start
+                trim_start = video.current_time
                 print(f"Trim start set at {trim_start} seconds")
 
             def mark_trim_end(e):
-                global trim_end, current_time
-                trim_end = current_time
+                global trim_end
+                trim_end = video.current_time
                 print(f"Trim end set at {trim_end} seconds")
 
             def handle_conversion(e):
@@ -174,6 +171,9 @@ def main(page: Page):
                             autoplay=False,
                             filter_quality=FilterQuality.HIGH,
                             muted=False,
+                            on_loaded=lambda e: print("Video loaded successfully!"),
+                            on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
+                            on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
                         ),
                         Row(
                             wrap=True,
@@ -211,11 +211,99 @@ def main(page: Page):
                 )
             )
 
-        # 동영상 변환이 끝난 뒤 화면
         if page.route == "/modified":
-            # Implement the modified view as required.
-            pass
+            modified_media = [
+                VideoMedia(
+                    "https://github.com/nadayoung/storage/raw/main/original/197898_(1080p).mp4",
+                ),
+            ]
 
+            def handle_play_or_pause(e):
+                video.play_or_pause()
+                print("Video.play_or_pause()")
+                print(select_file_name)
+
+            def handle_stop(e):
+                video.stop()
+                print("Video.stop()")
+
+            def handle_volume_change(e):
+                video.volume = e.control.value
+                page.update()
+                print(f"Video.volume = {e.control.value}")
+
+            def handle_playback_rate_change(e):
+                video.playback_rate = e.control.value
+                page.update()
+                print(f"Video.playback_rate = {e.control.value}")
+
+            def save_video_url(video_url):
+                savename = 'save_completed_video.mp4'
+                urllib.request.urlretrieve(video_url, 'finish/' + savename)
+                print(video_url)
+                print("save by url success")
+
+            page.views.append(
+                View(
+                    "/modified",
+                    [
+                        AppBar(title=Text("Modified video"), bgcolor=colors.SURFACE_VARIANT),
+                        video := Video(
+                            expand=True,
+                            playlist=modified_media,
+                            playlist_mode=PlaylistMode.SINGLE,
+                            fill_color=colors.BLUE_400,
+                            aspect_ratio=16/9,
+                            volume=100,
+                            autoplay=False,
+                            filter_quality=FilterQuality.HIGH,
+                            muted=False,
+                            on_loaded=lambda e: print("Video loaded successfully!"),
+                            on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
+                            on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
+                        ),
+                        Row(
+                            wrap=True,
+                            alignment=MainAxisAlignment.CENTER,
+                            controls=[
+                                ElevatedButton("Play Or Pause", on_click=handle_play_or_pause),
+                                ElevatedButton("Stop", on_click=handle_stop),
+                            ],
+                        ),
+                        Row(
+                            [
+                                ElevatedButton(
+                                    "Save file",
+                                    icon=icons.SAVE,
+                                    on_click=lambda _: save_video_url(video.playlist[0].resource),
+                                ),
+                            ]
+                        ),
+                        Slider(
+                            min=0,
+                            value=100,
+                            max=100,
+                            label="Volume = {value}%",
+                            divisions=10,
+                            width=400,
+                            on_change=handle_volume_change,
+                        ),
+                        Slider(
+                            min=1,
+                            value=1,
+                            max=3,
+                            label="PlaybackRate = {value}X",
+                            divisions=6,
+                            width=400,
+                            on_change=handle_playback_rate_change,
+                        ),
+                        ElevatedButton(
+                            "돌아가기", 
+                            on_click=lambda _: page.go("/"),
+                        ),
+                    ],
+                )
+            )
         page.update()
 
     def view_pop(view):
@@ -227,24 +315,21 @@ def main(page: Page):
     page.on_view_pop = view_pop
     page.go(page.route)
 
-    def trim_video(file_name, start_time, end_time):
-        # Trim the video using MoviePy library
-        video_clip = VideoFileClip(file_name).subclip(start_time, end_time)
-        trimmed_file_path = f"C:\dev\storage\trimmed + {file_name}"
-        video_clip.write_videofile(trimmed_file_path)
-        return trimmed_file_path
+def trim_video(file_name, start_time, end_time):
+    video_clip = VideoFileClip(file_name).subclip(start_time, end_time)
+    trimmed_file_path = f"C:/dev/storage/trimmed/{file_name}"
+    video_clip.write_videofile(trimmed_file_path)
+    return trimmed_file_path
 
-    def save_and_upload(trimmed_file_path):
-        # Save the trimmed file to the specified directory and upload it to GitHub
-        save_path = f"trimmed/{trimmed_file_path.split('/')[-1]}"
-        shutil.copy(trimmed_file_path, save_path)  # Copy trimmed file to the desired directory
-        upload_to_github(save_path)
+def save_and_upload(trimmed_file_path):
+    save_path = f"finish/{trimmed_file_path.split('/')[-1]}"
+    shutil.copy(trimmed_file_path, save_path)
+    upload_to_github(save_path)
 
-    def upload_to_github(file_path):
-        # Upload file to GitHub
-        system('git add .')
-        system('git commit -m "Trimmed video uploaded"')
-        system('git push origin main')
-        print("Trimmed video upload successful")
+def upload_to_github(file_path):
+    system('git add .')
+    system('git commit -m "Trimmed video uploaded"')
+    system('git push origin main')
+    print("Trimmed video upload successful")
 
 app(target=main, upload_dir="original", view=AppView.WEB_BROWSER)
