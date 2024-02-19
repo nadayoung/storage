@@ -182,7 +182,7 @@ def main(page: Page):
                             on_change=handle_volume_change,
                         ),
                         Row(
-                            alignment = MainAxisAlignment.CENTER,
+                            alignment = MainAxisAlignment.SPACE_BETWEEN,
                             controls=[
                                 Slider(
                                     min=0,
