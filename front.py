@@ -1,3 +1,4 @@
+# complete front code
 from flet import *
 import urllib.request
 from typing import Dict
@@ -27,11 +28,6 @@ def main(page: Page):
             prog_bars: Dict[str, ProgressRing] = {}
             upload_button = Ref[ElevatedButton]()
             next_button = Ref[ElevatedButton]()
-
-            def save_video_url(video_url):
-                savename = 'save_completed_video.mp4'
-                urllib.request.urlretrieve(video_url, 'original/' + savename)
-                print("save by url success")
 
             def file_picker_result(e: FilePickerResultEvent):
                 global select_file_name
@@ -75,6 +71,10 @@ def main(page: Page):
                 system('git commit -m "Video change"')
                 system('git push origin main')
                 print("upload success")
+            
+            def handle_seek(e):
+                video.seek(10000)
+                print(f"Video.seek(10000)")
 
             page.overlay.append(file_picker)
             page.views.append( 
@@ -225,6 +225,10 @@ def main(page: Page):
                 page.update()
                 print(f"Video.playback_rate = {e.control.value}")
 
+            def save_video_url(video_url):
+                savename = 'save_completed_video.mp4'
+                urllib.request.urlretrieve(video_url, 'original/' + savename)
+                print("save by url success")
 
             page.views.append(
                 View( # 변형된 화면
