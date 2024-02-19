@@ -212,7 +212,7 @@ def main(page: Page):
                                     on_change=handle_trim_end,
                                 ),
                                 ElevatedButton(
-                                    icon=icons.END,
+                                    icon=icons.STOP,
                                     #on_click=????,
                                 ),
                             ],
