@@ -72,7 +72,7 @@ def main(page: Page):
                     file_picker.upload(uf)
                 print("upload to original folder")
                 pre.extract_audio_from_video('original/'+select_file_name, 'original/audio.wav')
-                pre.reduce_noise('original/audio.wav', 'original/denoised_audio.wav')
+                pre.reduce_noise('original/audio.wav', 'trimmed/denoised_audio.wav')
                 upload_github()
             
             def upload_github():
@@ -235,6 +235,24 @@ def main(page: Page):
                 page.update()
                 print(f"Video.volume = {e.control.value}")
             
+            def handle_save_trimmed_file(e):
+                global select_file_name, start_point, end_point
+                
+
+                video_clip = VideoFileClip(f'original/{select_file_name}')  
+                trimmed_video = video_clip.subclip(start_point, end_point)
+    
+                # Close the original video clip
+                video_clip.close()
+    
+                trimmed_video_path = f'C:/dev/storage/trimmed/{select_file_name}'
+                #trimmed_video.write_videofile(trimmed_video_path)
+    
+                # Close the trimmed video clip
+                #trimmed_video.close()
+    
+                print("Trimmed video saved successfully")
+            
             page.views.append(
                 View(
                     "/select",
@@ -290,7 +308,7 @@ def main(page: Page):
                         ElevatedButton(
                             "변환하기", 
                             ref = next_button,
-                            on_click = lambda _:page.go("/modified"),
+                            on_click = lambda _: (handle_save_trimmed_file(), page.go("/modified")),
                             width=200,
                             bgcolor=colors.PURPLE_200,
                             color=colors.WHITE,
