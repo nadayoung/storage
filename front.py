@@ -70,7 +70,7 @@ def main(page: Page):
                 upload_github()
 
             def upload_github():
-                system('git pull')
+                #system('git pull')
                 system('git add .')
                 system('git commit -m "Video change"')
                 system('git push origin main')
@@ -122,7 +122,7 @@ def main(page: Page):
             original_media = [
                 VideoMedia(
                     # "https://github.com/nadayoung/storage/raw/da0/original/dog.mp4"
-                    "https://github.com/nadayoung/storage/raw/da0/original/"+select_file_name,
+                    "https://github.com/nadayoung/storage/tree/main/original/"+select_file_name,
                 ),
             ]
 
@@ -202,7 +202,7 @@ def main(page: Page):
         if page.route == "/modified":
             modified_media = [
                 VideoMedia(
-                    "https://github.com/nadayoung/storage/raw/main/original/197898_(1080p).mp4",
+                    "https://github.com/nadayoung/storage/blob/main/original/197898_(1080p).mp4",
                 ),
             ]
 
