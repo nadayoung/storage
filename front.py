@@ -186,14 +186,14 @@ def main(page: Page):
 
             def start_seek(e):
                 global start_point, video_length
-                video.seek(int(float(start_point)*video_length*10))
+                start_trim = video.seek(int(float(start_point)*video_length*10))
                 page.update()
                 print(f"Video.seek")
                 print(start_point)
 
             def end_seek(e):
                 global end_point, video_length
-                video.seek(int(float(end_point)*video_length*10))
+                end_trim = video.seek(int(float(end_point)*video_length*10))
                 print(f"Video.seek")
                 print(end_point)
 
@@ -235,21 +235,12 @@ def main(page: Page):
                 page.update()
                 print(f"Video.volume = {e.control.value}")
             
-            def handle_save_trimmed_file(e):
-                global select_file_name, start_point, end_point
-                
-
-                video_clip = VideoFileClip('original/'+select_file_name)  
-                trimmed_video = video_clip.subclip(start_point, end_point)
+            def make_clip_video(path,save_path, start_t, end_t):
+                clip_video = VideoFileClip(path).subclip(start_t, end_t)
+                clip_video.write_videofile(save_path)
     
-                # Close the original video clip
-                video_clip.close()
-    
-                trimmed_video_path = '/trimmed/' + select_file_name
-                trimmed_video.write_videofile(trimmed_video_path)
-    
-                # Close the trimmed video clip
-                trimmed_video.close()
+            if __name__ == "__main__":
+                make_clip_video("https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,'trimmed/output.mp4','00:00:05', '00:00:10')
     
                 print("Trimmed video saved successfully")
             
@@ -308,7 +299,7 @@ def main(page: Page):
                         ElevatedButton(
                             "변환하기", 
                             ref = next_button,
-                            on_click=lambda _: (handle_save_trimmed_file, page.go("/modified")),
+                            on_click=lambda _: (make_clip_video, page.go("/modified")),
                             width=200,
                             bgcolor=colors.PURPLE_200,
                             color=colors.WHITE,
