@@ -230,7 +230,7 @@ def main(page: Page):
 def trim_video(file_name, start_time, end_time):
     # Trim the video using MoviePy library
     video_clip = VideoFileClip(file_name).subclip(start_time, end_time)
-    trimmed_file_path = f"C:/dev/storage/trimmed/trimmed_{file_name}"
+    trimmed_file_path = f"C:/dev/storage/trimmed/{file_name}"
     video_clip.write_videofile(trimmed_file_path)
     return trimmed_file_path
 
