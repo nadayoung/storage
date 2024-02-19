@@ -181,23 +181,41 @@ def main(page: Page):
                             width=400,
                             on_change=handle_volume_change,
                         ),
-                        Slider(
-                            min=0,
-                            value=100,
-                            max=100,
-                            label="Trim Start = {value}%",
-                            divisions=100,
-                            width=400,
-                            on_change=handle_trim_start,
+                        Row(
+                            alignment = MainAxisAlignment.CENTER,
+                            controls=[
+                                Slider(
+                                    min=0,
+                                    value=100,
+                                    max=100,
+                                    label="Trim Start = {value}%",
+                                    divisions=100,
+                                    width=400,
+                                    on_change=handle_trim_start,
+                                ),
+                                ElevatedButton(
+                                    icon=icons.START,
+                                    #on_click=????,
+                                ),
+                            ],
                         ),
-                        Slider(
-                            min=0,
-                            value=100,
-                            max=100,
-                            label="Trim End = {value}%",
-                            divisions=100,
-                            width=400,
-                            on_change=handle_trim_end,
+                        Row(
+                            alignment = MainAxisAlignment.CENTER,
+                            controls=[
+                                Slider(
+                                    min=0,
+                                    value=100,
+                                    max=100,
+                                    label="Trim End = {value}%",
+                                    divisions=100,
+                                    width=400,
+                                    on_change=handle_trim_end,
+                                ),
+                                ElevatedButton(
+                                    icon=icons.END,
+                                    #on_click=????,
+                                ),
+                            ],
                         ),
                         ElevatedButton(
                             "변환하기", 
