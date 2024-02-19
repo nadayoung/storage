@@ -227,24 +227,24 @@ def main(page: Page):
     page.on_view_pop = view_pop
     page.go(page.route)
 
-def trim_video(file_name, start_time, end_time):
-    # Trim the video using MoviePy library
-    video_clip = VideoFileClip(file_name).subclip(start_time, end_time)
-    trimmed_file_path = f"C:/dev/storage/trimmed/{file_name}"
-    video_clip.write_videofile(trimmed_file_path)
-    return trimmed_file_path
+    def trim_video(file_name, start_time, end_time):
+        # Trim the video using MoviePy library
+        video_clip = VideoFileClip(file_name).subclip(start_time, end_time)
+        trimmed_file_path = f"C:/dev/storage/trimmed/{file_name}"
+        video_clip.write_videofile(trimmed_file_path)
+        return trimmed_file_path
 
-def save_and_upload(trimmed_file_path):
-    # Save the trimmed file to the specified directory and upload it to GitHub
-    save_path = f"finish/{trimmed_file_path.split('/')[-1]}"
-    shutil.copy(trimmed_file_path, save_path)  # Copy trimmed file to the desired directory
-    upload_to_github(save_path)
+    def save_and_upload(trimmed_file_path):
+        # Save the trimmed file to the specified directory and upload it to GitHub
+        save_path = f"finish/{trimmed_file_path.split('/')[-1]}"
+        shutil.copy(trimmed_file_path, save_path)  # Copy trimmed file to the desired directory
+        upload_to_github(save_path)
 
-def upload_to_github(file_path):
-    # Upload file to GitHub
-    system('git add .')
-    system('git commit -m "Trimmed video uploaded"')
-    system('git push origin main')
-    print("Trimmed video upload successful")
+    def upload_to_github(file_path):
+        # Upload file to GitHub
+        system('git add .')
+        system('git commit -m "Trimmed video uploaded"')
+        system('git push origin main')
+        print("Trimmed video upload successful")
 
 app(target=main, upload_dir="original", view=AppView.WEB_BROWSER)
