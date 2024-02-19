@@ -143,13 +143,14 @@ def main(page: Page):
 
             def mark_trim_start(e):
                 global trim_start
-                trim_start = video.current_time
+                trim_start = video.playlist[0].current_time
                 print(f"Trim start set at {trim_start} seconds")
 
             def mark_trim_end(e):
                 global trim_end
-                trim_end = video.current_time
+                trim_end = video.playlist[0].current_time
                 print(f"Trim end set at {trim_end} seconds")
+
 
             def handle_conversion(e):
                 trimmed_file_path = trim_video(select_file_name, trim_start, trim_end)
