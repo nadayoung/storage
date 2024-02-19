@@ -145,6 +145,16 @@ def main(page: Page):
                 page.update()
                 print(f"Video.trim_end = {e.control.value}")
             
+            def save_trim_start_value(video, slider_handler):
+                trim_start_value = video.playlist[0].trim_start
+                slider_handler(trim_start_value)
+                print(f"Trim Start value saved: {trim_start_value}")
+
+            def save_trim_end_value(video, slider_handler):
+                trim_end_value = video.playlist[0].trim_end
+                slider_handler(trim_end_value)
+                print(f"Trim End value saved: {trim_end_value}")
+            
             page.views.append(
                 View(
                     "/select",
@@ -195,7 +205,7 @@ def main(page: Page):
                                 ),
                                 ElevatedButton(
                                     icon=icons.START,
-                                    #on_click=????,
+                                    on_click=lambda e: save_trim_start_value(video, handle_trim_start),
                                 ),
                             ],
                         ),
@@ -213,7 +223,7 @@ def main(page: Page):
                                 ),
                                 ElevatedButton(
                                     icon=icons.STOP,
-                                    #on_click=????,
+                                    on_click=lambda e: save_trim_end_value(video, handle_trim_end),
                                 ),
                             ],
                         ),
