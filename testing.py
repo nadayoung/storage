@@ -3,17 +3,13 @@ import urllib.request
 from typing import Dict
 from os import system
 import flet as ft
-from moviepy.editor import VideoFileClip
-import shutil
+from moviepy.editor import *
 
 global select_file_name
 select_file_name = ""
-global trim_start, trim_end, video
-trim_start, trim_end = 0, 0
-video = None
-
 def main(page: Page):
-    global video, trim_start, trim_end
+    start_time = 0
+    end_time = 0
     page.theme_mode = ThemeMode.LIGHT
     page.title = "Project Modified voice"
     page.window_width = 500
@@ -22,6 +18,9 @@ def main(page: Page):
 
     def route_change(route):
         global select_file_name
+
+        # 화면을 띄우기 위함
+        # page.overlay.append(file_picker)
 
         page.views.clear()
 
@@ -54,6 +53,7 @@ def main(page: Page):
             file_picker = FilePicker(on_result=file_picker_result, on_upload=on_upload_progress)
 
             def upload_files(e):
+                # next_button.current.disabled = True if file_picker.result is None else False
                 uf = []
                 if file_picker.result is not None and file_picker.result.files is not None:
                     for f in file_picker.result.files:
@@ -68,6 +68,7 @@ def main(page: Page):
                 upload_github()
 
             def upload_github():
+                #system('git pull')
                 system('git add .')
                 system('git commit -m "Video change"')
                 system('git push origin main')
@@ -76,7 +77,7 @@ def main(page: Page):
             page.overlay.append(file_picker)
             page.views.append( 
             
-                View(
+                View( # 첫번째 화면
                     "/",
                     [
                         AppBar(title=Text("Select video"), bgcolor=colors.SURFACE_VARIANT),
@@ -122,6 +123,28 @@ def main(page: Page):
                 ),
             ]
 
+            def handle_start_button(e):
+                global start_time
+                start_time = video.current_time
+                print(f"Start time set to: {start_time} seconds")
+
+            def handle_end_button(e):
+                global end_time
+                end_time = video.current_time
+                print(f"End time set to: {end_time} seconds")
+
+            def handle_cut_button(e):
+                global start_time, end_time
+                if start_time >= end_time:
+                    print("Error: Start time is greater than or equal to end time.")
+                    return
+
+                print(f"Cutting video from {start_time} to {end_time}...")
+                # Load video and cut it between start_time and end_time
+                clip = VideoFileClip(select_file_name).subclip(start_time, end_time)
+                # Save the result to a file
+                clip.write_videofile("cut_video.mp4")
+
             def handle_play_or_pause(e):
                 video.play_or_pause()
                 print("Video.play_or_pause()")
@@ -140,23 +163,7 @@ def main(page: Page):
                 video.playback_rate = e.control.value
                 page.update()
                 print(f"Video.playback_rate = {e.control.value}")
-
-            def mark_trim_start(e):
-                global trim_start
-                trim_start = video.iter_frames_with_time()
-                print(f"Trim start set at {trim_start} seconds")
-
-            def mark_trim_end(e):
-                global trim_end
-                trim_end = video.current_time
-                print(f"Trim end set at {trim_end} seconds")
-
-
-            def handle_conversion(e):
-                trimmed_file_path = trim_video(select_file_name, trim_start, trim_end)
-                save_and_upload(trimmed_file_path)
-                page.go("/modified")
-
+            
             page.views.append(
                 View(
                     "/select",
@@ -182,8 +189,15 @@ def main(page: Page):
                             controls=[
                                 ElevatedButton("Play Or Pause", on_click=handle_play_or_pause),
                                 ElevatedButton("Stop", on_click=handle_stop),
-                                ElevatedButton("Mark Trim Start", on_click=mark_trim_start),
-                                ElevatedButton("Mark Trim End", on_click=mark_trim_end),
+                            ],
+                        ),
+                        Row(
+                            wrap=True,
+                            alignment=MainAxisAlignment.CENTER,
+                            controls=[
+                                ElevatedButton("Start", on_click=handle_start_button),
+                                ElevatedButton("End", on_click=handle_end_button),
+                                ElevatedButton("Cut", on_click=handle_cut_button),
                             ],
                         ),
                         Slider(
@@ -206,12 +220,13 @@ def main(page: Page):
                         ),
                         ElevatedButton(
                             "변환하기", 
-                            on_click=handle_conversion,
+                            on_click = lambda _:page.go("/modified"),
                         ),
                     ]
                 )
             )
 
+        # 동영상 변환이 끝난 뒤 화면
         if page.route == "/modified":
             modified_media = [
                 VideoMedia(
@@ -245,7 +260,7 @@ def main(page: Page):
                 print("save by url success")
 
             page.views.append(
-                View(
+                View( # 변형된 화면
                     "/modified",
                     [
                         AppBar(title=Text("Modified video"), bgcolor=colors.SURFACE_VARIANT),
@@ -267,44 +282,44 @@ def main(page: Page):
                             wrap=True,
                             alignment=MainAxisAlignment.CENTER,
                             controls=[
-                                ElevatedButton("Play Or Pause", on_click=handle_play_or_pause),
-                                ElevatedButton("Stop", on_click=handle_stop),
+                            ElevatedButton("Play Or Pause", on_click=handle_play_or_pause),
+                            ElevatedButton("Stop", on_click=handle_stop),
                             ],
                         ),
                         Row(
                             [
-                                ElevatedButton(
-                                    "Save file",
-                                    icon=icons.SAVE,
-                                    on_click=lambda _: save_video_url(video.playlist[0].resource),
-                                ),
-                            ]
-                        ),
-                        Slider(
-                            min=0,
-                            value=100,
-                            max=100,
-                            label="Volume = {value}%",
-                            divisions=10,
-                            width=400,
-                            on_change=handle_volume_change,
-                        ),
-                        Slider(
-                            min=1,
-                            value=1,
-                            max=3,
-                            label="PlaybackRate = {value}X",
-                            divisions=6,
-                            width=400,
-                            on_change=handle_playback_rate_change,
-                        ),
-                        ElevatedButton(
-                            "돌아가기", 
-                            on_click=lambda _: page.go("/"),
-                        ),
-                    ],
-                )
+                            ElevatedButton(
+                                "Save file",
+                                icon=icons.SAVE,
+                                on_click=save_video_url(video.playlist[0].resource),
+                            ),
+                        ]
+                    ),
+                    Slider(
+                        min=0,
+                        value=100,
+                        max=100,
+                        label="Volume = {value}%",
+                        divisions=10,
+                        width=400,
+                        on_change=handle_volume_change,
+                    ),
+                    Slider(
+                        min=1,
+                        value=1,
+                        max=3,
+                        label="PlaybackRate = {value}X",
+                        divisions=6,
+                        width=400,
+                        on_change=handle_playback_rate_change,
+                    ),
+                    ElevatedButton(
+                        "돌아가기", 
+                        on_click=lambda _: page.go("/"),
+                    ),
+                ],
             )
+        )
         page.update()
 
     def view_pop(view):
@@ -316,21 +331,5 @@ def main(page: Page):
     page.on_view_pop = view_pop
     page.go(page.route)
 
-def trim_video(file_name, start_time, end_time):
-    video_clip = VideoFileClip(file_name).subclip(start_time, end_time)
-    trimmed_file_path = f"C:/dev/storage/trimmed/{file_name}"
-    video_clip.write_videofile(trimmed_file_path)
-    return trimmed_file_path
-
-def save_and_upload(trimmed_file_path):
-    save_path = f"finish/{trimmed_file_path.split('/')[-1]}"
-    shutil.copy(trimmed_file_path, save_path)
-    upload_to_github(save_path)
-
-def upload_to_github(file_path):
-    system('git add .')
-    system('git commit -m "Trimmed video uploaded"')
-    system('git push origin main')
-    print("Trimmed video upload successful")
-
 app(target=main, upload_dir="original", view=AppView.WEB_BROWSER)
+
