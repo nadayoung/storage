@@ -84,7 +84,7 @@ def main(page: Page):
                 # system('git pull')
                 system('git add .')
                 system('git commit -m "Video change"')
-                system('git push origin da0')
+                system('git push origin main')
                 print("upload success")
                 set_video_length('original/'+select_file_name)
                 page.update()
@@ -299,7 +299,7 @@ def main(page: Page):
                         ElevatedButton(
                             "변환하기", 
                             ref = next_button,
-                            on_click=lambda _: (make_clip_video, page.go("/modified")),
+                            on_click=lambda _: (lambda: (make_clip_video("https://github.com/nadayoung/storage/raw/main/original/"+select_file_name, 'trimmed/output.mp4', '00:00:05', '00:00:10'), page.go("/modified"))),
                             width=200,
                             bgcolor=colors.PURPLE_200,
                             color=colors.WHITE,
