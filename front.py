@@ -22,6 +22,7 @@ def main(page: Page):
     page.window_width = 500
     page.spacing = 20
     page.horizontal_alignment = CrossAxisAlignment.CENTER
+    page.vertical_alignment = MainAxisAlignment.CENTER
 
     def route_change(route):
         global select_file_name, end_point, start_point
@@ -106,27 +107,29 @@ def main(page: Page):
                 View( # 첫번째 화면
                     "/",
                     [
-                        AppBar(title=Text("영상 선택"), bgcolor=colors.SURFACE_VARIANT),
-                        Column(
-                            [
-                                Image("assets\cartoon_satoori.jpg"),
-                                Text("사투리의 멋있음을 보여주세요!", style=TextStyle(size=20)),                            
-                            ],
+                        AppBar(title=Text("영상 선택"), bgcolor=colors.BLUE_200),
+                        Row(
                             alignment=MainAxisAlignment.CENTER,
-                            width = 500,
+                            controls=[
+                                Image("assets\kkaps.jpg", width=700, height=450, fit=ImageFit.FIT_WIDTH),
+                            ],
                         ),
                         Row(
-                            [
+                            alignment=MainAxisAlignment.CENTER,
+                            controls=[
+                                Text("사투리의 멋있음을 보여주세요!", size=22),
+                            ]
+                        ),
+                        Row(
+                            alignment=MainAxisAlignment.CENTER,
+                            controls=[
                                 ElevatedButton(
                                     "Select files",
                                     icon=icons.FOLDER_OPEN,
                                     on_click=lambda _: file_picker.pick_files(allow_multiple=True),
+                                    bgcolor=colors.BLUE_200,
                                     width=200,
-                                )
-                            ]
-                        ),
-                        Row(
-                            [
+                                ),
                                 Column(ref=files),
                                 ElevatedButton(
                                     "Upload",
@@ -134,12 +137,28 @@ def main(page: Page):
                                     icon=icons.UPLOAD,
                                     on_click=upload_files,
                                     disabled=True,
+                                    bgcolor=colors.BLUE_100,
                                     width=190,
-                                ),   
+                                ),
                             ]
                         ),
+                        # Row(
+                        #     alignment=MainAxisAlignment.CENTER,
+                        #     controls=[
+                        #         Column(ref=files),
+                        #         ElevatedButton(
+                        #             "Upload",
+                        #             ref=upload_button,
+                        #             icon=icons.UPLOAD,
+                        #             on_click=upload_files,
+                        #             disabled=True,
+                        #             width=190,
+                        #         ),   
+                            # ]
+                        # ),
                         Row(
-                            [
+                            alignment=MainAxisAlignment.CENTER,
+                            controls=[
                                 pr,
                                 ElevatedButton(
                                     "선택완료",
@@ -147,10 +166,11 @@ def main(page: Page):
                                     on_click=lambda _: page.go("/select"),
                                     disabled=True,
                                     width=200,
-                                    bgcolor=colors.PURPLE_200,
+                                    bgcolor=colors.BLUE,
                                     color=colors.WHITE,
                                 ),
                             ],
+
                         ),
                     ]
                 )
