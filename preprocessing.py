@@ -47,6 +47,7 @@ def set_video_length(sample_media):
     return video_length
 
 def upload_github():
+    system('git pull')
     system('git add .')
     system('git commit -m "project assets update"')
     system('git push -u')
