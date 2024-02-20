@@ -239,8 +239,8 @@ def main(page: Page):
                 clip_video = VideoFileClip(path).subclip(start_trim, end_trim)
                 clip_video.write_videofile(save_path)
     
-            # if __name__ == "__main__":
-            #     make_clip_video("https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,'trimmed/output.mp4','00:00:05', '00:00:10')
+            if __name__ == "__main__":
+                make_clip_video("https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,'trimmed/output.mp4','00:00:05', '00:00:10')
     
                 print("Trimmed video saved successfully")
             
