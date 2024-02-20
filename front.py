@@ -328,7 +328,7 @@ def main(page: Page):
                                 pr,
                                 ElevatedButton(
                                     "변환하기", 
-                                    ref = next_button,
+                                    # ref = next_button,
                                     on_click = lambda _: [make_subclip(), page.go("/modified")],
                                     width=200,
                                     bgcolor=colors.PURPLE_200,
