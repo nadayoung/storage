@@ -337,7 +337,7 @@ def main(page: Page):
 
             def save_trimmed_file(e):
                 global select_file_name
-                pre.save_video_url("trimmed/"+select_file_name, "finish/"+select_file_name)
+                pre.save_video_url("https://github.com/nadayoung/storage/tree/main/trimmed/"+select_file_name, "finish/"+select_file_name)
 
             page.views.append(
                 View( # 변형된 화면
