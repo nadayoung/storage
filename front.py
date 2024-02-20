@@ -340,18 +340,18 @@ def main(page: Page):
                 ),
             ]
 
-            def handle_play_or_pause(e):
-                video.play_or_pause()
-                print("Video.play_or_pause()")
+            # def handle_play_or_pause(e):
+            #     video.play_or_pause()
+            #     print("Video.play_or_pause()")
 
-            def handle_stop(e):
-                video.stop()
-                print("Video.stop()")
+            # def handle_stop(e):
+            #     video.stop()
+            #     print("Video.stop()")
 
-            def handle_volume_change(e):
-                video.volume = e.control.value
-                page.update()
-                print(f"Video.volume = {e.control.value}")
+            # def handle_volume_change(e):
+            #     video.volume = e.control.value
+            #     page.update()
+            #     print(f"Video.volume = {e.control.value}")
 
             def save_trimmed_file(e):
                 global select_file_name
@@ -380,8 +380,8 @@ def main(page: Page):
                             wrap=True,
                             alignment=MainAxisAlignment.CENTER,
                             controls=[
-                            ElevatedButton("Play Or Pause", on_click=handle_play_or_pause, width=200,),
-                            ElevatedButton("Stop", on_click=handle_stop, width=200,),
+                            # ElevatedButton("Play Or Pause", on_click=handle_play_or_pause, width=200,),
+                            # ElevatedButton("Stop", on_click=handle_stop, width=200,),
                             ElevatedButton(
                                 "Save file",
                                 icon=icons.SAVE,
@@ -390,15 +390,15 @@ def main(page: Page):
                             ),
                             ],
                         ),
-                    Slider(
-                        min=0,
-                        value=100,
-                        max=100,
-                        label="Volume = {value}%",
-                        divisions=10,
-                        width=400,
-                        on_change=handle_volume_change,
-                    ),
+                    # Slider(
+                    #     min=0,
+                    #     value=100,
+                    #     max=100,
+                    #     label="Volume = {value}%",
+                    #     divisions=10,
+                    #     width=400,
+                    #     on_change=handle_volume_change,
+                    # ),
                     ElevatedButton(
                         "돌아가기", 
                         on_click=lambda _: page.go("/"),
