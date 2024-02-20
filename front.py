@@ -110,7 +110,7 @@ def main(page: Page):
                         Column(
                             [
                                 Image("assets\cartoon_satoori.jpg"),
-                                Text("사투리의 멋있음을 보여주세요!"),                            
+                                Text("사투리의 멋있음을 보여주세요!", style=TextStyle(size=20)),                            
                             ],
                             alignment=MainAxisAlignment.CENTER,
                             width = 500,
@@ -151,7 +151,6 @@ def main(page: Page):
                                     color=colors.WHITE,
                                 ),
                             ],
-                            # alignment=MainAxisAlignment.CENTER
                         ),
                     ]
                 )
