@@ -284,7 +284,7 @@ def main(page: Page):
                                 playlist=original_media,
                                 playlist_mode=PlaylistMode.SINGLE,
                                 fill_color=colors.BLACK,
-                                aspect_ratio=16/9,
+                                aspect_ratio=5/4,
                                 volume=100,
                                 autoplay=False,
                                 filter_quality=FilterQuality.HIGH,
