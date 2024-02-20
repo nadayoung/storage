@@ -111,7 +111,7 @@ def main(page: Page):
                         Row(
                             alignment=MainAxisAlignment.CENTER,
                             controls=[
-                                Image("assets\kkaps.jpg", width=700, height=450, fit=ImageFit.FIT_WIDTH),
+                                Image("assets\cartoon_caps.jpg", width=700, height=450, fit=ImageFit.FIT_WIDTH),
                             ],
                         ),
                         Row(
@@ -181,14 +181,14 @@ def main(page: Page):
             # next_button = Ref[ElevatedButton]()
             subclip_slider = Ref[RangeSlider]()
 
-            def handle_play_or_pause(e):
-                video.play_or_pause()
-                print("Video.play_or_pause()")
+            # def handle_play_or_pause(e):
+            #     video.play_or_pause()
+            #     print("Video.play_or_pause()")
 
-            def handle_volume_change(e):
-                video.volume = e.control.value
-                page.update()
-                print(f"Video.volume = {e.control.value}")
+            # def handle_volume_change(e):
+            #     video.volume = e.control.value
+            #     page.update()
+            #     print(f"Video.volume = {e.control.value}")
                 
             def slider_change_start(e):
                 global start_point, end_point
@@ -267,7 +267,6 @@ def main(page: Page):
 
             original_media = [
                 VideoMedia(
-                    # https://github.com/nadayoung/storage/raw/da0/original/197898_(1080p).mp4
                     "https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,
                 ),
             ]
@@ -291,22 +290,22 @@ def main(page: Page):
                             on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
                             on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
                         ),
-                        Row(
-                            wrap=True,
-                            alignment=MainAxisAlignment.CENTER,
-                            controls=[
-                                ElevatedButton("Play Or Pause", on_click=handle_play_or_pause),
-                            ],
-                        ),
-                        Slider(
-                            min=0,
-                            value=100,
-                            max=100,
-                            label="Volume = {value}%",
-                            divisions=10,
-                            width=400,
-                            on_change=handle_volume_change,
-                        ),
+                        # Row(
+                        #     wrap=True,
+                        #     alignment=MainAxisAlignment.CENTER,
+                        #     controls=[
+                        #         ElevatedButton("Play Or Pause", on_click=handle_play_or_pause),
+                        #     ],
+                        # ),
+                        # Slider(
+                        #     min=0,
+                        #     value=100,
+                        #     max=100,
+                        #     label="Volume = {value}%",
+                        #     divisions=10,
+                        #     width=400,
+                        #     on_change=handle_volume_change,
+                        # ),
                         Row(
                             controls = [
                                 Container(height=30),
