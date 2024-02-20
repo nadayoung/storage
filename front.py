@@ -335,7 +335,7 @@ def main(page: Page):
                 page.update()
                 print(f"Video.volume = {e.control.value}")
 
-            def save_trimmed_file():
+            def save_trimmed_file(e):
                 global select_file_name
                 pre.save_video_url("trimmed/"+select_file_name, "finish/"+select_file_name)
 
