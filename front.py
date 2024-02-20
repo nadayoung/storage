@@ -221,32 +221,28 @@ def main(page: Page):
                 ),
             ]
 
-            def handle_play_or_pause(e):
-                video.play_or_pause()
-                print("Video.play_or_pause()")
-                print(select_file_name)
+            # def handle_play_or_pause(e):
+            #     video.play_or_pause()
+            #     print("Video.play_or_pause()")
+            #     print(select_file_name)
 
             def handle_stop(e):
                 video.stop()
                 print("Video.stop()")
 
-            def handle_volume_change(e):
-                video.volume = e.control.value
-                page.update()
-                print(f"Video.volume = {e.control.value}")
+            # def handle_volume_change(e):
+            #     video.volume = e.control.value
+            #     page.update()
+            #     print(f"Video.volume = {e.control.value}")
             
             def make_clip_video(path,save_path, start_t, end_t):
                 clip_video = VideoFileClip(path).subclip(start_t, end_t)
                 clip_video.write_videofile(save_path)
     
-            if __name__ == "__main__":
-                make_clip_video("https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,'trimmed/output.mp4','00:00:05', '00:00:10')
+            # if __name__ == "__main__":
+            #     make_clip_video("https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,'trimmed/output.mp4','00:00:05', '00:00:10')
     
                 print("Trimmed video saved successfully")
-
-            def trim_video():
-                make_clip_video("https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,'trimmed/output.mp4','00:00:05', '00:00:10')
-                page.go("/modified")
             
             page.views.append(
                 View(
@@ -303,7 +299,7 @@ def main(page: Page):
                         ElevatedButton(
                             "변환하기", 
                             ref = next_button,
-                            on_click=lambda _: trim_video(),
+                            on_click=lambda _: (make_clip_video("https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,'trimmed/output.mp4',start_point,end_point)),
                             width=200,
                             bgcolor=colors.PURPLE_200,
                             color=colors.WHITE,
