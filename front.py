@@ -214,20 +214,21 @@ def main(page: Page):
             
             def make_subclip():
                 pr.visible=True
+                subclip_slider.current.disabled = False if pr.visible is False else True
                 page.update()
                 global start_point, end_point, video_length, select_file_name
                 print(f'select_file_name: {select_file_name}')
-                start_time = int(float(start_point)*video_length*0.01)
-                end_time = int(float(end_point)*video_length*0.01)
-                print(f"cut out from {start_time}s to {end_time}s and entire time is {video_length}s")
+                print(f"cut out from {start_point}s to {end_point}s and entire time is {video_length}s")
 
                 clip = VideoFileClip('original\\'+select_file_name)
-                clip = clip.subclip(start_time, end_time)
+                clip = clip.subclip(start_point, end_point)
                 clip.write_videofile("trimmed/"+select_file_name)
                 print("success make subclip")
                 pre.extract_audio_from_video('trimmed/'+select_file_name, 'trimmed/audio.wav')
                 pre.reduce_noise('trimmed/audio.wav', 'trimmed/denoised_audio.wav')
                 pre.upload_github()
+
+            subclip_slider = Ref[RangeSlider]()
 
             pr = ProgressRing(width=20, height=20, visible=False)
 
