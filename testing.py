@@ -5,7 +5,7 @@ from typing import Dict
 import preprocessing as pre
 from time import sleep
 
-url = "https://github.com/nadayoung/storage/raw/da0/"
+url = "https://github.com/nadayoung/storage/tree/main/"
 
 global select_file_name, select_file_name_m
 select_file_name = ""
