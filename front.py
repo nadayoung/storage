@@ -280,6 +280,7 @@ def main(page: Page):
                             expand=True,
                             playlist=original_media,
                             playlist_mode=PlaylistMode.SINGLE,
+                            alignment=MainAxisAlignment.CENTER,
                             fill_color=colors.BLACK,
                             aspect_ratio=16/9,
                             volume=100,
@@ -306,10 +307,10 @@ def main(page: Page):
                         #     width=400,
                         #     on_change=handle_volume_change,
                         # ),
-                        Column(
+                        Row(
                             alignment=MainAxisAlignment.CENTER,
                             controls=[
-                                Text("변환하고 싶은 영역을 선택해 주세요", text_align=TextAlign.CENTER),
+                                Text("변환하고 싶은 영역을 선택해 주세요", size=22),
                                 Row(
                                     wrap=True,
                                     alignment=MainAxisAlignment.CENTER,
