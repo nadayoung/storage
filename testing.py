@@ -1,15 +1,15 @@
 from flet import *
 from moviepy.editor import *
-from urllib.request import urlopen
-from urllib.error import HTTPError
+from urllib.parse import quote
 from typing import Dict
 import preprocessing as pre
 from time import sleep
-from os import system
-import urllib
 
-global select_file_name
+url = "https://github.com/nadayoung/storage/raw/da0/"
+
+global select_file_name, select_file_name_m
 select_file_name = ""
+select_file_name_m = ""
 global upload_complete
 upload_complete = False
 
@@ -26,11 +26,10 @@ def main(page: Page):
     page.horizontal_alignment = CrossAxisAlignment.CENTER
 
     def route_change(route):
-        global select_file_name, end_point, start_point
+        global select_file_name, select_file_name_m, end_point, start_point, video_length
 
         # 화면을 띄우기 위함
         # page.overlay.append(file_picker)
-
         page.views.clear()
 
         files = Ref[Column]()
@@ -63,6 +62,7 @@ def main(page: Page):
 
             file_picker = FilePicker(on_result=file_picker_result, on_upload=on_upload_progress)
 
+
             def upload_files(e):
                 uf = []
                 if file_picker.result is not None and file_picker.result.files is not None:
@@ -76,32 +76,32 @@ def main(page: Page):
                     file_picker.upload(uf)
                     pr_visible()
                 print("upload to original folder")
-                upload_github_check()
-
+                file_check()
+            
             def pr_visible():
                 sleep(0.7)
                 pr.visible=True
                 page.update()
             
-            def upload_github_check():
-                global upload_complete, video_length, select_file_name
+            def file_check():
+                global upload_complete, video_length, select_file_name, select_file_name_m
+                # 공백을 _로, 한글을 변화하여 file_name 호출에 문제가 없도록 함
+                # select_file_name_m = select_file_name.replace(" ", "_")
+                select_file_name_m = select_file_name.replace(" ", "%20")
+                select_file_name_m = quote(select_file_name)
+                print(f"file.name_m: {select_file_name_m}")
+                # 만약 file_name에 공백이나 한글이 존재한다면, 비디오를 하나 더 저장
+                # if select_file_name != select_file_name_m:
+                #     clip = VideoFileClip('original/'+select_file_name)
+                #     print(f"file.name_m: {select_file_name_m}")
+                #     clip.write_videofile("original/"+select_file_name_m)
+                #     clip.close()
+                pre.upload_github_check('original', select_file_name_m)
                 upload_complete = True
-                # print(upload_complete, next_button.current.disabled)
                 next_button.current.disabled = True if upload_complete is False else False
-                # print(upload_complete, next_button.current.disabled)
-                # system('git pull')
-                system('git add .')
-                system('git commit -m "Video change"')
-                system('git push origin main')
-                print("upload success")
-                set_video_length('original/'+select_file_name)
+                video_length = pre.set_video_length('original/' + select_file_name)
+                pr.visible = False
                 page.update()
-            
-            def set_video_length(sample_media):
-                global video_length
-                video_clip = VideoFileClip(sample_media)
-                video_length = video_clip.duration
-                video_clip.close()
 
             page.overlay.append(file_picker)
             page.views.append( 
@@ -110,8 +110,14 @@ def main(page: Page):
                     "/",
                     [
                         AppBar(title=Text("영상 선택"), bgcolor=colors.SURFACE_VARIANT),
-                        Image("assets\cartoon_satoori.jpg"),
-                        Text("사투리의 멋있음을 보여주세요!"),
+                        Column(
+                            [
+                                Image("assets\cartoon_caps.jpg"),
+                                Text("사투리의 멋있음을 보여주세요!"),                            
+                            ],
+                            alignment=MainAxisAlignment.CENTER,
+                            width = 500,
+                        ),
                         Row(
                             [
                                 ElevatedButton(
@@ -137,13 +143,14 @@ def main(page: Page):
                         ),
                         Row(
                             [
+                                pr,
                                 ElevatedButton(
                                     "선택완료",
                                     ref=next_button,
                                     on_click=lambda _: page.go("/select"),
                                     disabled=True,
                                     width=200,
-                                    bgcolor=colors.PURPLE_200,
+                                    bgcolor=colors.INDIGO_ACCENT_700,
                                     color=colors.WHITE,
                                 ),
                             ],
@@ -153,17 +160,19 @@ def main(page: Page):
                 )
             )
 
+        ###############################################(2번째 화면입니다.)#########################################################
         if page.route == "/select":
             next_button = Ref[ElevatedButton]()
+            subclip_slider = Ref[RangeSlider]()
 
-            def handle_play_or_pause(e):
-                video.play_or_pause()
-                print("Video.play_or_pause()")
+            # def handle_play_or_pause(e):
+            #     video.play_or_pause()
+            #     print("Video.play_or_pause()")
 
-            def handle_volume_change(e):
-                video.volume = e.control.value
-                page.update()
-                print(f"Video.volume = {e.control.value}")
+            # def handle_volume_change(e):
+            #     video.volume = e.control.value
+            #     page.update()
+            #     print(f"Video.volume = {e.control.value}")
                 
             def slider_change_start(e):
                 global start_point, end_point
@@ -194,63 +203,55 @@ def main(page: Page):
 
             def start_seek(e):
                 global start_point, video_length
-                start_trim = video.seek(int(float(start_point)*video_length*10))
+                video.seek(int(float(start_point)*1000))
                 page.update()
-                print(f"Video.seek")
-                print(start_point)
+                print(f"Video.seek_start: {start_point}")
 
             def end_seek(e):
                 global end_point, video_length
-                end_trim = video.seek(int(float(end_point)*video_length*10))
-                print(f"Video.seek")
-                print(end_point)
+                video.seek(int(float(end_point)*1000))
+                page.update()
+                print(f"Video.seek_end: {end_point}")
+            
+            def modified_video():
+                pr.visible=True
+                subclip_slider.current.disabled = False if pr.visible is False else True
+                next_button.disabled = True
+                page.update()
+
+                global start_point, end_point, video_length, select_file_name, select_file_name_m
+                print(f'select_file_name: {select_file_name}')
+                print(f"cut out from {start_point}s to {end_point}s and entire time is {video_length}s")
+
+                pre.make_subclip(start_point, end_point, select_file_name, select_file_name_m)
+                pre.make_clear_audio(select_file_name)
+                pre.upload_github_check('trimmed', select_file_name_m)
+
+            pr = ProgressRing(width=20, height=20, visible=False)
 
             range_slider = RangeSlider(
-            
+                ref=subclip_slider,
                 min=0,
-                max=100,
+                max=video_length,
                 start_value=0,
-                end_value=100,
-                divisions=100,
-                width=400,
-                inactive_color=colors.GREEN_300,
-                active_color=colors.GREEN_700,
-                overlay_color=colors.GREEN_100,
-                # label="{value}%",
+                end_value=video_length,
+                divisions=50,
+                width=300,
+                inactive_color=colors.RED_100,
+                active_color=colors.INDIGO_ACCENT_700,
+                overlay_color=colors.INDIGO_ACCENT_100,
+                label="{value}초",
                 on_change_start=slider_change_start,
                 on_change=slider_is_changing,
                 on_change_end=slider_change_end,
-            
+                disabled=False
             )
 
             original_media = [
                 VideoMedia(
-                    "https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,
+                    url + "original/" + select_file_name_m,
                 ),
             ]
-
-            # def handle_play_or_pause(e):
-            #     video.play_or_pause()
-            #     print("Video.play_or_pause()")
-            #     print(select_file_name)
-
-            def handle_stop(e):
-                video.stop()
-                print("Video.stop()")
-
-            # def handle_volume_change(e):
-            #     video.volume = e.control.value
-            #     page.update()
-            #     print(f"Video.volume = {e.control.value}")
-            
-            def make_clip_video(path,save_path, start_trim, end_trim):
-                clip_video = VideoFileClip(path).subclip(start_trim, end_trim)
-                clip_video.write_videofile(save_path)
-    
-            if __name__ == "__main__":
-                make_clip_video("https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,'trimmed/output.mp4','00:00:05', '00:00:10')
-    
-                print("Trimmed video saved successfully")
             
             page.views.append(
                 View(
@@ -271,84 +272,104 @@ def main(page: Page):
                             on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
                             on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
                         ),
+                        # Row(
+                        #     wrap=True,
+                        #     alignment=MainAxisAlignment.CENTER,
+                        #     controls=[
+                        #         ElevatedButton("Play Or Pause", on_click=handle_play_or_pause),
+                        #     ],
+                        # ),
+                        
+                        Column(
+                            alignment=CrossAxisAlignment.CENTER,
+                            controls = [
+                                Row(
+                                    
+                                ),
+                                Text("변환하고 싶은 영역을 선택해 주세요.", text_align=TextAlign.CENTER),
+                                Row(
+                                    wrap=True,
+                                    alignment=MainAxisAlignment.CENTER,
+                                    controls = [
+                                        Container(height=30),
+                                        ElevatedButton("Start", on_click=start_seek, width=80,),
+                                        range_slider,
+                                        ElevatedButton("End", on_click=end_seek, width=80,),
+                                    ],
+                                ),
+                            ],    
+                        ),
+                        # Row(
+                        #     wrap=True,
+                        #     alignment=MainAxisAlignment.CENTER,
+                        #     controls=[
+                        #         Container(content=Text("Volume: "),),
+                        #         Slider(
+                        #         min=0,
+                        #         value=100,
+                        #         max=100,
+                        #         label="Volume = {value}%",
+                        #         divisions=10,
+                        #         width=400,
+                        #         on_change=handle_volume_change,
+                        #         ),
+                        #     ],
+                        # ),
                         Row(
-                            wrap=True,
+                            # wrap=True,
                             alignment=MainAxisAlignment.CENTER,
                             controls=[
-                                ElevatedButton("Play Or Pause", on_click=handle_play_or_pause),
+                                pr,
+                                ElevatedButton(
+                                "변환하기", 
+                                ref = next_button,
+                                on_click = lambda _: [modified_video(), page.go("/modified")],
+                                width=200,
+                                bgcolor=colors.INDIGO_ACCENT_700,
+                                color=colors.WHITE,
+                                ),
                             ],
-                        ),
-                        Slider(
-                            min=0,
-                            value=100,
-                            max=100,
-                            label="Volume = {value}%",
-                            divisions=10,
-                            width=400,
-                            on_change=handle_volume_change,
-                        ),
-                        Row(
-                            controls = [
-                                Container(height=30),
-                                ElevatedButton("Start", on_click=start_seek, width=80,),
-                                range_slider,
-                                ElevatedButton("End", on_click=end_seek, width=80,),
-                            ],
-                        ),
-                        # Slider(
-                        #     min=1,
-                        #     value=1,
-                        #     max=3,
-                        #     label="PlaybackRate = {value}X",
-                        #     divisions=6,
-                        #     width=400,
-                        #     on_change=handle_playback_rate_change,
-                        # ),
-                        ElevatedButton(
-                            "변환하기", 
-                            ref = next_button,
-                            on_click=lambda _: (make_clip_video("https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,'trimmed/output.mp4',start_point,end_point)),
-                            width=200,
-                            bgcolor=colors.PURPLE_200,
-                            color=colors.WHITE,
-                            # disabled=True,
                         ),
                     ]
                 )
             )
 
+        ###############################################(3번째 화면입니다.)#########################################################
         # 동영상 변환이 끝난 뒤 화면
         if page.route == "/modified":
+            next_button = Ref[ElevatedButton]()
+
             modified_media = [
-                VideoMedia(
-                    "https://github.com/nadayoung/storage/raw/main/original/197898_(1080p).mp4",
+                VideoMedia( # https://github.com/nadayoung/storage/raw/da0/trimmed/infinite_challenge.mp4
+                    url + "trimmed/" + select_file_name_m,
                 ),
             ]
-
-            def handle_play_or_pause(e):
-                video.play_or_pause()
-                print("Video.play_or_pause()")
-                print(select_file_name)
-
-            def handle_stop(e):
-                video.stop()
-                print("Video.stop()")
-
-            def handle_volume_change(e):
-                video.volume = e.control.value
+            def save_trimmed_file(e):
+                pr.visible=True
+                next_button.current.disabled = True
                 page.update()
-                print(f"Video.volume = {e.control.value}")
 
-            # def handle_playback_rate_change(e):
-            #     video.playback_rate = e.control.value
+                global select_file_name_m
+                pre.save_video_url(video.playlist[0].resource, select_file_name_m)
+                
+                pr.visible=False
+                next_button.current.disabled = False 
+                page.update()
+
+            # def handle_play_or_pause(e):
+            #     video.play_or_pause()
+            #     print("Video.play_or_pause()")
+
+            # def handle_stop(e):
+            #     video.stop()
+            #     print("Video.stop()")
+
+            # def handle_volume_change(e):
+            #     video.volume = e.control.value
             #     page.update()
-            #     print(f"Video.playback_rate = {e.control.value}")
-
-            def save_video_url(video_url):
-                savename = 'save_completed_video.mp4'
-                urllib.request.urlretrieve(video_url, 'finish/' + savename)
-                print(video_url)
-                print("save by url success")
+            #     print(f"Video.volume = {e.control.value}")
+                
+            pr = ProgressRing(width=20, height=20, visible=False)
 
             page.views.append(
                 View( # 변형된 화면
@@ -370,50 +391,47 @@ def main(page: Page):
                             on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
                         ),
                         Row(
-                            wrap=True,
-                            alignment=MainAxisAlignment.CENTER,
+                            # wrap=True,
+                            alignment = MainAxisAlignment.CENTER,
                             controls=[
-                            ElevatedButton("Play Or Pause", on_click=handle_play_or_pause, width=200,),
-                            ElevatedButton("Stop", on_click=handle_stop, width=200,),
+                            # ElevatedButton("Play Or Pause", icon=icons.PLAY_ARROW, on_click=handle_play_or_pause, width=200,),
+                            # ElevatedButton("Stop", icon=icons.STOP, on_click=handle_stop, width=200,),
+                            ElevatedButton("Save file", icon=icons.SAVE, on_click=save_trimmed_file, width=200,),
                             ],
                         ),
+                        # Row(
+                        #     alignment = MainAxisAlignment.CENTER,
+                        #     controls=[
+                        #         Text("Volume: "),
+                        #         Slider(
+                        #             min=0,
+                        #             value=100,
+                        #             max=100,
+                        #             label="Volume = {value}%",
+                        #             divisions=10,
+                        #             width=400,
+                        #             on_change=handle_volume_change,
+                        #         ),
+                        #     ],
+                        # ),
                         Row(
-                            [
-                            ElevatedButton(
-                                "Save file",
-                                icon=icons.SAVE,
-                                on_click=save_video_url(video.playlist[0].resource),
-                                width=200,
-                            ),
-                        ]
-                    ),
-                    Slider(
-                        min=0,
-                        value=100,
-                        max=100,
-                        label="Volume = {value}%",
-                        divisions=10,
-                        width=400,
-                        on_change=handle_volume_change,
-                    ),
-                    # Slider(
-                    #     min=1,
-                    #     value=1,
-                    #     max=3,
-                    #     label="PlaybackRate = {value}X",
-                    #     divisions=6,
-                    #     width=400,
-                    #     on_change=handle_playback_rate_change,
-                    # ),
-                    ElevatedButton(
-                        "돌아가기", 
-                        on_click=lambda _: page.go("/"),
-                        bgcolor=colors.PURPLE_200,
-                        color=colors.WHITE,
-                    ),
-                ],
+                            alignment = MainAxisAlignment.CENTER,
+                            controls=[
+                                pr,
+                                ElevatedButton(
+                                "돌아가기", 
+                                ref = next_button,
+                                on_click=lambda _: page.go("/"),
+                                bgcolor=colors.INDIGO_ACCENT_700,
+                                color=colors.WHITE,
+                                disabled=False,
+                                ),
+                            ],
+                        ),
+                    
+                    ],
+                )
             )
-        )
         page.update()
 
     def view_pop(view):
