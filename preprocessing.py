@@ -42,10 +42,10 @@ def upload_github():
     system('git push origin main')
     print('success github upload!')
 
-# def save_video_url(video_url, file_name):
-#     urlretrieve(video_url, 'finish/' + file_name)
-#     print(f"save video_url: {video_url}")
-#     print("save by url success")
+def save_video_url(video_url, file_name):
+    urlretrieve(video_url, 'finish/' + file_name)
+    print(f"save video_url: {video_url}")
+    print("save by url success")
 
 def main():
     video_file = 'original/197898_(1080p).mp4'  # 변환하고 싶은 비디오 파일의 경로
