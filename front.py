@@ -243,6 +243,10 @@ def main(page: Page):
                 make_clip_video("https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,'trimmed/output.mp4','00:00:05', '00:00:10')
     
                 print("Trimmed video saved successfully")
+
+            def handle_convert_button_click(e):
+                make_clip_video("https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,'trimmed/output.mp4','00:00:05', '00:00:10')
+                page.go("/modified")
             
             page.views.append(
                 View(
@@ -299,7 +303,7 @@ def main(page: Page):
                         ElevatedButton(
                             "변환하기", 
                             ref = next_button,
-                            on_click=lambda _: (lambda: (make_clip_video("https://github.com/nadayoung/storage/raw/main/original/"+select_file_name, 'trimmed/output.mp4', '00:00:05', '00:00:10'), page.go("/modified"))),
+                            on_click=handle_convert_button_click,
                             width=200,
                             bgcolor=colors.PURPLE_200,
                             color=colors.WHITE,
