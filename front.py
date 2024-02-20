@@ -306,25 +306,35 @@ def main(page: Page):
                         #     width=400,
                         #     on_change=handle_volume_change,
                         # ),
-                        Row(
-                            controls = [
-                                Container(height=30),
-                                ElevatedButton("Start", on_click=start_seek, width=80,),
-                                range_slider,
-                                ElevatedButton("End", on_click=end_seek, width=80,),
-                            ],
+                        Column(
+                            alignment=MainAxisAlignment.CENTER,
+                            controls=[
+                                Text("변환하고 싶은 영역을 선택해 주세요", text_align=TextAlign.CENTER),
+                                Row(
+                                    wrap=True,
+                                    alignment=MainAxisAlignment.CENTER,
+                                    controls=[
+                                        Container(height=30),
+                                        ElevatedButton("Start", on_click=start_seek, width=80,),
+                                        range_slider,
+                                        ElevatedButton("End", on_click=end_seek, width=80,),
+                                    ]
+                                )
+                            ]
                         ),
-                        Row([
-                            pr,
-                            ElevatedButton(
-                            "변환하기", 
-                            # ref = next_button,
-                            on_click = lambda _: [make_subclip(), page.go("/modified")],
-                            width=200,
-                            bgcolor=colors.PURPLE_200,
-                            color=colors.WHITE,
-                            # disabled=True,
-                            ),
+                        Row(
+                            alignment=MainAxisAlignment.CENTER,
+                            controls=[
+                                pr,
+                                ElevatedButton(
+                                    "변환하기", 
+                                    ref = next_button,
+                                    on_click = lambda _: [make_subclip(), page.go("/modified")],
+                                    width=200,
+                                    bgcolor=colors.PURPLE_200,
+                                    color=colors.WHITE,
+                                    # disabled=True,
+                                ),
                         ]),
                         
                     ]
@@ -399,11 +409,19 @@ def main(page: Page):
                     #     width=400,
                     #     on_change=handle_volume_change,
                     # ),
-                    ElevatedButton(
-                        "돌아가기", 
-                        on_click=lambda _: page.go("/"),
-                        bgcolor=colors.PURPLE_200,
-                        color=colors.WHITE,
+                    Row(
+                        alignment=MainAxisAlignment.CENTER,
+                        controls=[
+                            pr,
+                            ElevatedButton(
+                                "돌아가기",
+                                ref=next_button,
+                                on_click=lambda _: page.go("/"),
+                                bgcolor=colors.INDIGO_ACCENT_700,
+                                color=colors.WHITE,
+                                disabled=False,
+                            ),
+                        ],
                     ),
                 ],
             )
