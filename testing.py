@@ -341,7 +341,7 @@ def main(page: Page):
 
             modified_media = [
                 VideoMedia( # https://github.com/nadayoung/storage/raw/da0/trimmed/infinite_challenge.mp4
-                    url + "original/" + select_file_name_m,
+                    url + "trimmed/" + select_file_name_m,
                 ),
             ]
             def save_trimmed_file(e):
