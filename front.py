@@ -5,6 +5,8 @@ from urllib.error import HTTPError
 from typing import Dict
 import preprocessing as pre
 from time import sleep
+import urllib
+from os import system
 
 global select_file_name
 select_file_name = ""
@@ -109,7 +111,7 @@ def main(page: Page):
                         AppBar(title=Text("영상 선택"), bgcolor=colors.SURFACE_VARIANT),
                         Column(
                             [
-                                Image("assets\cartoon_caps.jpg"),
+                                Image("assets\cartoon_satoori.jpg"),
                                 Text("사투리의 멋있음을 보여주세요!"),                            
                             ],
                             alignment=MainAxisAlignment.CENTER,
@@ -344,6 +346,12 @@ def main(page: Page):
                 video.volume = e.control.value
                 page.update()
                 print(f"Video.volume = {e.control.value}")
+            
+            def save_video_url(video_url):
+                savename = 'save_completed_video.mp4'
+                urllib.request.urlretrieve(video_url, 'finish/' + savename)
+                print(video_url)
+                print("save by url success")
 
             page.views.append(
                 View( # 변형된 화면
@@ -377,7 +385,7 @@ def main(page: Page):
                             ElevatedButton(
                                 "Save file",
                                 icon=icons.SAVE,
-                                on_click=pre.save_video_url(video.playlist[0].resource),
+                                on_click=save_video_url(video.playlist[0].resource),
                                 width=200,
                             ),
                         ]
