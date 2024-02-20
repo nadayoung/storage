@@ -85,7 +85,7 @@ def main(page: Page):
             def upload_github_check():
                 global upload_complete, video_length, select_file_name
                 pre.upload_github()
-                try:
+                try: # https://github.com/nadayoung/storage/blob/da0/original/dog.mp4
                     res = urlopen("https://github.com/nadayoung/storage/tree/main/original/"+select_file_name)
                     print(f"res.status: {res.status}")
                 except HTTPError as e:
@@ -211,6 +211,8 @@ def main(page: Page):
                 print(end_point)
             
             def make_subclip():
+                pr.visible=True
+                page.update()
                 global start_point, end_point, video_length, select_file_name
                 print(f'select_file_name: {select_file_name}')
                 start_time = int(float(start_point)*video_length*0.01)
@@ -224,6 +226,8 @@ def main(page: Page):
                 pre.extract_audio_from_video('trimmed/'+select_file_name, 'trimmed/audio.wav')
                 pre.reduce_noise('trimmed/audio.wav', 'trimmed/denoised_audio.wav')
                 pre.upload_github()
+
+            pr = ProgressRing(width=20, height=20, visible=False)
 
             range_slider = RangeSlider(
             
@@ -245,6 +249,7 @@ def main(page: Page):
 
             original_media = [
                 VideoMedia(
+                    # https://github.com/nadayoung/storage/raw/da0/original/197898_(1080p).mp4
                     "https://github.com/nadayoung/storage/tree/main/original/"+select_file_name,
                 ),
             ]
@@ -301,16 +306,19 @@ def main(page: Page):
                         #     width=400,
                         #     on_change=handle_playback_rate_change,
                         # ),
-                        ElevatedButton(
-                            "변환하기", 
+                        Row([
                             pr,
+                            ElevatedButton(
+                            "변환하기", 
                             ref = next_button,
                             on_click = lambda _: [make_subclip(), page.go("/modified")],
                             width=200,
                             bgcolor=colors.PURPLE_200,
                             color=colors.WHITE,
                             # disabled=True,
-                        ),
+                            ),
+                        ]),
+                        
                     ]
                 )
             )
