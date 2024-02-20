@@ -309,6 +309,7 @@ def main(page: Page):
                         Row(
                             alignment=MainAxisAlignment.CENTER,
                             controls=[
+                                Column(ref=files),
                                 Text("변환하고 싶은 영역을 선택해 주세요", size=22),
                                 Row(
                                     wrap=True,
