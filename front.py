@@ -109,7 +109,7 @@ def main(page: Page):
                         AppBar(title=Text("영상 선택"), bgcolor=colors.SURFACE_VARIANT),
                         Column(
                             [
-                                Image("assets\cartoon_caps.jpg"),
+                                Image("assets\cartoon_satoori.jpg"),
                                 Text("사투리의 멋있음을 보여주세요!"),                            
                             ],
                             alignment=MainAxisAlignment.CENTER,
@@ -249,7 +249,7 @@ def main(page: Page):
             original_media = [
                 VideoMedia(
                     # https://github.com/nadayoung/storage/raw/da0/original/197898_(1080p).mp4
-                    "https://github.com/nadayoung/storage/tree/main/original/"+select_file_name,
+                    "https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,
                 ),
             ]
             
