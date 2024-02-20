@@ -335,6 +335,10 @@ def main(page: Page):
                 page.update()
                 print(f"Video.volume = {e.control.value}")
 
+            def save_trimmed_file():
+                global select_file_name
+                pre.save_video_url("trimmed/"+select_file_name, "finish/"+select_file_name)
+
             page.views.append(
                 View( # 변형된 화면
                     "/modified",
@@ -363,21 +367,11 @@ def main(page: Page):
                             ElevatedButton(
                                 "Save file",
                                 icon=icons.SAVE,
-                                on_click=pre.save_video_url(video.playlist[0].resource, select_file_name),
+                                on_click=save_trimmed_file,
                                 width=200,
                             ),
                             ],
                         ),
-                    #     Row(
-                    #         [
-                    #         ElevatedButton(
-                    #             "Save file",
-                    #             icon=icons.SAVE,
-                    #             on_click=pre.save_video_url(video.playlist[0].resource),
-                    #             width=200,
-                    #         ),
-                    #     ]
-                    # ),
                     Slider(
                         min=0,
                         value=100,
