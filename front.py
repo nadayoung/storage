@@ -244,7 +244,7 @@ def main(page: Page):
     
                 print("Trimmed video saved successfully")
 
-            def handle_convert_button_click(e):
+            def trim_video():
                 make_clip_video("https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,'trimmed/output.mp4','00:00:05', '00:00:10')
                 page.go("/modified")
             
@@ -303,7 +303,7 @@ def main(page: Page):
                         ElevatedButton(
                             "변환하기", 
                             ref = next_button,
-                            on_click=handle_convert_button_click,
+                            on_click=lambda _: trim_video(),
                             width=200,
                             bgcolor=colors.PURPLE_200,
                             color=colors.WHITE,
