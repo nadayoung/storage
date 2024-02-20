@@ -235,8 +235,8 @@ def main(page: Page):
             #     page.update()
             #     print(f"Video.volume = {e.control.value}")
             
-            def make_clip_video(path,save_path, start_t, end_t):
-                clip_video = VideoFileClip(path).subclip(start_t, end_t)
+            def make_clip_video(path,save_path, start_trim, end_trim):
+                clip_video = VideoFileClip(path).subclip(start_trim, end_trim)
                 clip_video.write_videofile(save_path)
     
             # if __name__ == "__main__":
