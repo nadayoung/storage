@@ -6,7 +6,7 @@ from typing import Dict
 import preprocessing as pre
 from time import sleep
 import urllib
-from os import system
+import os
 
 global select_file_name
 select_file_name = ""
@@ -312,7 +312,7 @@ def main(page: Page):
                             ElevatedButton(
                             "변환하기", 
                             ref = next_button,
-                            on_click = lambda _: (make_subclip(), page.go("/modified")),
+                            on_click = lambda _: [make_subclip(), page.go("/modified")],
                             width=200,
                             bgcolor=colors.PURPLE_200,
                             color=colors.WHITE,

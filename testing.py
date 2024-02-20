@@ -5,6 +5,8 @@ from urllib.error import HTTPError
 from typing import Dict
 import preprocessing as pre
 from time import sleep
+from os import system
+import urllib
 
 global select_file_name
 select_file_name = ""
