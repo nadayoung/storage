@@ -88,7 +88,7 @@ def main(page: Page):
                 global upload_complete, video_length, select_file_name
                 pre.upload_github()
                 try:
-                    res = urlopen("https://github.com/nadayoung/storage/tree/main/original"+select_file_name)
+                    res = urlopen("https://github.com/nadayoung/storage/tree/main/original/"+select_file_name)
                     print(f"res.status: {res.status}")
                 except HTTPError as e:
                     err = e.read()
@@ -312,7 +312,7 @@ def main(page: Page):
                             ElevatedButton(
                             "변환하기", 
                             ref = next_button,
-                            on_click = lambda _: [make_subclip(), page.go("/modified")],
+                            on_click = lambda _: (make_subclip(), page.go("/modified")),
                             width=200,
                             bgcolor=colors.PURPLE_200,
                             color=colors.WHITE,
