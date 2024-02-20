@@ -1,10 +1,10 @@
-# front.py
 from flet import *
-import urllib.request
+from moviepy.editor import *
+from urllib.request import urlopen
+from urllib.error import HTTPError
 from typing import Dict
-from os import system
 import preprocessing as pre
-from moviepy.editor import VideoFileClip
+from time import sleep
 
 global select_file_name
 select_file_name = ""
@@ -38,6 +38,8 @@ def main(page: Page):
             upload_button = Ref[ElevatedButton]()
             next_button = Ref[ElevatedButton]()
 
+            pr = ProgressRing(width=20, height=20, visible=False)
+
             def file_picker_result(e: FilePickerResultEvent):
                 global select_file_name
                 upload_button.current.disabled = True if e.files is None else False
@@ -59,6 +61,7 @@ def main(page: Page):
 
             file_picker = FilePicker(on_result=file_picker_result, on_upload=on_upload_progress)
 
+
             def upload_files(e):
                 uf = []
                 if file_picker.result is not None and file_picker.result.files is not None:
@@ -70,30 +73,32 @@ def main(page: Page):
                             )
                         )
                     file_picker.upload(uf)
+                    pr_visible()
                 print("upload to original folder")
-                pre.extract_audio_from_video('original/'+select_file_name, 'original/audio.wav')
-                pre.reduce_noise('original/audio.wav', 'trimmed/denoised_audio.wav')
-                upload_github()
+                upload_github_check()
             
-            def upload_github():
-                global upload_complete
-                upload_complete = True
-                # print(upload_complete, next_button.current.disabled)
-                next_button.current.disabled = True if upload_complete is False else False
-                # print(upload_complete, next_button.current.disabled)
-                # system('git pull')
-                system('git add .')
-                system('git commit -m "Video change"')
-                system('git push origin main')
-                print("upload success")
-                set_video_length('original/'+select_file_name)
+            def pr_visible():
+                sleep(0.7)
+                pr.visible=True
                 page.update()
             
-            def set_video_length(sample_media):
-                global video_length
-                video_clip = VideoFileClip(sample_media)
-                video_length = video_clip.duration
-                video_clip.close()
+            def upload_github_check():
+                global upload_complete, video_length, select_file_name
+                pre.upload_github()
+                try: # https://github.com/nadayoung/storage/blob/da0/original/dog.mp4
+                    res = urlopen("https://github.com/nadayoung/storage/tree/main/original/"+select_file_name)
+                    print(f"res.status: {res.status}")
+                except HTTPError as e:
+                    err = e.read()
+                    code = e.getcode()
+                    print(f"error code: {code}")
+                    print("try again to upload github")
+                    pre.upload_github()
+                upload_complete = True
+                next_button.current.disabled = True if upload_complete is False else False
+                video_length = pre.set_video_length('original/'+select_file_name)
+                pr.visible = False
+                page.update()
 
             page.overlay.append(file_picker)
             page.views.append( 
@@ -102,8 +107,14 @@ def main(page: Page):
                     "/",
                     [
                         AppBar(title=Text("영상 선택"), bgcolor=colors.SURFACE_VARIANT),
-                        Image("assets\cartoon_satoori.jpg"),
-                        Text("사투리의 멋있음을 보여주세요!"),
+                        Column(
+                            [
+                                Image("assets\cartoon_caps.jpg"),
+                                Text("사투리의 멋있음을 보여주세요!"),                            
+                            ],
+                            alignment=MainAxisAlignment.CENTER,
+                            width = 500,
+                        ),
                         Row(
                             [
                                 ElevatedButton(
@@ -129,6 +140,7 @@ def main(page: Page):
                         ),
                         Row(
                             [
+                                pr,
                                 ElevatedButton(
                                     "선택완료",
                                     ref=next_button,
@@ -145,6 +157,7 @@ def main(page: Page):
                 )
             )
 
+        ###############################################(2번째 화면입니다.)#########################################################
         if page.route == "/select":
             next_button = Ref[ElevatedButton]()
 
@@ -186,29 +199,44 @@ def main(page: Page):
 
             def start_seek(e):
                 global start_point, video_length
-                start_trim = video.seek(int(float(start_point)*video_length*10))
+                video.seek(int(float(start_point)*video_length*10))
                 page.update()
                 print(f"Video.seek")
                 print(start_point)
 
             def end_seek(e):
                 global end_point, video_length
-                end_trim = video.seek(int(float(end_point)*video_length*10))
+                video.seek(int(float(end_point)*video_length*10))
                 print(f"Video.seek")
                 print(end_point)
+            
+            def make_subclip():
+                global start_point, end_point, video_length, select_file_name
+                print(f'select_file_name: {select_file_name}')
+                start_time = int(float(start_point)*video_length*0.01)
+                end_time = int(float(end_point)*video_length*0.01)
+                print(f"cut out from {start_time}s to {end_time}s and entire time is {video_length}s")
+
+                clip = VideoFileClip('original\\'+select_file_name)
+                clip = clip.subclip(start_time, end_time)
+                clip.write_videofile("trimmed/"+select_file_name)
+                print("success make subclip")
+                pre.extract_audio_from_video('trimmed/'+select_file_name, 'trimmed/audio.wav')
+                pre.reduce_noise('trimmed/audio.wav', 'trimmed/denoised_audio.wav')
+                pre.upload_github()
 
             range_slider = RangeSlider(
             
                 min=0,
-                max=100,
+                max=video_length,
                 start_value=0,
-                end_value=100,
-                divisions=100,
+                end_value=video_length,
+                divisions=50,
                 width=400,
                 inactive_color=colors.GREEN_300,
                 active_color=colors.GREEN_700,
                 overlay_color=colors.GREEN_100,
-                # label="{value}%",
+                label="{value}초",
                 on_change_start=slider_change_start,
                 on_change=slider_is_changing,
                 on_change_end=slider_change_end,
@@ -217,32 +245,10 @@ def main(page: Page):
 
             original_media = [
                 VideoMedia(
-                    "https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,
+                    # https://github.com/nadayoung/storage/raw/da0/original/197898_(1080p).mp4
+                    "https://github.com/nadayoung/storage/tree/main/original/"+select_file_name,
                 ),
             ]
-
-            # def handle_play_or_pause(e):
-            #     video.play_or_pause()
-            #     print("Video.play_or_pause()")
-            #     print(select_file_name)
-
-            def handle_stop(e):
-                video.stop()
-                print("Video.stop()")
-
-            # def handle_volume_change(e):
-            #     video.volume = e.control.value
-            #     page.update()
-            #     print(f"Video.volume = {e.control.value}")
-            
-            def make_clip_video(path,save_path, start_trim, end_trim):
-                clip_video = VideoFileClip(path).subclip(start_trim, end_trim)
-                clip_video.write_videofile(save_path)
-    
-            if __name__ == "__main__":
-                make_clip_video("https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,'trimmed/output.mp4','00:00:05', '00:00:10')
-    
-                print("Trimmed video saved successfully")
             
             page.views.append(
                 View(
@@ -299,7 +305,7 @@ def main(page: Page):
                         ElevatedButton(
                             "변환하기", 
                             ref = next_button,
-                            on_click=lambda _: (make_clip_video("https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,'trimmed/output.mp4',start_point,end_point)),
+                            on_click = lambda _: [make_subclip(), page.go("/modified")],
                             width=200,
                             bgcolor=colors.PURPLE_200,
                             color=colors.WHITE,
@@ -309,6 +315,7 @@ def main(page: Page):
                 )
             )
 
+        ###############################################(3번째 화면입니다.)#########################################################
         # 동영상 변환이 끝난 뒤 화면
         if page.route == "/modified":
             modified_media = [
@@ -320,7 +327,6 @@ def main(page: Page):
             def handle_play_or_pause(e):
                 video.play_or_pause()
                 print("Video.play_or_pause()")
-                print(select_file_name)
 
             def handle_stop(e):
                 video.stop()
@@ -330,17 +336,6 @@ def main(page: Page):
                 video.volume = e.control.value
                 page.update()
                 print(f"Video.volume = {e.control.value}")
-
-            # def handle_playback_rate_change(e):
-            #     video.playback_rate = e.control.value
-            #     page.update()
-            #     print(f"Video.playback_rate = {e.control.value}")
-
-            def save_video_url(video_url):
-                savename = 'save_completed_video.mp4'
-                urllib.request.urlretrieve(video_url, 'finish/' + savename)
-                print(video_url)
-                print("save by url success")
 
             page.views.append(
                 View( # 변형된 화면
@@ -374,7 +369,7 @@ def main(page: Page):
                             ElevatedButton(
                                 "Save file",
                                 icon=icons.SAVE,
-                                on_click=save_video_url(video.playlist[0].resource),
+                                on_click=pre.save_video_url(video.playlist[0].resource),
                                 width=200,
                             ),
                         ]

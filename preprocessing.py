@@ -1,22 +1,23 @@
-# preprocessing.py
 from moviepy.editor import VideoFileClip, AudioFileClip
 import whisper 
 # pip install -U openai-whisper
 # ffmpge 다운로드 필요(https://stackoverflow.com/questions/73845566/openai-whisper-filenotfounderror-winerror-2-the-system-cannot-find-the-file)
 import soundfile as sf
+from os import system
 
 # 영상에서 음성 추출
 def extract_audio_from_video(video_file_path, audio_file_path):
     # mp4 등 비디오 파일 불러오기
     video = VideoFileClip(video_file_path)
-
     # 오디오를 추출하여 mp3 파일로 저장
     video.audio.write_audiofile(audio_file_path, codec='pcm_s16le')
     # video = VideoFileClip(video_file_path[:9]+"extract_audio_" + video_file_path[9:])
+    print("extract audio from video.")
 
 def reduce_noise(audio_file_path, audio_file_path_dn):
     data, samplerate = sf.read(audio_file_path)
     sf.write(audio_file_path_dn, data, samplerate, 'PCM_24')
+    print("success reducing a noise.")
 
 def rebuild_video(video_file_path, audio_file_path_dn):
     # model 적용 후 audio와 video 합쳐서 저장
@@ -25,7 +26,20 @@ def rebuild_video(video_file_path, audio_file_path_dn):
     video_clip = video_clip.set_audio(audio_clip)
     video_clip.write_videofile("finish/post.mp4")
     video_clip.close()
+    print("rebuild the video!")
 
+def set_video_length(sample_media):
+    video_clip = VideoFileClip(sample_media)
+    video_length = video_clip.duration
+    video_clip.close()
+    print(f"video length: {video_length}")
+    return video_length
+
+def upload_github():
+    system('git add .')
+    system('git commit -m "Video change"')
+    system('git push origin da0')
+    print('success github upload!')
 
 def main():
     video_file = 'original/infinite_challenge.mp4'  # 변환하고 싶은 비디오 파일의 경로
