@@ -88,7 +88,7 @@ def main(page: Page):
                 global upload_complete, video_length, select_file_name
                 pre.upload_github()
                 try: # https://github.com/nadayoung/storage/blob/da0/original/dog.mp4
-                    res = urlopen("https://github.com/nadayoung/storage/tree/main/original/"+select_file_name)
+                    res = urlopen("https://github.com/nadayoung/storage/raw/main/original/"+select_file_name)
                     print(f"res.status: {res.status}")
                 except HTTPError as e:
                     err = e.read()
@@ -252,7 +252,7 @@ def main(page: Page):
             original_media = [
                 VideoMedia(
                     # https://github.com/nadayoung/storage/raw/da0/original/197898_(1080p).mp4
-                    "https://github.com/nadayoung/storage/tree/main/original/"+select_file_name,
+                    "https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,
                 ),
             ]
             
