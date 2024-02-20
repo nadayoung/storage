@@ -1,9 +1,10 @@
-from moviepy.editor import VideoFileClip, AudioFileClip
+from moviepy.editor import *
 import whisper 
 # pip install -U openai-whisper
 # ffmpge 다운로드 필요(https://stackoverflow.com/questions/73845566/openai-whisper-filenotfounderror-winerror-2-the-system-cannot-find-the-file)
 import soundfile as sf
 from os import system
+from urllib.request import urlretrieve
 
 # 영상에서 음성 추출
 def extract_audio_from_video(video_file_path, audio_file_path):
@@ -38,13 +39,18 @@ def set_video_length(sample_media):
 def upload_github():
     system('git add .')
     system('git commit -m "Video change"')
-    system('git push origin da0')
+    system('git push origin main')
     print('success github upload!')
 
+def save_video_url(video_url, file_name):
+    urlretrieve(video_url, 'finish/' + file_name)
+    print(f"save video_url: {video_url}")
+    print("save by url success")
+
 def main():
-    video_file = 'original/infinite_challenge.mp4'  # 변환하고 싶은 비디오 파일의 경로
+    video_file = 'original/197898_(1080p).mp4'  # 변환하고 싶은 비디오 파일의 경로
     audio_file = 'original/audio.wav'  # 저장할 오디오 파일의 경로, 이름 지정
-    audio_file_dn = 'original/denoised_audio.wav'
+    audio_file_dn = 'trimmed/denoised_audio.wav'
 
     extract_audio_from_video(video_file, audio_file)
     reduce_noise(audio_file, audio_file_dn)
