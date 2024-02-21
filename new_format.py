@@ -100,66 +100,61 @@ def main(page: Page):
                 page.update()
 
             page.overlay.append(file_picker)
-            page.views.append( 
-            
-                View( # 첫번째 화면
-                    "/",
-                    [
-                        AppBar(title=Text("영상 선택"), bgcolor=colors.BLUE_200),
-                        Row(
-                            alignment=MainAxisAlignment.CENTER,
-                            controls=[
-                                Image("assets\cartoon_caps.jpg", width=700, height=450, fit=ImageFit.FIT_WIDTH),
-                            ],
-                        ),
-                        Row(
-                            alignment=MainAxisAlignment.CENTER,
-                            controls=[
-                                Text("사투리의 멋있음을 보여주세요!", size=22),
-                            ]
-                        ),
-                        Row(
-                            alignment=MainAxisAlignment.CENTER,
-                            controls=[
-                                ElevatedButton(
-                                    "Select files",
-                                    icon=icons.FOLDER_OPEN,
-                                    on_click=lambda _: file_picker.pick_files(allow_multiple=True),
-                                    bgcolor=colors.BLUE_200,
-                                    width=200,
-                                ),
-                                Column(ref=files),
-                                ElevatedButton(
-                                    "Upload",
-                                    ref=upload_button,
-                                    icon=icons.UPLOAD,
-                                    on_click=upload_files,
-                                    disabled=True,
-                                    bgcolor=colors.BLUE_100,
-                                    width=190,
-                                ),
-                            ]
-                        ),
-                        Row(
-                            alignment=MainAxisAlignment.CENTER,
-                            controls=[
-                                pr,
-                                ElevatedButton(
-                                    "선택완료",
-                                    ref=next_button,
-                                    on_click=lambda _: page.go("/select"),
-                                    disabled=True,
-                                    width=200,
-                                    bgcolor=colors.BLUE,
-                                    color=colors.WHITE,
-                                ),
-                            ],
-
-                        ),
-                    ]
-                )
-            )
-
+            page.views.append(
+    View( # 첫번째 화면
+        "/",
+        [
+            AppBar(title=Text("영상 선택"), bgcolor=colors.BLUE_200),
+            Row(
+                controls=[
+                    Column(
+                        alignment=MainAxisAlignment.START,
+                        expand=True,
+                        controls=[
+                            Image("assets\cartoon_caps.jpg"),
+                        ]
+                    ),
+                    Column(
+                        alignment=MainAxisAlignment.CENTER,
+                        controls=[
+                            Text("사투리의 멋있음을 보여주세요!", size=22),
+                            ElevatedButton(
+                                "Select files",
+                                icon=icons.FOLDER_OPEN,
+                                on_click=lambda _: file_picker.pick_files(allow_multiple=True),
+                                bgcolor=colors.BLUE_200,
+                                width=400,
+                            ),
+                            Row(
+                                alignment=MainAxisAlignment.CENTER,
+                                controls=[
+                                    ElevatedButton(
+                                        "Upload",
+                                        ref=upload_button,
+                                        icon=icons.UPLOAD,
+                                        on_click=upload_files,
+                                        disabled=True,
+                                        bgcolor=colors.BLUE_100,
+                                        width=190,
+                                    ),
+                                    ElevatedButton(
+                                        "선택완료",
+                                        ref=next_button,
+                                        on_click=lambda _: page.go("/select"),
+                                        disabled=True,
+                                        width=200,
+                                        bgcolor=colors.BLUE,
+                                        color=colors.WHITE,
+                                    ),
+                                ]
+                            ),
+                        ]
+                    )
+                ]
+            ),
+        ],
+    ),
+)
         ###############################################(2번째 화면입니다.)#########################################################
         if page.route == "/select":
             # next_button = Ref[ElevatedButton]()
