@@ -46,6 +46,7 @@ def main(page: Page):
                 upload_button.current.disabled = True if e.files is None else False
                 prog_bars.clear()
                 files.current.controls.clear()
+
                 if e.files is not None:
                     for f in e.files:
                         prog = ProgressRing(value=0, bgcolor="#eeeeee", width=20, height=20)
@@ -115,7 +116,8 @@ def main(page: Page):
                         ]
                     ),
                     Column(
-                        alignment=MainAxisAlignment.CENTER,
+                        alignment=CrossAxisAlignment.CENTER,
+                        width=400,
                         controls=[
                             Text("사투리의 멋있음을 보여주세요!", size=22),
                             ElevatedButton(
@@ -123,10 +125,10 @@ def main(page: Page):
                                 icon=icons.FOLDER_OPEN,
                                 on_click=lambda _: file_picker.pick_files(allow_multiple=True),
                                 bgcolor=colors.BLUE_200,
-                                width=400,
                             ),
+                            file_picker,
                             Row(
-                                alignment=MainAxisAlignment.CENTER,
+                                alignment=CrossAxisAlignment.CENTER,
                                 controls=[
                                     ElevatedButton(
                                         "Upload",
@@ -135,14 +137,14 @@ def main(page: Page):
                                         on_click=upload_files,
                                         disabled=True,
                                         bgcolor=colors.BLUE_100,
-                                        width=190,
+                                        width=150,
                                     ),
                                     ElevatedButton(
                                         "선택완료",
                                         ref=next_button,
                                         on_click=lambda _: page.go("/select"),
                                         disabled=True,
-                                        width=200,
+                                        width=150,
                                         bgcolor=colors.BLUE,
                                         color=colors.WHITE,
                                     ),
