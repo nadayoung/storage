@@ -356,16 +356,16 @@ def main(page: Page):
 
             original_media = [
                 VideoMedia(
-                    "https://github.com/nadayoung/storage/tree/main/original/"+select_file_name,
+                    "https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,
                 ),
             ]
-            print("Video URL:", "https://github.com/nadayoung/storage/tree/main/original/"+select_file_name)
+            print("Video URL:", "https://github.com/nadayoung/storage/raw/main/original/"+select_file_name)
 
             video = Video(
                 expand=True,
                 playlist=original_media,
-                playlist_mode=PlaylistMode.LOOP,
-                fill_color=colors.BLUE_400,
+                playlist_mode=PlaylistMode.SINGLE,
+                fill_color=colors.BLACK,
                 aspect_ratio=16/9,
                 volume=100,
                 autoplay=False,
