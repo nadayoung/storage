@@ -493,7 +493,7 @@ def main(page: Page):
                                 video,
                                 # Column(
                                     Container(
-                                        alignment=alignment.CENTER,
+                                        alignment=alignment.center,
                                         width=300,
                                         content=Column(
                                             # width=300,
