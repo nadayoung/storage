@@ -490,6 +490,7 @@ def main(page: Page):
                         # ),
                         Row(
                             controls=[
+                                video,
                                 Row(
                                     width=400,
                                     alignment = MainAxisAlignment.CENTER,
@@ -500,6 +501,7 @@ def main(page: Page):
                                 Container(height=10),
                                 Row(
                                     width=400,
+                                    alignment=MainAxisAlignment.CENTER,
                                     controls=[
                                         Container(width=90),
                                         ElevatedButton(
