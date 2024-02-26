@@ -164,7 +164,7 @@ def main(page: Page):
                                         on_click=lambda _: cl.scroll_to(key="A", duration=500),
                                     ),
                                     TextButton(
-                                        "How to use",
+                                        "How To?",
                                         width=150,
                                         on_click=lambda _: cl.scroll_to(key="B", duration=500),
                                     ),
@@ -182,58 +182,83 @@ def main(page: Page):
                     Column(
                         [
                             Container(
-                                Column(
-                                    width=300,
-                                    height=page.height,
-                                    alignment=CrossAxisAlignment.CENTER,
+                                bgcolor=colors.GREY_300,
+                                height=page.height,
+                                width=300,
+                                content=Column(
+                                    # alignment=CrossAxisAlignment.CENTER,
                                     controls=[
                                         Container(height=40),
-                                        Text("변환할 영역을 선택하세요.", size=18),
+                                        Row(
+                                            alignment=MainAxisAlignment.CENTER,
+                                            controls=[
+                                                Text("변환할 영역을 선택하세요.", size=18),
+                                            ]
+                                        ),
                                         Container(height=10),
-                                        ElevatedButton(
-                                            "파일 선택",
-                                            icon=icons.FOLDER_OPEN,
-                                            on_click=lambda _: file_picker.pick_files(allow_multiple=True),
-                                            bgcolor=colors.INDIGO_ACCENT_700,
-                                            color=colors.WHITE,
-                                        ),
-                                        ElevatedButton(
-                                            "업로드",
-                                            ref=upload_button,
-                                            icon=icons.UPLOAD,
-                                            on_click=upload_files,
-                                            disabled=True,
-                                            bgcolor=colors.INDIGO_ACCENT_700,
-                                            color=colors.WHITE,
-                                            width=200,
-                                        ),
-                                        ElevatedButton(
-                                            "선택 완료",
-                                            ref=next_button,
-                                            on_click=lambda _: page.go("select"),
-                                            disabled=True,
-                                            bgcolor=colors.INDIGO_ACCENT_700,
-                                            color=colors.WHITE,
-                                            width=200,
-                                        ),
-                                        Container(height=30),
                                         Row(
-                                            [
-                                                Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
-                                                Text("1. sadfasdf"),
+                                            alignment=MainAxisAlignment.CENTER,
+                                            controls=[
+                                                ElevatedButton(
+                                                    "파일 선택",
+                                                    icon=icons.FOLDER_OPEN,
+                                                    on_click=lambda _: file_picker.pick_files(allow_multiple=True),
+                                                    bgcolor=colors.INDIGO_ACCENT_700,
+                                                    color=colors.WHITE,
+                                                    width=200,
+                                                ),
+                                            ]
+                                        ),
+                                        Row(
+                                            alignment=MainAxisAlignment.CENTER,
+                                            controls=[
+                                                ElevatedButton(
+                                                    "업로드",
+                                                    ref=upload_button,
+                                                    icon=icons.UPLOAD,
+                                                    on_click=upload_files,
+                                                    disabled=True,
+                                                    bgcolor=colors.INDIGO_ACCENT_700,
+                                                    color=colors.WHITE,
+                                                    width=200,
+                                                ),
+                                            ]
+                                        ),
+                                        Row(
+                                            alignment=MainAxisAlignment.CENTER,
+                                            controls=[
+                                                ElevatedButton(
+                                                    "선택 완료",
+                                                    ref=next_button,
+                                                    on_click=lambda _: page.go("/select"),
+                                                    disabled=True,
+                                                    bgcolor=colors.INDIGO_ACCENT_700,
+                                                    color=colors.WHITE,
+                                                    width=200,
+                                                ),
                                             ]
                                         ),
                                         Container(height=30),
                                         Row(
-                                            [
+                                            alignment=MainAxisAlignment.CENTER,
+                                            controls=[
                                                 Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
-                                                Text("2. ㅁㄴㄹㅇㅁㄴㅇㄹ \n ㅁㄴㅇㄻㄴㄹㅇ \n asfdadf"),
+                                                Text("1. sldfa;sldkjf!"),
+                                            ]
+                                        ),
+                                        Container(height=30),
+                                        Row(
+                                            alignment=MainAxisAlignment.CENTER,
+                                            controls=[
+                                                Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
+                                                Text("2. ㅁㄴㅇㄻㄴㅇㄹ! \n ㅓㅏㅓㅓㅏㅣㅑ \n asdfasdf \n asdfasdf \n asfasdfadsf"),
                                             ]
                                         ),
                                         Row(
-                                            [
+                                            alignment=MainAxisAlignment.CENTER,
+                                            controls=[
                                                 Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
-                                                Text("3. 124551534"),
+                                                Text("3. 2141553!"),
                                             ]
                                         ),
                                     ]
