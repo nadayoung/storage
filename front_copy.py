@@ -494,11 +494,23 @@ def main(page: Page):
                                 Column(
                                     Container(
                                         width=300,
-                                        controls=[
-                                            ElevatedButton("Save file", icon=icons.SAVE, on_click=lambda _: save_trimmed_file, width=200),
-                                            Container(),
-                                            ElevatedButton("돌아가기", on_click=lambda _: page.go("/"), width=200, bgcolor=colors.INDIGO_ACCENT_700, color=colors.WHITE),
-                                    ],
+                                        content=Column(
+                                            controls=[
+                                                Row(
+                                                    alignment=CrossAxisAlignment.CENTER,
+                                                    controls=[
+                                                        ElevatedButton("Save file", icon=icons.SAVE, on_click=lambda _: save_trimmed_file, width=200),
+                                                    ]
+                                                ),
+                                                Container(height=10),
+                                                Row(
+                                                    alignment=CrossAxisAlignment.CENTER,
+                                                    controls=[
+                                                        ElevatedButton("돌아가기", on_click=lambda _: page.go("/"), width=200, bgcolor=colors.INDIGO_ACCENT_700, color=colors.WHITE),
+                                                    ]
+                                                ),
+                                            ]
+                                        )
                                 ),
                                 )
                             ]
