@@ -497,11 +497,10 @@ def main(page: Page):
                                             width=300,
                                             # alignment=MainAxisAlignment.CENTER,
                                             controls=[
-                                                ElevatedButton("Save file", icon=icons.SAVE, on_click=lambda _: save_trimmed_file, width=200),
+                                                ElevatedButton("Save file", icon=icons.SAVE, on_click=lambda _: save_trimmed_file, width=200, alignment=MainAxisAlignment.CENTER),
                                                 Container(),
-                                                ElevatedButton("돌아가기", on_click=lambda _: page.go("/"), width=200, bgcolor=colors.INDIGO_ACCENT_700, color=colors.WHITE),
+                                                ElevatedButton("돌아가기", on_click=lambda _: page.go("/"), width=200, bgcolor=colors.INDIGO_ACCENT_700, color=colors.WHITE, alignment=CrossAxisAlignment.CENTER),
                                             ],
-                                            alignment=MainAxisAlignment.CENTER,
                                         )
                                     )
                                 # ),
