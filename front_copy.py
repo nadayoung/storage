@@ -334,10 +334,9 @@ def main(page: Page):
                 pre.reduce_noise('trimmed/audio.wav', 'trimmed/denoised_audio.wav')
                 pre.upload_github()
 
-            def go_to_third_page():
+            def execute_multiple_functions():
                 make_subclip()
                 page.go("/modified")
-                page.update()
 
             pr = ProgressRing(width=20, height=20, visible=False)
 
@@ -426,7 +425,7 @@ def main(page: Page):
                                                 ElevatedButton(
                                                     "변환하기",
                                                     ref=next_button,
-                                                    on_click=go_to_third_page(),
+                                                    on_click=execute_multiple_functions(),
                                                     width=200,
                                                     bgcolor=colors.INDIGO_ACCENT_700,
                                                     color=colors.WHITE,
