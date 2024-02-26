@@ -360,7 +360,7 @@ def main(page: Page):
                 ),
             ]
 
-            video = Video(
+            video = VideoMedia(
                 expand=True,
                 playlist=original_media,
                 playlist_mode=PlaylistMode.LOOP,
