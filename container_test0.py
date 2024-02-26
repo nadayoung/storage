@@ -23,6 +23,7 @@ def main(page: Page):
     page.spacing = 20
     page.horizontal_alignment = CrossAxisAlignment.CENTER
     page.vertical_alignment = MainAxisAlignment.CENTER
+    scroll=ScrollMode.ALWAYS
 
     def route_change(route):
         global select_file_name, end_point, start_point
@@ -101,7 +102,7 @@ def main(page: Page):
 
             page.overlay.append(file_picker)
             page.views.append(
-    View( # 첫번째 화면
+    View(
         "/",
         [
             AppBar(title=Text("Welcome!"), bgcolor=colors.SURFACE_VARIANT),
@@ -112,8 +113,17 @@ def main(page: Page):
                         expand=True,
                         controls=[
                             Image("assets\ew.png"),
+                            # Image("assets\cartoon_caps.jpg"),
+                            Row(
+                                alignment=MainAxisAlignment.CENTER,
+                                controls=[
+                                TextButton("Home"),
+                                TextButton("How?"),
+                                TextButton("About TAT"),
+                            ]
+                            )
+                            
                         ],
-                        scroll=True,
                     ),
                     Container(width=1, bgcolor=colors.BLACK, height=page.height),
                     Container(
@@ -123,10 +133,10 @@ def main(page: Page):
                     content=Column(
                         alignment=CrossAxisAlignment.CENTER,
                         controls=[
-                            Container(height=50),
+                            Container(height=40),
                             Row(
                                 controls=[
-                                    Container(width=5),
+                                    Container(width=10),
                                     Icon(icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
                                     Text("ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻ" , size=18),
                                 ]
@@ -134,7 +144,7 @@ def main(page: Page):
                             Container(),
                             Row(
                                 controls=[
-                                    Container(width=5),
+                                    Container(width=10),
                                     Icon(icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
                                     Text("asdfadfadfasf", size=18),
                                 ]
@@ -142,14 +152,15 @@ def main(page: Page):
                             Container(),
                             Row(
                                 controls=[
-                                    Container(width=5),
+                                    Container(width=10),
                                     Icon(icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
                                     Text("23452362345", size=18),
                                 ]
                             ),
+                            Container(),
                             Row(
                                 controls=[
-                                    Container(width=45),
+                                    Container(width=45,height=30),
                                     ElevatedButton(
                                     "파일 선택",
                                     icon=icons.FOLDER_OPEN,
@@ -179,7 +190,7 @@ def main(page: Page):
                             # Container(height=10),
                             Row(
                                 controls=[
-                                    Container(width=45),
+                                    Container(width=45, height=30),
                                     ElevatedButton(
                                         "선택 완료",
                                         ref=next_button,
