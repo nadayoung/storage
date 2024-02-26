@@ -228,6 +228,7 @@ def main(page: Page):
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
+                                                pr,
                                                 ElevatedButton(
                                                     "선택완료",
                                                     ref=next_button,
@@ -361,7 +362,7 @@ def main(page: Page):
 
             video = Video(
                 expand=True,
-                playlist=original_media[0:2],
+                playlist=original_media,
                 playlist_mode=PlaylistMode.LOOP,
                 fill_color=colors.BLUE_400,
                 aspect_ratio=16/9,
@@ -408,9 +409,9 @@ def main(page: Page):
                                             wrap=True,
                                             width=400,
                                             controls=[
-                                                ElevatedButton("시작점", on_click=print('start_seek'), width=40, style = ButtonStyle(padding=0)),
+                                                ElevatedButton("시작점", on_click=print('start_seek'), width=45, style = ButtonStyle(padding=0)),
                                                 range_slider,
-                                                ElevatedButton("끝점", on_click=print('end_seek'), width=40, style = ButtonStyle(padding=0)),
+                                                ElevatedButton("끝점", on_click=print('end_seek'), width=45, style = ButtonStyle(padding=0)),
                                             ],
                                         ),
                                         Row(
