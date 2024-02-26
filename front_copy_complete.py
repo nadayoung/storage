@@ -123,28 +123,28 @@ def main(page: Page):
                         
                     Container(
                         cl := Column(
-                            width=960,
-                            height=540,
+                            width=1060,
+                            height=590,
                             alignment=MainAxisAlignment.START,
                             expand=True,
                             scroll=ScrollMode.ALWAYS,
                             controls=[
                                 Container(
                                     Image("assets\\home_screen.png"),
-                                    height=580,
-                                    width=1200,
+                                    height=590,
+                                    width=1060,
                                     key="A",
                                 ),
                                 Container(
                                     Image("assets\\howto.png"),
-                                    height=580,
-                                    width=1200,
+                                    height=590,
+                                    width=1060,
                                     key="B",
                                 ),
                                 Container(
                                     Image("assets\\end_screen.png"),
-                                    height=580,
-                                    width=1200,
+                                    height=590,
+                                    width=1060,
                                     key="C",
                                 ),
                             ],
@@ -154,23 +154,23 @@ def main(page: Page):
                     Column([
                         Container(
                             Row(
-                                width=1200,
+                                width=1060,
                                 height=70,
                                 alignment=MainAxisAlignment.CENTER,
                                 controls=[
                                     TextButton(
                                         "Home",
-                                        width=150,
+                                        width=130,
                                         on_click=lambda _: cl.scroll_to(key="A", duration=500),
                                     ),
                                     TextButton(
                                         "How to use TAT",
-                                        width=150,
+                                        width=130,
                                         on_click=lambda _: cl.scroll_to(key="B", duration=500),
                                     ),
                                     TextButton(
                                         "About TAT",
-                                        width=150,
+                                        width=130,
                                         on_click=lambda _: cl.scroll_to(key="C", duration=500),
                                     ),
                                 ]
@@ -184,7 +184,7 @@ def main(page: Page):
                             Container(
                                 # bgcolor=colors.WHITE,
                                 # height=page.height,
-                                width=300,
+                                width=400,
                                 content=Column(
                                     # alignment=CrossAxisAlignment.CENTER,
                                     controls=[
@@ -205,7 +205,7 @@ def main(page: Page):
                                                     on_click=lambda _: file_picker.pick_files(allow_multiple=True),
                                                     bgcolor=colors.INDIGO_ACCENT_700,
                                                     color=colors.WHITE,
-                                                    width=200,
+                                                    width=250,
                                                 ),
                                             ]
                                         ),
@@ -221,7 +221,7 @@ def main(page: Page):
                                                     disabled=True,
                                                     bgcolor=colors.INDIGO_ACCENT_700,
                                                     color=colors.WHITE,
-                                                    width=200,
+                                                    width=250,
                                                 ),
                                             ]
                                         ),
@@ -236,11 +236,11 @@ def main(page: Page):
                                                     disabled=True,
                                                     bgcolor=colors.INDIGO_ACCENT_700,
                                                     color=colors.WHITE,
-                                                    width=200,
+                                                    width=250,
                                                 ),
                                             ]
                                         ),
-                                        Container(height=30),
+                                        Container(height=20),
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
@@ -248,7 +248,7 @@ def main(page: Page):
                                                 Text("1. 자연스러운 사투리 구사하고 싶은 사람!"),
                                             ]
                                         ),
-                                        Container(height=30),
+                                        Container(height=15),
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
@@ -256,6 +256,7 @@ def main(page: Page):
                                                 Text("2. 여기다 뭘 써야할까!?"),
                                             ]
                                         ),
+                                        Container(height=15),
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
@@ -492,19 +493,19 @@ def main(page: Page):
                             controls=[
                                 video,
                                 Column(
-                                    width=300,
+                                    width=400,
                                     controls=[
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
-                                                ElevatedButton("Save file", icon=icons.SAVE, on_click=lambda _: save_trimmed_file, width=200),
+                                                ElevatedButton("Save file", icon=icons.SAVE, on_click=lambda _: save_trimmed_file, width=250),
                                             ]
                                         ),
                                         Container(),
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
-                                                ElevatedButton("돌아가기", on_click=lambda _: page.go("/"), width=200, bgcolor=colors.INDIGO_ACCENT_700, color=colors.WHITE),
+                                                ElevatedButton("돌아가기", on_click=lambda _: page.go("/"), width=250, bgcolor=colors.INDIGO_ACCENT_700, color=colors.WHITE),
                                             ]
                                         )
                                     ],
