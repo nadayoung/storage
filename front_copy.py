@@ -182,8 +182,8 @@ def main(page: Page):
                     Column(
                         [
                             Container(
-                                bgcolor=colors.WHITE,
-                                height=page.height,
+                                # bgcolor=colors.WHITE,
+                                # height=page.height,
                                 width=300,
                                 content=Column(
                                     # alignment=CrossAxisAlignment.CENTER,
@@ -491,6 +491,7 @@ def main(page: Page):
                         Row(
                             controls=[
                                 video,
+                                Container(width=300),
                                 Column(
                                     alignment=CrossAxisAlignment.CENTER,
                                     controls=[
