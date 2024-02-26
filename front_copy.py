@@ -199,7 +199,6 @@ def main(page: Page):
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
-                                                pr,
                                                 ElevatedButton(
                                                     "파일 선택",
                                                     icon=icons.FOLDER_OPEN,
