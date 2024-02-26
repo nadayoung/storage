@@ -361,7 +361,9 @@ def main(page: Page):
             ]
 
             video = VideoMedia(
-                expand=True,
+                # expand=True,
+                width=1200,
+                height=530,
                 playlist=original_media,
                 playlist_mode=PlaylistMode.LOOP,
                 fill_color=colors.BLUE_400,
