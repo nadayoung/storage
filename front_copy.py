@@ -231,7 +231,7 @@ def main(page: Page):
                                                 pr,
                                                 ElevatedButton(
                                                     "선택완료",
-                                                    ref=next_button,
+                                                    # ref=next_button,
                                                     on_click=lambda _: page.go("/select"),
                                                     disabled=True,
                                                     bgcolor=colors.INDIGO_ACCENT_700,
@@ -499,7 +499,7 @@ def main(page: Page):
                                         Container(width=90),
                                         ElevatedButton(
                                             "돌아가기",
-                                            ref=next_button,
+                                            # ref=next_button,
                                             on_click=lambda _: [page.go("/")],
                                             width=200,
                                             bgcolor=colors.INDIGO_ACCENT_700,
