@@ -422,6 +422,7 @@ def main(page: Page):
                                         Row(
                                             controls=[
                                                 Container(width=80),
+                                                pr,
                                                 ElevatedButton(
                                                     "변환하기",
                                                     ref=next_button,
@@ -445,15 +446,15 @@ def main(page: Page):
         if page.route == "/modified":
             modified_media = [
                 VideoMedia(
-                    "https://github.com/nadayoung/storage/tree/main/original/197898_(1080p).mp4",
+                    "https://github.com/nadayoung/storage/raw/main/original/197898_(1080p).mp4",
                 ),
             ]
 
             video = Video(
                 expand=True,
                 playlist=modified_media[0:2],
-                playlist_mode=PlaylistMode.LOOP,
-                fill_color=colors.BLUE_400,
+                playlist_mode=PlaylistMode.SINGLE,
+                fill_color=colors.BLACK,
                 aspect_ratio=16/9,
                 volume=100,
                 autoplay=False,
@@ -466,7 +467,7 @@ def main(page: Page):
 
             def save_trimmed_file(e):
                 global select_file_name
-                pre.save_video_url("https://github.com/nadayoung/storage/tree/main/trimmed/"+select_file_name, select_file_name)
+                pre.save_video_url("https://github.com/nadayoung/storage/raw/main/trimmed/"+select_file_name, select_file_name)
 
             page.views.append(
                 View( # 변형된 화면
@@ -493,7 +494,7 @@ def main(page: Page):
                                     width=400,
                                     alignment = MainAxisAlignment.CENTER,
                                     controls=[
-                                        ElevatedButton("Save file", icon=icons.SAVE, on_click=print('save_trimmed_file'), width=200),
+                                        ElevatedButton("Save file", icon=icons.SAVE, on_click=lambda _: save_trimmed_file, width=200),
                                     ],
                                 ),
                                 Container(height=10),
