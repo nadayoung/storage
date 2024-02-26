@@ -276,7 +276,6 @@ def main(page: Page):
 
         ###############################################(2번째 화면입니다.)#########################################################
         if page.route == "/select":
-            # next_button = Ref[ElevatedButton]()
             subclip_slider = Ref[RangeSlider]()
             next_button = Ref[ElevatedButton]()
                 
@@ -334,6 +333,11 @@ def main(page: Page):
                 pre.extract_audio_from_video('trimmed/'+select_file_name, 'trimmed/audio.wav')
                 pre.reduce_noise('trimmed/audio.wav', 'trimmed/denoised_audio.wav')
                 pre.upload_github()
+
+            def go_to_third_page():
+                make_subclip()
+                page.go("/modified")
+                page.update()
 
             pr = ProgressRing(width=20, height=20, visible=False)
 
@@ -411,9 +415,9 @@ def main(page: Page):
                                             wrap=True,
                                             width=400,
                                             controls=[
-                                                ElevatedButton("시작점", on_click=print('start_seek'), width=45, style = ButtonStyle(padding=0)),
+                                                ElevatedButton("시작점", on_click=start_seek, width=45, style = ButtonStyle(padding=0)),
                                                 range_slider,
-                                                ElevatedButton("끝점", on_click=print('end_seek'), width=45, style = ButtonStyle(padding=0)),
+                                                ElevatedButton("끝점", on_click=end_seek, width=45, style = ButtonStyle(padding=0)),
                                             ],
                                         ),
                                         Row(
@@ -421,8 +425,8 @@ def main(page: Page):
                                                 Container(width=80),
                                                 ElevatedButton(
                                                     "변환하기",
-                                                    # ref=next_button,
-                                                    on_click=lambda _: [page.go("/modified")],
+                                                    ref=next_button,
+                                                    on_click=go_to_third_page(),
                                                     width=200,
                                                     bgcolor=colors.INDIGO_ACCENT_700,
                                                     color=colors.WHITE,
