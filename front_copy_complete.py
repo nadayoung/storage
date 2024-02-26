@@ -18,7 +18,7 @@ video_length = 0
 
 def main(page: Page):
     page.theme_mode = ThemeMode.LIGHT
-    page.title = "Project Modified voice"
+    page.title = "TAT"
     page.window_width = 500
     page.spacing = 20
     page.horizontal_alignment = CrossAxisAlignment.CENTER
@@ -115,7 +115,7 @@ def main(page: Page):
             page.views.append(
                 View("/", 
                     [
-                AppBar(title=Text("Welcome!"), bgcolor=colors.BLUE_200),
+                AppBar(title=Text("안녕하수꽈!"), bgcolor=colors.BLUE_200),
                 Row(
                     [
                         Column(
@@ -123,14 +123,14 @@ def main(page: Page):
                         
                     Container(
                         cl := Column(
-                            width=1200,
-                            height=580,
+                            width=960,
+                            height=540,
                             alignment=MainAxisAlignment.START,
                             expand=True,
                             scroll=ScrollMode.ALWAYS,
                             controls=[
                                 Container(
-                                    Image("assets\\ew.png"),
+                                    Image("assets\\home_screen.png"),
                                     height=580,
                                     width=1200,
                                     key="A",
@@ -142,7 +142,7 @@ def main(page: Page):
                                     key="B",
                                 ),
                                 Container(
-                                    Image("assets\\cartoon_satoori.jpg"),
+                                    Image("assets\\end_screen.png"),
                                     height=580,
                                     width=1200,
                                     key="C",
@@ -164,7 +164,7 @@ def main(page: Page):
                                         on_click=lambda _: cl.scroll_to(key="A", duration=500),
                                     ),
                                     TextButton(
-                                        "How To?",
+                                        "How to use TAT",
                                         width=150,
                                         on_click=lambda _: cl.scroll_to(key="B", duration=500),
                                     ),
@@ -253,14 +253,14 @@ def main(page: Page):
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
                                                 Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
-                                                Text("2. ㅁㄴㅇㄻㄴㅇㄹ! \n ㅓㅏㅓㅓㅏㅣㅑ \n asdfasdf \n asdfasdf \n asfasdfadsf"),
+                                                Text("2. 여기다 뭘 써야할까!?"),
                                             ]
                                         ),
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
                                                 Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
-                                                Text("3. 2141553!"),
+                                                Text("3. 3개이상 쓸 게 있을까!?"),
                                             ]
                                         ),
                                     ]
