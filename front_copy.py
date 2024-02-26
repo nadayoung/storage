@@ -493,13 +493,9 @@ def main(page: Page):
                                 video,
                                 Column(
                                     controls=[
-                                Row(
-                                    controls=[
                                         ElevatedButton("Save file", icon=icons.SAVE, on_click=lambda _: save_trimmed_file, width=150),
                                         ElevatedButton("돌아가기", on_click=lambda _: page.go("/"), width=150, bgcolor=colors.INDIGO_ACCENT_700, color=colors.WHITE),
                                     ],
-                                ),
-                                    ]
                                 ),
                             ]
                         ),
