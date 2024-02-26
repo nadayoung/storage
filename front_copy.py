@@ -425,7 +425,7 @@ def main(page: Page):
                                                 ElevatedButton(
                                                     "변환하기",
                                                     ref=next_button,
-                                                    on_click=execute_multiple_functions(),
+                                                    on_click=lambda _: execute_multiple_functions(),
                                                     width=200,
                                                     bgcolor=colors.INDIGO_ACCENT_700,
                                                     color=colors.WHITE,
