@@ -491,28 +491,15 @@ def main(page: Page):
                         Row(
                             controls=[
                                 video,
-                                Row(
-                                    width=400,
-                                    alignment = MainAxisAlignment.CENTER,
+                                Column(
                                     controls=[
-                                        ElevatedButton("Save file", icon=icons.SAVE, on_click=lambda _: save_trimmed_file, width=200),
+                                Row(
+                                    controls=[
+                                        ElevatedButton("Save file", icon=icons.SAVE, on_click=lambda _: save_trimmed_file, width=150),
+                                        ElevatedButton("돌아가기", on_click=lambda _: page.go("/"), width=150, bgcolor=colors.INDIGO_ACCENT_700, color=colors.WHITE),
                                     ],
                                 ),
-                                Container(height=10),
-                                Row(
-                                    width=400,
-                                    alignment=MainAxisAlignment.CENTER,
-                                    controls=[
-                                        Container(width=90),
-                                        ElevatedButton(
-                                            "돌아가기",
-                                            # ref=next_button,
-                                            on_click=lambda _: [page.go("/")],
-                                            width=200,
-                                            bgcolor=colors.INDIGO_ACCENT_700,
-                                            color=colors.WHITE,
-                                        ),
-                                    ],
+                                    ]
                                 ),
                             ]
                         ),
