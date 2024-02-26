@@ -498,7 +498,7 @@ def main(page: Page):
                                         ElevatedButton("돌아가기", on_click=lambda _: page.go("/"), width=200, bgcolor=colors.INDIGO_ACCENT_700, color=colors.WHITE),
                                     ],
                                     width=300,
-                                    alignment=CrossAxisAlignment.CENTER,
+                                    alignment=alignment.center,
                                 )
                             ]
                         ),
