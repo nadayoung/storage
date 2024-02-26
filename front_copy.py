@@ -356,9 +356,10 @@ def main(page: Page):
 
             original_media = [
                 VideoMedia(
-                    "https://github.com/nadayoung/storage/tree/main/"+select_file_name,
+                    "https://github.com/nadayoung/storage/tree/main/original/"+select_file_name,
                 ),
             ]
+            print("Video URL:", "https://github.com/nadayoung/storage/tree/main/original/"+select_file_name)
 
             video = Video(
                 expand=True,
