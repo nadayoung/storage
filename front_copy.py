@@ -199,6 +199,7 @@ def main(page: Page):
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
+                                                pr,
                                                 ElevatedButton(
                                                     "파일 선택",
                                                     icon=icons.FOLDER_OPEN,
@@ -212,6 +213,7 @@ def main(page: Page):
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
+                                                pr,
                                                 ElevatedButton(
                                                     "업로드",
                                                     ref=upload_button,
@@ -274,7 +276,7 @@ def main(page: Page):
 
         ###############################################(2번째 화면입니다.)#########################################################
         if page.route == "/select":
-            # next_button = Ref[ElevatedButton]()
+            next_button = Ref[ElevatedButton]()
             subclip_slider = Ref[RangeSlider]()
                 
             def slider_change_start(e):
@@ -402,7 +404,7 @@ def main(page: Page):
                                     "변환하기", 
                                     on_click = lambda _: [make_subclip(), page.go("/modified")],
                                     width=200,
-                                    bgcolor=colors.PURPLE_200,
+                                    bgcolor=colors.INDIGO_ACCENT_700,
                                     color=colors.WHITE,
                                 ),
                         ]),
