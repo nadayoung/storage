@@ -398,13 +398,12 @@ def main(page: Page):
                             controls=[
                                 video,
                                 Column(
-                                    alignment=MainAxisAlignment.CENTER,
                                     controls=[
                                         Row(
-                                            # controls=[
-                                                # Container(width=45),
-                                            Text("변환하고 싶은 영역을 선택해 주세요.", size=18),
-                                            # ]
+                                            controls=[
+                                                Container(width=45),
+                                                Text("변환하고 싶은 영역을 선택해 주세요.", size=18),
+                                            ]
                                         ),
                                         Row(
                                             wrap=True,
@@ -416,25 +415,17 @@ def main(page: Page):
                                             ],
                                         ),
                                         Row(
-                                            ElevatedButton(
-                                                "변환하기",
-                                                ref=next_button,
-                                                on_click=lambda _: [page.go("/modified")],
-                                                width=200,
-                                                bgcolor=colors.INDIGO_ACCENT_700,
-                                                color=colors.WHITE,
-                                            ),
-                                            # controls=[
-                                            #     Container(width=80),
-                                            #     ElevatedButton(
-                                            #         "변환하기",
-                                            #         ref=next_button,
-                                            #         on_click=lambda _: [page.go("/modified")],
-                                            #         width=200,
-                                            #         bgcolor=colors.INDIGO_ACCENT_700,
-                                            #         color=colors.WHITE,
-                                            #     ),
-                                            # ],
+                                            controls=[
+                                                Container(width=80),
+                                                ElevatedButton(
+                                                    "변환하기",
+                                                    ref=next_button,
+                                                    on_click=lambda _: [page.go("/modified")],
+                                                    width=200,
+                                                    bgcolor=colors.INDIGO_ACCENT_700,
+                                                    color=colors.WHITE,
+                                                ),
+                                            ],
                                         ),
                                     ]
                                 ),
