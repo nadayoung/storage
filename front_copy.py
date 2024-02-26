@@ -495,7 +495,7 @@ def main(page: Page):
                                     width=300,
                                     controls=[
                                         Row(
-                                            alignment=CrossAxisAlignment.CENTER,
+                                            alignment=MainAxisAlignment.CENTER,
                                             controls=[
                                                 ElevatedButton("Save file", icon=icons.SAVE, on_click=lambda _: save_trimmed_file, width=200),
                                             ]
