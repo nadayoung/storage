@@ -494,8 +494,8 @@ def main(page: Page):
                                 # Column(
                                     Container(
                                         Column(
-                                            width=400,
-                                            alignment=CrossAxisAlignment.CENTER,
+                                            width=300,
+                                            alignment=MainAxisAlignment.CENTER,
                                             controls=[
                                                 ElevatedButton("Save file", icon=icons.SAVE, on_click=lambda _: save_trimmed_file, width=200),
                                                 Container(),
