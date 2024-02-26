@@ -17,8 +17,6 @@ global start_point, end_point, video_length
 start_point = 0
 end_point = 100
 video_length = 0
-end_point = 100
-video_length = 0
 
 def main(page: Page):
     page.theme_mode = ThemeMode.LIGHT
@@ -31,7 +29,9 @@ def main(page: Page):
         global select_file_name, select_file_name_m, end_point, start_point, video_length
 
         # 화면을 띄우기 위함
-        page.views.clear
+        # page.overlay.append(file_picker)
+        page.overlay.extend([file_picker, save_ficker])
+        page.views.clear()
 
         files = Ref[Column]()
 
@@ -40,7 +40,6 @@ def main(page: Page):
             upload_button = Ref[ElevatedButton]()
             next_button = Ref[ElevatedButton]()
 
-            pr = ProgressRing(width=20, height=20, visible=False)
             pr = ProgressRing(width=20, height=20, visible=False)
 
             def file_picker_result(e: FilePickerResultEvent):
@@ -60,6 +59,7 @@ def main(page: Page):
             def on_upload_progress(e: FilePickerUploadEvent):
                 prog_bars[e.file_name].value = e.progress
                 prog_bars[e.file_name].update()
+                # print(prog_bars[e.file_name])
 
             file_picker = FilePicker(on_result=file_picker_result, on_upload=on_upload_progress)
 
@@ -87,11 +87,16 @@ def main(page: Page):
             def file_check():
                 global upload_complete, video_length, select_file_name, select_file_name_m
                 # 공백을 _로, 한글을 변화하여 file_name 호출에 문제가 없도록 함
-               
+                # select_file_name_m = select_file_name.replace(" ", "_")
                 select_file_name_m = select_file_name.replace(" ", "%20")
                 select_file_name_m = quote(select_file_name)
                 print(f"file.name_m: {select_file_name_m}")
                 # 만약 file_name에 공백이나 한글이 존재한다면, 비디오를 하나 더 저장
+                # if select_file_name != select_file_name_m:
+                #     clip = VideoFileClip('original/'+select_file_name)
+                #     print(f"file.name_m: {select_file_name_m}")
+                #     clip.write_videofile("original/"+select_file_name_m)
+                #     clip.close()
                 pre.upload_github_check('original', select_file_name_m)
                 upload_complete = True
                 next_button.current.disabled = True if upload_complete is False else False
@@ -99,9 +104,7 @@ def main(page: Page):
                 pr.visible = False
                 page.update()
 
-            page.overlay.append(file_picker)
-            # page.views.append( 
-            page.overlay.append(file_picker)
+            # page.overlay.append(file_picker)
             page.views.append( 
             
                 View( # 첫번째 화면
@@ -152,6 +155,7 @@ def main(page: Page):
                                     color=colors.WHITE,
                                 ),
                             ],
+                            # alignment=MainAxisAlignment.CENTER
                         ),
                     ]
                 )
@@ -159,7 +163,6 @@ def main(page: Page):
 
         ###############################################(2번째 화면입니다.)#########################################################
         if page.route == "/select":
-        # if page.route == "/select":
             next_button = Ref[ElevatedButton]()
             subclip_slider = Ref[RangeSlider]()
 
@@ -235,7 +238,6 @@ def main(page: Page):
                 end_value=video_length,
                 divisions=50,
                 width=300,
-                # width=300,
                 inactive_color=colors.RED_100,
                 active_color=colors.INDIGO_ACCENT_700,
                 overlay_color=colors.INDIGO_ACCENT_100,
@@ -271,6 +273,13 @@ def main(page: Page):
                             on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
                             on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
                         ),
+                        # Row(
+                        #     wrap=True,
+                        #     alignment=MainAxisAlignment.CENTER,
+                        #     controls=[
+                        #         ElevatedButton("Play Or Pause", on_click=handle_play_or_pause),
+                        #     ],
+                        # ),
                         
                         Column(
                             alignment=CrossAxisAlignment.CENTER,
@@ -291,6 +300,22 @@ def main(page: Page):
                                 ),
                             ],    
                         ),
+                        # Row(
+                        #     wrap=True,
+                        #     alignment=MainAxisAlignment.CENTER,
+                        #     controls=[
+                        #         Container(content=Text("Volume: "),),
+                        #         Slider(
+                        #         min=0,
+                        #         value=100,
+                        #         max=100,
+                        #         label="Volume = {value}%",
+                        #         divisions=10,
+                        #         width=400,
+                        #         on_change=handle_volume_change,
+                        #         ),
+                        #     ],
+                        # ),
                         Row(
                             # wrap=True,
                             alignment=MainAxisAlignment.CENTER,
@@ -309,8 +334,6 @@ def main(page: Page):
                     ]
                 )
             )
-                # )
-            
 
         ###############################################(자르는 부분 확인하는 화면입니다.)#########################################################
         if page.route == "/modified":
@@ -321,7 +344,27 @@ def main(page: Page):
                     url + "trimmed/" + select_file_name_m,
                 ),
             ]
-            def save_trimmed_file(e):
+
+            # def pick_files_result(e: FilePickerResultEvent):
+            #     selected_files.value = (
+            #         ", ".join(map(lambda f: f.name, e.files)) if e.files else "Cancelled!"
+            #     )
+            #     selected_files.update()
+            
+            def save_file_result(e: FilePickerResultEvent):
+                print('save file result start')
+                save_file_path.value = e.path if e.path else "Cancelled!"
+                save_file_path.update()
+                print(f"save_path: {save_file_path.value}")
+
+            save_ficker = FilePicker(on_result=save_file_result)
+            save_file_path = Text()
+
+            # page.overlay.append(save_ficker)
+            # page.overlay.extend([save_ficker])
+
+            def save_trimmed_file():
+                print("save trimmed start")
                 pr.visible=True
                 next_button.current.disabled = True
                 page.update()
@@ -332,6 +375,19 @@ def main(page: Page):
                 pr.visible=False
                 next_button.current.disabled = False 
                 page.update()
+
+            # def handle_play_or_pause(e):
+            #     video.play_or_pause()
+            #     print("Video.play_or_pause()")
+
+            # def handle_stop(e):
+            #     video.stop()
+            #     print("Video.stop()")
+
+            # def handle_volume_change(e):
+            #     video.volume = e.control.value
+            #     page.update()
+            #     print(f"Video.volume = {e.control.value}")
                 
             pr = ProgressRing(width=20, height=20, visible=False)
 
@@ -363,6 +419,21 @@ def main(page: Page):
                             ElevatedButton("Save file", icon=icons.SAVE, on_click=save_trimmed_file, width=200,),
                             ],
                         ),
+                        # Row(
+                        #     alignment = MainAxisAlignment.CENTER,
+                        #     controls=[
+                        #         Text("Volume: "),
+                        #         Slider(
+                        #             min=0,
+                        #             value=100,
+                        #             max=100,
+                        #             label="Volume = {value}%",
+                        #             divisions=10,
+                        #             width=400,
+                        #             on_change=handle_volume_change,
+                        #         ),
+                        #     ],
+                        # ),
                         Row(
                             alignment = MainAxisAlignment.CENTER,
                             controls=[
