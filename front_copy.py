@@ -231,7 +231,7 @@ def main(page: Page):
                                                 pr,
                                                 ElevatedButton(
                                                     "선택완료",
-                                                    # ref=next_button,
+                                                    ref=next_button,
                                                     on_click=lambda _: page.go("/select"),
                                                     disabled=True,
                                                     bgcolor=colors.INDIGO_ACCENT_700,
@@ -276,8 +276,9 @@ def main(page: Page):
 
         ###############################################(2번째 화면입니다.)#########################################################
         if page.route == "/select":
-            next_button = Ref[ElevatedButton]()
+            # next_button = Ref[ElevatedButton]()
             subclip_slider = Ref[RangeSlider]()
+            next_button = Ref[ElevatedButton]()
                 
             def slider_change_start(e):
                 global start_point, end_point
