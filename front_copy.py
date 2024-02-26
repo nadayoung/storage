@@ -130,21 +130,21 @@ def main(page: Page):
                             scroll=ScrollMode.ALWAYS,
                             controls=[
                                 Container(
-                                    Image("assets\\ew1.png"),
-                                    height=page.height,
-                                    width=page.width,
+                                    Image("assets\\ew.png"),
+                                    height=530,
+                                    width=1200,
                                     key="A",
                                 ),
                                 Container(
-                                    Image("assets\\howto1.png"),
-                                    height=page.height,
-                                    width=page.width,
+                                    Image("assets\\howto.png"),
+                                    height=530,
+                                    width=1200,
                                     key="B",
                                 ),
                                 Container(
                                     Image("assets\\cartoon_satoori.jpg"),
-                                    height=page.height,
-                                    width=page.width,
+                                    height=530,
+                                    width=1200,
                                     key="C",
                                 ),
                             ],
@@ -245,7 +245,7 @@ def main(page: Page):
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
                                                 Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
-                                                Text("1. sldfa;sldkjf!"),
+                                                Text("1. 자연스러운 사투리 구사하고 싶은 사람!"),
                                             ]
                                         ),
                                         Container(height=30),
@@ -401,7 +401,7 @@ def main(page: Page):
                                     controls=[
                                         Row(
                                             controls=[
-                                                Container(width=30),
+                                                Container(width=45),
                                                 Text("변환하고 싶은 영역을 선택해 주세요.", size=18),
                                             ]
                                         ),
@@ -409,9 +409,9 @@ def main(page: Page):
                                             wrap=True,
                                             width=400,
                                             controls=[
-                                                ElevatedButton("시작점", on_click=print('start_seek'), width=45, style = ButtonStyle(padding=0)),
+                                                ElevatedButton("시작점", on_click=print('start_seek'), width=40, style = ButtonStyle(padding=0)),
                                                 range_slider,
-                                                ElevatedButton("끝점", on_click=print('end_seek'), width=45, style = ButtonStyle(padding=0)),
+                                                ElevatedButton("끝점", on_click=print('end_seek'), width=40, style = ButtonStyle(padding=0)),
                                             ],
                                         ),
                                         Row(
