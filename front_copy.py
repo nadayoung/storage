@@ -359,40 +359,40 @@ def main(page: Page):
                 ),
             ]
 
-            # video = Video(
-            #     expand=True,
-            #     playlist=original_media[0:2],
-            #     playlist_mode=PlaylistMode.LOOP,
-            #     fill_color=colors.BLUE_400,
-            #     aspect_ratio=16/9,
-            #     volume=100,
-            #     autoplay=False,
-            #     filter_quality=FilterQuality.HIGH,
-            #     muted=False,
-            #     on_loaded=lambda e: print("Video loaded successfully!"),
-            #     on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
-            #     on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
-            # )
+            video = Video(
+                expand=True,
+                playlist=original_media[0:2],
+                playlist_mode=PlaylistMode.LOOP,
+                fill_color=colors.BLUE_400,
+                aspect_ratio=16/9,
+                volume=100,
+                autoplay=False,
+                filter_quality=FilterQuality.HIGH,
+                muted=False,
+                on_loaded=lambda e: print("Video loaded successfully!"),
+                on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
+                on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
+            )
             
             page.views.append(
                 View(
                     "/select",
                     [
                         AppBar(title = Text("변환할 부분 선택"), bgcolor=colors.SURFACE_VARIANT),
-                        video := Video(
-                            expand=True,
-                            playlist=original_media[0:2],
-                            playlist_mode=PlaylistMode.LOOP,
-                            fill_color=colors.BLUE_400,
-                            aspect_ratio=16/9,
-                            volume=100,
-                            autoplay=False,
-                            filter_quality=FilterQuality.HIGH,
-                            muted=False,
-                            on_loaded=lambda e: print("Video loaded successfully!"),
-                            on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
-                            on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
-                        ),
+                        # video := Video(
+                        #     expand=True,
+                        #     playlist=original_media,
+                        #     playlist_mode=PlaylistMode.SINGLE,
+                        #     fill_color=colors.BLACK,
+                        #     aspect_ratio=16/9,
+                        #     volume=100,
+                        #     autoplay=False,
+                        #     filter_quality=FilterQuality.HIGH,
+                        #     muted=False,
+                        #     on_loaded=lambda e: print("Video loaded successfully!"),
+                        #     on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
+                        #     on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
+                        # ),
                         Row(
                             controls=[
                                 video,
