@@ -446,13 +446,13 @@ def main(page: Page):
         if page.route == "/modified":
             modified_media = [
                 VideoMedia(
-                    "https://github.com/nadayoung/storage/raw/main/original/197898_(1080p).mp4",
+                    "https://github.com/nadayoung/storage/raw/main/trimmed/197898_(1080p).mp4",
                 ),
             ]
 
             video = Video(
                 expand=True,
-                playlist=modified_media[0:2],
+                playlist=modified_media,
                 playlist_mode=PlaylistMode.SINGLE,
                 fill_color=colors.BLACK,
                 aspect_ratio=16/9,
