@@ -124,26 +124,26 @@ def main(page: Page):
                     Container(
                         cl := Column(
                             width=1200,
-                            height=530,
+                            height=580,
                             alignment=MainAxisAlignment.START,
                             expand=True,
                             scroll=ScrollMode.ALWAYS,
                             controls=[
                                 Container(
                                     Image("assets\\ew.png"),
-                                    height=530,
+                                    height=580,
                                     width=1200,
                                     key="A",
                                 ),
                                 Container(
                                     Image("assets\\howto.png"),
-                                    height=530,
+                                    height=580,
                                     width=1200,
                                     key="B",
                                 ),
                                 Container(
                                     Image("assets\\cartoon_satoori.jpg"),
-                                    height=530,
+                                    height=580,
                                     width=1200,
                                     key="C",
                                 ),
@@ -155,7 +155,7 @@ def main(page: Page):
                         Container(
                             Row(
                                 width=1200,
-                                height=40,
+                                height=70,
                                 alignment=MainAxisAlignment.CENTER,
                                 controls=[
                                     TextButton(
@@ -493,7 +493,7 @@ def main(page: Page):
                                 video,
                                 Column(
                                     width=300,
-                                    alignment=CrossAxisAlignment.CENTER,
+                                    alignment=MainAxisAlignment.CENTER,
                                     controls=[
                                         ElevatedButton("Save file", icon=icons.SAVE, on_click=lambda _: save_trimmed_file, width=200),
                                         Container(),
