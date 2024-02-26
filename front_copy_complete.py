@@ -155,7 +155,7 @@ def main(page: Page):
                         Container(
                             Row(
                                 width=1060,
-                                height=70,
+                                height=50,
                                 alignment=MainAxisAlignment.CENTER,
                                 controls=[
                                     TextButton(
@@ -182,11 +182,8 @@ def main(page: Page):
                     Column(
                         [
                             Container(
-                                # bgcolor=colors.WHITE,
-                                # height=page.height,
                                 width=400,
                                 content=Column(
-                                    # alignment=CrossAxisAlignment.CENTER,
                                     controls=[
                                         Container(height=40),
                                         Row(
@@ -205,7 +202,7 @@ def main(page: Page):
                                                     on_click=lambda _: file_picker.pick_files(allow_multiple=True),
                                                     bgcolor=colors.INDIGO_ACCENT_700,
                                                     color=colors.WHITE,
-                                                    width=250,
+                                                    width=260,
                                                 ),
                                             ]
                                         ),
@@ -221,7 +218,7 @@ def main(page: Page):
                                                     disabled=True,
                                                     bgcolor=colors.INDIGO_ACCENT_700,
                                                     color=colors.WHITE,
-                                                    width=250,
+                                                    width=260,
                                                 ),
                                             ]
                                         ),
@@ -236,7 +233,7 @@ def main(page: Page):
                                                     disabled=True,
                                                     bgcolor=colors.INDIGO_ACCENT_700,
                                                     color=colors.WHITE,
-                                                    width=250,
+                                                    width=260,
                                                 ),
                                             ]
                                         ),
@@ -498,7 +495,7 @@ def main(page: Page):
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
-                                                ElevatedButton("Save file", icon=icons.SAVE, on_click=lambda _: save_trimmed_file, width=250),
+                                                ElevatedButton("Save file", icon=icons.SAVE, on_click=save_trimmed_file, width=250),
                                             ]
                                         ),
                                         Container(),
