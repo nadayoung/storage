@@ -130,13 +130,13 @@ def main(page: Page):
                             scroll=ScrollMode.ALWAYS,
                             controls=[
                                 Container(
-                                    Image("assets\\ew.png"),
+                                    Image("assets\\ew1.png"),
                                     height=page.height,
                                     width=page.width,
                                     key="A",
                                 ),
                                 Container(
-                                    Image("assets\\cartoon_caps.jpg"),
+                                    Image("assets\\howto1.png"),
                                     height=page.height,
                                     width=page.width,
                                     key="B",
@@ -182,7 +182,7 @@ def main(page: Page):
                     Column(
                         [
                             Container(
-                                bgcolor=colors.GREY_300,
+                                bgcolor=colors.WHITE,
                                 height=page.height,
                                 width=300,
                                 content=Column(
@@ -192,7 +192,7 @@ def main(page: Page):
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
-                                                Text("변환할 영역을 선택하세요.", size=18),
+                                                Text("변환하고 싶은 영상을 넣어주세요.", size=18),
                                             ]
                                         ),
                                         Container(height=10),
@@ -200,7 +200,7 @@ def main(page: Page):
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
                                                 ElevatedButton(
-                                                    "파일 선택",
+                                                    "Select files",
                                                     icon=icons.FOLDER_OPEN,
                                                     on_click=lambda _: file_picker.pick_files(allow_multiple=True),
                                                     bgcolor=colors.INDIGO_ACCENT_700,
@@ -214,7 +214,7 @@ def main(page: Page):
                                             controls=[
                                                 pr,
                                                 ElevatedButton(
-                                                    "업로드",
+                                                    "Upload",
                                                     ref=upload_button,
                                                     icon=icons.UPLOAD,
                                                     on_click=upload_files,
@@ -229,7 +229,7 @@ def main(page: Page):
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
                                                 ElevatedButton(
-                                                    "선택 완료",
+                                                    "선택완료",
                                                     ref=next_button,
                                                     on_click=lambda _: page.go("/select"),
                                                     disabled=True,
@@ -355,59 +355,81 @@ def main(page: Page):
 
             original_media = [
                 VideoMedia(
-                    "https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,
+                    "https://github.com/nadayoung/storage/tree/main/original/"+select_file_name,
                 ),
             ]
+
+            video = Video(
+                expand=True,
+                playlist=original_media[0:2],
+                playlist_mode=PlaylistMode.LOOP,
+                fill_color=colors.BLUE_400,
+                aspect_ratio=16/9,
+                volume=100,
+                autoplay=False,
+                filter_quality=FilterQuality.HIGH,
+                muted=False,
+                on_loaded=lambda e: print("Video loaded successfully!"),
+                on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
+                on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
+            )
             
             page.views.append(
                 View(
                     "/select",
                     [
                         AppBar(title = Text("변환할 부분 선택"), bgcolor=colors.SURFACE_VARIANT),
-                        video := Video(
-                            expand=True,
-                            playlist=original_media,
-                            playlist_mode=PlaylistMode.SINGLE,
-                            fill_color=colors.BLACK,
-                            aspect_ratio=16/9,
-                            volume=100,
-                            autoplay=False,
-                            filter_quality=FilterQuality.HIGH,
-                            muted=False,
-                            on_loaded=lambda e: print("Video loaded successfully!"),
-                            on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
-                            on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
-                        ),
+                        # video := Video(
+                        #     expand=True,
+                        #     playlist=original_media,
+                        #     playlist_mode=PlaylistMode.SINGLE,
+                        #     fill_color=colors.BLACK,
+                        #     aspect_ratio=16/9,
+                        #     volume=100,
+                        #     autoplay=False,
+                        #     filter_quality=FilterQuality.HIGH,
+                        #     muted=False,
+                        #     on_loaded=lambda e: print("Video loaded successfully!"),
+                        #     on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
+                        #     on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
+                        # ),
                         Row(
-                            alignment=MainAxisAlignment.CENTER,
                             controls=[
-                                Column(ref=files),
-                                Text("변환하고 싶은 영역을 선택해 주세요", size=22),
-                                Row(
-                                    wrap=True,
-                                    alignment=MainAxisAlignment.CENTER,
+                                video,
+                                Column(
                                     controls=[
-                                        Container(height=30),
-                                        ElevatedButton("Start", on_click=start_seek, width=80,),
-                                        range_slider,
-                                        ElevatedButton("End", on_click=end_seek, width=80,),
+                                        Row(
+                                            controls=[
+                                                Container(width=30),
+                                                Text("변환하고 싶은 영역을 선택해 주세요.", size=18),
+                                            ]
+                                        ),
+                                        Row(
+                                            wrap=True,
+                                            width=400,
+                                            controls=[
+                                                ElevatedButton("시작점", on_click=print('start_seek'), width=50, style = ButtonStyle(padding=0.1)),
+                                                range_slider,
+                                                ElevatedButton("끝점", on_click=print('end_seek'), width=50, style = ButtonStyle(padding=0)),
+                                            ],
+                                        ),
+                                        Row(
+                                            controls=[
+                                                Container(width=80),
+                                                ElevatedButton(
+                                                    "변환하기",
+                                                    ref=next_button,
+                                                    on_click=lambda _: [page.go("/modified")],
+                                                    width=200,
+                                                    bgcolor=colors.INDIGO_ACCENT_700,
+                                                    color=colors.WHITE,
+                                                ),
+                                            ],
+                                        ),
                                     ]
-                                )
-                            ]
-                        ),
-                        Row(
-                            alignment=MainAxisAlignment.CENTER,
-                            controls=[
-                                pr,
-                                ElevatedButton(
-                                    "변환하기", 
-                                    on_click = lambda _: [make_subclip(), page.go("/modified")],
-                                    width=200,
-                                    bgcolor=colors.INDIGO_ACCENT_700,
-                                    color=colors.WHITE,
                                 ),
-                        ]),
-                        
+                            ]
+                        )
                     ]
                 )
             )
@@ -417,9 +439,24 @@ def main(page: Page):
         if page.route == "/modified":
             modified_media = [
                 VideoMedia(
-                    "https://github.com/nadayoung/storage/raw/main/original/197898_(1080p).mp4",
+                    "https://github.com/nadayoung/storage/tree/main/original/197898_(1080p).mp4",
                 ),
             ]
+
+            video = Video(
+                expand=True,
+                playlist=modified_media[0:2],
+                playlist_mode=PlaylistMode.LOOP,
+                fill_color=colors.BLUE_400,
+                aspect_ratio=16/9,
+                volume=100,
+                autoplay=False,
+                filter_quality=FilterQuality.HIGH,
+                muted=False,
+                on_loaded=lambda e: print("Video loaded successfully!"),
+                on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
+                on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
+            )
 
             def save_trimmed_file(e):
                 global select_file_name
@@ -430,49 +467,49 @@ def main(page: Page):
                     "/modified",
                     [
                         AppBar(title=Text("변환 완료"), bgcolor=colors.SURFACE_VARIANT),
-                        video := Video(
-                            expand=True,
-                            playlist=modified_media,
-                            playlist_mode=PlaylistMode.SINGLE,
-                            fill_color=colors.BLACK,
-                            aspect_ratio=16/9,
-                            volume=100,
-                            autoplay=False,
-                            filter_quality=FilterQuality.HIGH,
-                            muted=False,
-                            on_loaded=lambda e: print("Video loaded successfully!"),
-                            on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
-                            on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
-                        ),
+                        # video := Video(
+                        #     expand=True,
+                        #     playlist=modified_media,
+                        #     playlist_mode=PlaylistMode.SINGLE,
+                        #     fill_color=colors.BLACK,
+                        #     aspect_ratio=16/9,
+                        #     volume=100,
+                        #     autoplay=False,
+                        #     filter_quality=FilterQuality.HIGH,
+                        #     muted=False,
+                        #     on_loaded=lambda e: print("Video loaded successfully!"),
+                        #     on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
+                        #     on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
+                        # ),
                         Row(
-                            wrap=True,
-                            alignment=MainAxisAlignment.CENTER,
                             controls=[
-                            ElevatedButton(
-                                "Save file",
-                                icon=icons.SAVE,
-                                on_click=save_trimmed_file,
-                                width=200,
-                            ),
-                            ],
+                                Row(
+                                    width=400,
+                                    alignment = MainAxisAlignment.CENTER,
+                                    conrols=[
+                                        ElevatedButton("Save file", icon=icons.SAVE, on_click=print('save_trimmed_file'), width=200),
+                                    ],
+                                ),
+                                Container(height=10),
+                                Row(
+                                    width=400,
+                                    controls=[
+                                        Container(width=90),
+                                        ElevatedButton(
+                                            "돌아가기",
+                                            ref=next_button,
+                                            on_click=lambda _: [page.go("/")],
+                                            width=200,
+                                            bgcolor=colors.INDIGO_ACCENT_700,
+                                            color=colors.WHITE,
+                                        ),
+                                    ],
+                                ),
+                            ]
                         ),
-                    Row(
-                        alignment=MainAxisAlignment.CENTER,
-                        controls=[
-                            # pr,
-                            ElevatedButton(
-                                "돌아가기",
-                                ref=next_button,
-                                on_click=lambda _: page.go("/"),
-                                bgcolor=colors.INDIGO_ACCENT_700,
-                                color=colors.WHITE,
-                                disabled=False,
-                            ),
-                        ],
-                    ),
-                ],
+                    ]
+                )
             )
-        )
         page.update()
 
     def view_pop(view):

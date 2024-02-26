@@ -27,9 +27,6 @@ def main(page: Page):
     def route_change(route):
         global select_file_name, end_point, start_point
 
-        # 화면을 띄우기 위함
-        # page.overlay.append(file_picker)
-
         page.views.clear()
 
         files = Ref[Column]()
@@ -41,16 +38,31 @@ def main(page: Page):
 
             pr = ProgressRing(width=20, height=20, visible=False)
 
+            # def file_picker_result(e: FilePickerResultEvent):
+            #     global select_file_name
+            #     upload_button.current.disabled = True if e.files is None else False
+            #     prog_bars.clear()
+            #     files.current.controls.clear()
+            #     if e.files is not None:
+            #         for f in e.files:
+            #             prog = ProgressRing(value=0, bgcolor="#eeeeee", width=20, height=20)
+            #             prog_bars[f.name] = prog
+            #             files.current.controls.append(Row([prog, Text(f.name)]))
+            #             select_file_name = f.name
+            #     page.update()
+
             def file_picker_result(e: FilePickerResultEvent):
                 global select_file_name
                 upload_button.current.disabled = True if e.files is None else False
-                prog_bars.clear()
-                files.current.controls.clear()
                 if e.files is not None:
                     for f in e.files:
                         prog = ProgressRing(value=0, bgcolor="#eeeeee", width=20, height=20)
-                        prog_bars[f.name] = prog
-                        files.current.controls.append(Row([prog, Text(f.name)]))
+                        files_content = files.current.controls if files.current else []
+                        files_content.append(Row([prog, Text(f.name)]))
+                        if files.current:
+                            files.current.controls = files_content
+                        else:
+                            files.current = Column(controls=files_content)
                         select_file_name = f.name
                 page.update()
 
@@ -100,69 +112,170 @@ def main(page: Page):
                 page.update()
 
             page.overlay.append(file_picker)
-            page.views.append( 
-            
-                View( # 첫번째 화면
-                    "/",
+            page.views.append(
+                View("/", 
                     [
-                        AppBar(title=Text("영상 선택"), bgcolor=colors.BLUE_200),
-                        Row(
-                            alignment=MainAxisAlignment.CENTER,
+                AppBar(title=Text("Welcome!"), bgcolor=colors.BLUE_200),
+                Row(
+                    [
+                        Column(
+                            [
+                        
+                    Container(
+                        cl := Column(
+                            width=1200,
+                            height=530,
+                            alignment=MainAxisAlignment.START,
+                            expand=True,
+                            scroll=ScrollMode.ALWAYS,
                             controls=[
-                                Image("assets\cartoon_caps.jpg", width=700, height=450, fit=ImageFit.FIT_WIDTH),
-                            ],
-                        ),
-                        Row(
-                            alignment=MainAxisAlignment.CENTER,
-                            controls=[
-                                Text("사투리의 멋있음을 보여주세요!", size=22),
-                            ]
-                        ),
-                        Row(
-                            alignment=MainAxisAlignment.CENTER,
-                            controls=[
-                                ElevatedButton(
-                                    "Select files",
-                                    icon=icons.FOLDER_OPEN,
-                                    on_click=lambda _: file_picker.pick_files(allow_multiple=True),
-                                    bgcolor=colors.BLUE_200,
-                                    width=200,
+                                Container(
+                                    Image("assets\\ew1.png"),
+                                    height=page.height,
+                                    width=page.width,
+                                    key="A",
                                 ),
-                                Column(ref=files),
-                                ElevatedButton(
-                                    "Upload",
-                                    ref=upload_button,
-                                    icon=icons.UPLOAD,
-                                    on_click=upload_files,
-                                    disabled=True,
-                                    bgcolor=colors.BLUE_100,
-                                    width=190,
+                                Container(
+                                    Image("assets\\howto1.png"),
+                                    height=page.height,
+                                    width=page.width,
+                                    key="B",
                                 ),
-                            ]
-                        ),
-                        Row(
-                            alignment=MainAxisAlignment.CENTER,
-                            controls=[
-                                pr,
-                                ElevatedButton(
-                                    "선택완료",
-                                    ref=next_button,
-                                    on_click=lambda _: page.go("/select"),
-                                    disabled=True,
-                                    width=200,
-                                    bgcolor=colors.BLUE,
-                                    color=colors.WHITE,
+                                Container(
+                                    Image("assets\\cartoon_satoori.jpg"),
+                                    height=page.height,
+                                    width=page.width,
+                                    key="C",
                                 ),
                             ],
-
                         ),
+                        border=border.all(1),
+                    ),
+                    Column([
+                        Container(
+                            Row(
+                                width=1200,
+                                height=40,
+                                alignment=MainAxisAlignment.CENTER,
+                                controls=[
+                                    TextButton(
+                                        "Home",
+                                        width=150,
+                                        on_click=lambda _: cl.scroll_to(key="A", duration=500),
+                                    ),
+                                    TextButton(
+                                        "How To?",
+                                        width=150,
+                                        on_click=lambda _: cl.scroll_to(key="B", duration=500),
+                                    ),
+                                    TextButton(
+                                        "About TAT",
+                                        width=150,
+                                        on_click=lambda _: cl.scroll_to(key="C", duration=500),
+                                    ),
+                                ]
+                            ),
+                            ),
+                        ]
+                    ),
+                    ]),
+                    Column(
+                        [
+                            Container(
+                                bgcolor=colors.WHITE,
+                                height=page.height,
+                                width=300,
+                                content=Column(
+                                    # alignment=CrossAxisAlignment.CENTER,
+                                    controls=[
+                                        Container(height=40),
+                                        Row(
+                                            alignment=MainAxisAlignment.CENTER,
+                                            controls=[
+                                                Text("변환하고 싶은 영상을 넣어주세요.", size=18),
+                                            ]
+                                        ),
+                                        Container(height=10),
+                                        Row(
+                                            alignment=MainAxisAlignment.CENTER,
+                                            controls=[
+                                                ElevatedButton(
+                                                    "Select files",
+                                                    icon=icons.FOLDER_OPEN,
+                                                    on_click=lambda _: file_picker.pick_files(allow_multiple=True),
+                                                    bgcolor=colors.INDIGO_ACCENT_700,
+                                                    color=colors.WHITE,
+                                                    width=200,
+                                                ),
+                                            ]
+                                        ),
+                                        Row(
+                                            alignment=MainAxisAlignment.CENTER,
+                                            controls=[
+                                                pr,
+                                                ElevatedButton(
+                                                    "Upload",
+                                                    ref=upload_button,
+                                                    icon=icons.UPLOAD,
+                                                    on_click=upload_files,
+                                                    disabled=True,
+                                                    bgcolor=colors.INDIGO_ACCENT_700,
+                                                    color=colors.WHITE,
+                                                    width=200,
+                                                ),
+                                            ]
+                                        ),
+                                        Row(
+                                            alignment=MainAxisAlignment.CENTER,
+                                            controls=[
+                                                ElevatedButton(
+                                                    "선택완료",
+                                                    ref=next_button,
+                                                    on_click=lambda _: page.go("/select"),
+                                                    disabled=True,
+                                                    bgcolor=colors.INDIGO_ACCENT_700,
+                                                    color=colors.WHITE,
+                                                    width=200,
+                                                ),
+                                            ]
+                                        ),
+                                        Container(height=30),
+                                        Row(
+                                            alignment=MainAxisAlignment.CENTER,
+                                            controls=[
+                                                Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
+                                                Text("1. sldfa;sldkjf!"),
+                                            ]
+                                        ),
+                                        Container(height=30),
+                                        Row(
+                                            alignment=MainAxisAlignment.CENTER,
+                                            controls=[
+                                                Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
+                                                Text("2. ㅁㄴㅇㄻㄴㅇㄹ! \n ㅓㅏㅓㅓㅏㅣㅑ \n asdfasdf \n asdfasdf \n asfasdfadsf"),
+                                            ]
+                                        ),
+                                        Row(
+                                            alignment=MainAxisAlignment.CENTER,
+                                            controls=[
+                                                Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
+                                                Text("3. 2141553!"),
+                                            ]
+                                        ),
+                                    ]
+                                )
+                            )
+                        ]
+                    )
                     ]
+                
                 )
-            )
+                ]
+                ))
 
         ###############################################(2번째 화면입니다.)#########################################################
         if page.route == "/select":
-            # next_button = Ref[ElevatedButton]()
+            next_button = Ref[ElevatedButton]()
             subclip_slider = Ref[RangeSlider]()
                 
             def slider_change_start(e):
@@ -290,7 +403,7 @@ def main(page: Page):
                                     "변환하기", 
                                     on_click = lambda _: [make_subclip(), page.go("/modified")],
                                     width=200,
-                                    bgcolor=colors.PURPLE_200,
+                                    bgcolor=colors.INDIGO_ACCENT_700,
                                     color=colors.WHITE,
                                 ),
                         ]),
