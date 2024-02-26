@@ -495,12 +495,13 @@ def main(page: Page):
                                     Container(
                                         Column(
                                             width=300,
-                                            alignment=MainAxisAlignment.CENTER,
+                                            # alignment=MainAxisAlignment.CENTER,
                                             controls=[
                                                 ElevatedButton("Save file", icon=icons.SAVE, on_click=lambda _: save_trimmed_file, width=200),
                                                 Container(),
                                                 ElevatedButton("돌아가기", on_click=lambda _: page.go("/"), width=200, bgcolor=colors.INDIGO_ACCENT_700, color=colors.WHITE),
-                                            ]
+                                            ],
+                                            alignment=CrossAxisAlignment.CENTER,
                                         )
                                     )
                                 # ),
