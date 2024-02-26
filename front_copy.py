@@ -343,7 +343,7 @@ def main(page: Page):
                 start_value=0,
                 end_value=video_length,
                 divisions=50,
-                width=300,
+                width=280,
                 inactive_color=colors.GREEN_300,
                 active_color=colors.GREEN_700,
                 overlay_color=colors.GREEN_100,
@@ -409,9 +409,9 @@ def main(page: Page):
                                             wrap=True,
                                             width=400,
                                             controls=[
-                                                ElevatedButton("시작점", on_click=print('start_seek'), width=40, style = ButtonStyle(padding=0)),
+                                                ElevatedButton("시작점", on_click=print('start_seek'), width=45, style = ButtonStyle(padding=0)),
                                                 range_slider,
-                                                ElevatedButton("끝점", on_click=print('end_seek'), width=40, style = ButtonStyle(padding=0)),
+                                                ElevatedButton("끝점", on_click=print('end_seek'), width=45, style = ButtonStyle(padding=0)),
                                             ],
                                         ),
                                         Row(
