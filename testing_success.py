@@ -202,7 +202,7 @@ def main(page: ft.Page):
                                                     "업로드",
                                                     ref=upload_button,
                                                     icon=icons.UPLOAD,
-                                                    # on_click=upload_files,
+                                                    on_click=upload_files,
                                                     disabled=True,
                                                     bgcolor=colors.INDIGO_ACCENT_700,
                                                     color=colors.WHITE,
@@ -216,7 +216,7 @@ def main(page: ft.Page):
                                                 ElevatedButton(
                                                     "선택 완료",
                                                     ref=next_button,
-                                                    # on_click=lambda _: page.go("/select"),
+                                                    on_click=lambda _: page.go("/select"),
                                                     disabled=True,
                                                     bgcolor=colors.INDIGO_ACCENT_700,
                                                     color=colors.WHITE,
