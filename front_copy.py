@@ -491,7 +491,7 @@ def main(page: Page):
                         Row(
                             controls=[
                                 video,
-                                Column(
+                                # Column(
                                     Container(
                                         Column(
                                             width=400,
@@ -503,7 +503,7 @@ def main(page: Page):
                                             ]
                                         )
                                     )
-                                ),
+                                # ),
                             ]
                         ),
                     ]
