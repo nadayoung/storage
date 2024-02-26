@@ -493,8 +493,10 @@ def main(page: Page):
                                 video,
                                 # Column(
                                     Container(
-                                        Column(
-                                            width=300,
+                                        alignment=alignment.CENTER,
+                                        width=300,
+                                        content=Column(
+                                            # width=300,
                                             # alignment=MainAxisAlignment.CENTER,
                                             controls=[
                                                 ElevatedButton("Save file", icon=icons.SAVE, on_click=lambda _: save_trimmed_file, width=200),
