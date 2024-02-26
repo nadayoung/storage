@@ -360,7 +360,7 @@ def main(page: Page):
                 ),
             ]
 
-            video = VideoMedia(
+            video = Video(
                 # expand=True,
                 width=1200,
                 height=530,
