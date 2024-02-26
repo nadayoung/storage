@@ -361,7 +361,6 @@ def main(page: Page):
                     "https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,
                 ),
             ]
-            print("Video URL:", "https://github.com/nadayoung/storage/raw/main/original/"+select_file_name)
 
             video = Video(
                 expand=True,
@@ -444,7 +443,7 @@ def main(page: Page):
         if page.route == "/modified":
             modified_media = [
                 VideoMedia(
-                    "https://github.com/nadayoung/storage/raw/main/trimmed/197898_(1080p).mp4",
+                    "https://github.com/nadayoung/storage/raw/main/trimmed/"+select_file_name,
                 ),
             ]
 
