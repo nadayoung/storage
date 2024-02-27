@@ -82,16 +82,8 @@ def main(page: Page):
             
             def upload_github_check():
                 global upload_complete, video_length, select_file_name
-                pre.upload_github()
-                try:
-                    res = urlopen("https://github.com/nadayoung/storage/tree/main/original/"+select_file_name)
-                    print(f"res.status: {res.status}")
-                except HTTPError as e:
-                    err = e.read()
-                    code = e.getcode()
-                    print(f"error code: {code}")
-                    print("try again to upload github")
-                    pre.upload_github()
+                file_name_github = select_file_name.replace(" ", "%20")
+                pre.upload_github_check('original/'+file_name_github)
                 upload_complete = True
                 next_button.current.disabled = True if upload_complete is False else False
                 video_length = pre.set_video_length('original/'+select_file_name)
@@ -316,9 +308,7 @@ def main(page: Page):
                 print(f'select_file_name: {select_file_name}')
                 print(f"cut out from {start_point}s to {end_point}s and entire time is {video_length}s")
 
-                clip = VideoFileClip('original\\'+select_file_name)
-                clip = clip.subclip(start_point, end_point)
-                clip.write_videofile("trimmed/"+select_file_name)
+                pre.make_subclip(start_point, end_point, 'original/original_video.mp4')
                 print("success make subclip")
                 pre.extract_audio_from_video('trimmed/'+select_file_name, 'trimmed/audio.wav')
                 pre.reduce_noise('trimmed/audio.wav', 'trimmed/denoised_audio.wav')
