@@ -251,6 +251,7 @@ def main(page: Page):
                                             controls=[
                                                 Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
                                                 Text("2. 여기다 뭘 써야할까!?"),
+                                                Container(width=105),
                                             ]
                                         ),
                                         Container(height=15),
@@ -259,6 +260,7 @@ def main(page: Page):
                                             controls=[
                                                 Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
                                                 Text("3. 3개이상 쓸 게 있을까!?"),
+                                                Container(width=95),
                                             ]
                                         ),
                                     ]
