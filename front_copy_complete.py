@@ -329,7 +329,7 @@ def main(page: Page):
                 end_value=video_length,
                 divisions=50,
                 width=280,
-                inactive_color=colors.BLUE_ACCENT_700,
+                inactive_color=colors.BLUE_ACCENT_100,
                 active_color=colors.BLUE_ACCENT_700,
                 overlay_color=colors.BLUE_ACCENT_100,
                 label="{value}초",
