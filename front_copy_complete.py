@@ -80,12 +80,18 @@ def main(page: Page):
                         uf.append(
                             FilePickerUploadFile(
                                 f.name,
-                                upload_url=page.get_upload_url(f.name, 600),
+                                upload_url=page.get_upload_url('original_video.mp4', 600),
                             )
                         )
                     file_picker.upload(uf)
                     pr_visible()
+                    # video_path = 'original/' + select_file_name
+                    # print(video_path)
+                    # clip=VideoFileClip(video_path)
+                    # clip.write_videofile('original/original_video.mp4')
+                    # clip.close()
                 print("upload to original folder")
+
                 upload_github_check()
             
             def pr_visible():
