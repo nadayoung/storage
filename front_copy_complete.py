@@ -5,12 +5,9 @@ from urllib.error import HTTPError
 from typing import Dict
 import preprocessing as pre
 from time import sleep
-from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 global select_file_name
 select_file_name = ""
-global upload_complete
-upload_complete = False
 
 global start_point, end_point, video_length
 start_point = 0
@@ -19,7 +16,7 @@ video_length = 0
 
 def main(page: Page):
     page.theme_mode = ThemeMode.LIGHT
-    page.title = "TAT"
+    page.title = "Project: TAT"
     page.window_width = 500
     page.spacing = 20
     page.horizontal_alignment = CrossAxisAlignment.CENTER
@@ -86,10 +83,8 @@ def main(page: Page):
             
             def github_check():
                 global video_length, select_file_name
-                # file_name_github = select_file_name.replace(" ", "%20")
                 pre.upload_github_check('original/original_video.mp4')
                 sleep(0.5)
-                print(upload_complete)
                 next_button.current.disabled = False
                 video_length = pre.set_video_length('original/original_video.mp4')
                 pr.visible = False
@@ -99,7 +94,7 @@ def main(page: Page):
             page.views.append(
                 View("/", 
                     [
-                AppBar(title=Text("Welcome to TAT!"), bgcolor=colors.GREEN_ACCENT_700, color=colors.WHITE),
+                AppBar(title=Text("Welcome to TAT!"), bgcolor=colors.CYAN_ACCENT_700, color=colors.WHITE),
                 # teal, cyan,
                 Row(
                     [
@@ -121,7 +116,7 @@ def main(page: Page):
                                     key="A",
                                 ),
                                 Container(
-                                    Image("assets\\howto_changed.png"),
+                                    Image("assets\\howto_screen_completed.png"),
                                     height=590,
                                     width=1060,
                                     key="B",
@@ -334,9 +329,9 @@ def main(page: Page):
                 end_value=video_length,
                 divisions=50,
                 width=280,
-                inactive_color=colors.GREEN_300,
-                active_color=colors.GREEN_700,
-                overlay_color=colors.GREEN_100,
+                inactive_color=colors.BLUE_ACCENT_700,
+                active_color=colors.BLUE_ACCENT_700,
+                overlay_color=colors.BLUE_ACCENT_100,
                 label="{value}초",
                 on_change_start=slider_change_start,
                 on_change=slider_is_changing,
@@ -370,20 +365,6 @@ def main(page: Page):
                     "/select",
                     [
                         AppBar(title = Text("Video Modifying Selection"), bgcolor=colors.GREEN_ACCENT_700),
-                        # video := Video(
-                        #     expand=True,
-                        #     playlist=original_media,
-                        #     playlist_mode=PlaylistMode.SINGLE,
-                        #     fill_color=colors.BLACK,
-                        #     aspect_ratio=16/9,
-                        #     volume=100,
-                        #     autoplay=False,
-                        #     filter_quality=FilterQuality.HIGH,
-                        #     muted=False,
-                        #     on_loaded=lambda e: print("Video loaded successfully!"),
-                        #     on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
-                        #     on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
-                        # ),
                         Row(
                             controls=[
                                 video,
@@ -459,20 +440,6 @@ def main(page: Page):
                     "/modified",
                     [
                         AppBar(title=Text("Modified Video Save"), bgcolor=colors.GREEN_ACCENT_700),
-                        # video := Video(
-                        #     expand=True,
-                        #     playlist=modified_media,
-                        #     playlist_mode=PlaylistMode.SINGLE,
-                        #     fill_color=colors.BLACK,
-                        #     aspect_ratio=16/9,
-                        #     volume=100,
-                        #     autoplay=False,
-                        #     filter_quality=FilterQuality.HIGH,
-                        #     muted=False,
-                        #     on_loaded=lambda e: print("Video loaded successfully!"),
-                        #     on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
-                        #     on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
-                        # ),
                         Row(
                             controls=[
                                 video,
