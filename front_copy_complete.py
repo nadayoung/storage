@@ -112,7 +112,7 @@ def main(page: Page):
                     # print("audio_file save")
                     # video_clip.close()
                     # audio_clip.close()
-                    cmd_video = "ffmpeg -i " + video_path + " -acodec aac copy -vcodec libx264 copy original/original_video.mp4"
+                    cmd_video = "ffmpeg -y -i " + video_path + " -acodec aac copy -vcodec libx264 copy original/original_video.mp4"
                     os.system(cmd_video)
                 print("upload to original folder")
                 upload_github_check()
@@ -360,7 +360,7 @@ def main(page: Page):
                 print(f'select_file_name: {select_file_name}')
                 print(f"cut out from {start_point}s to {end_point}s and entire time is {video_length}s")
 
-                clip = VideoFileClip('original\\'+select_file_name)
+                clip = VideoFileClip('original/original_video.mp4')
                 clip = clip.subclip(start_point, end_point)
                 clip.write_videofile("trimmed/"+select_file_name)
                 print("success make subclip")
