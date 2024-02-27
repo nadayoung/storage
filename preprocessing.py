@@ -96,8 +96,8 @@ def make_subclip(start, end):
     # # clip.ipython_display(width = 360)
     # print(4)
     # clip.write_videofile("trimmed/video.mp4")
-    ffmpeg_extract_subclip("original\original_video.mp4", start, end, targetname="trimmed/output_video.mp4")
-
+    print(start, end)
+    ffmpeg_extract_subclip("original/original_video.mp4", start, end, targetname="trimmed/output_video.mp4")
 
 # 비디오와 audio를 합쳐서 저장
 def rebuild_video(video_file_path, audio_file_path):
