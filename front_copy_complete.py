@@ -1,11 +1,10 @@
 from flet import *
-from moviepy.editor import VideoFileClip, AudioFileClip
+from moviepy.editor import *
 from urllib.request import urlopen
 from urllib.error import HTTPError
 from typing import Dict
 import preprocessing as pre
 from time import sleep
-import os
 
 global select_file_name
 select_file_name = ""
@@ -65,20 +64,6 @@ def main(page: Page):
                         else:
                             files.current = Column(controls=files_content)
                         select_file_name = f.name
-                # video_path = e.files[0].path
-                # video_name = e.files[0].name
-                # video_name_ffmpeg = video_name.replace(" ", "_")
-                # print(f'path: {video_path}')
-                # print(f'name: {video_name}')
-
-                # video_clip = VideoFileClip(video_path)
-                # audio_clip = AudioFileClip(video_path)
-                # video_clip.write_videofile('original/' + video_name_ffmpeg, fps=30, codec='libx264', audio=False)
-                # audio_clip.write_audiofile('original/audio.mp3', audio_codec='aac')
-                # video_clip.close()
-                # audio_clip.close()
-                # cmd_merge = 'ffmpeg -y -i original/audio.mp3 -r 30 -i original/' + video_name_ffmpeg + ' -filter:a aresample=async=1 -c:a flac -c:v copy  original/original_video.mp4'  
-                # os.system(cmd_merge)
                 page.update()
 
             def on_upload_progress(e: FilePickerUploadEvent):
@@ -100,20 +85,6 @@ def main(page: Page):
                         )
                     file_picker.upload(uf)
                     pr_visible()
-                    video_path = file_picker.result.files[0].path
-                    # video_name_ffmpeg = select_file_name.replace(" ", "_")
-                    # video_clip = VideoFileClip(video_path, audio=False)
-                    # audio_clip = AudioFileClip(video_path)
-                    # print("load")
-                    # video_clip.write_videofile('original/' + video_name_ffmpeg, temp_audiofile="temp-audio.m4a", fps=30, remove_temp=True, codec = 'libx264', audio_codec='aac')
-                    # video_clip.write_videofile('original/' + video_name_ffmpeg, fps=30, codec = 'libx264')
-                    # print("video_file_save")
-                    # audio_clip.write_audiofile('original/audio.mp3', codec='pcm_s32le')
-                    # print("audio_file save")
-                    # video_clip.close()
-                    # audio_clip.close()
-                    cmd_video = "ffmpeg -y -i " + video_path + " -acodec aac copy -vcodec libx264 copy original/original_video.mp4"
-                    os.system(cmd_video)
                 print("upload to original folder")
                 upload_github_check()
             
@@ -152,8 +123,6 @@ def main(page: Page):
                         
                     Container(
                         cl := Column(
-                            # width=1060,
-                            # height=590,
                             width=1060,
                             height=590,
                             alignment=MainAxisAlignment.START,
@@ -162,20 +131,20 @@ def main(page: Page):
                             controls=[
                                 Container(
                                     Image("assets\\home_screen.png"),
-                                    # height=590,
-                                    # width=1060,
+                                    height=590,
+                                    width=1060,
                                     key="A",
                                 ),
                                 Container(
                                     Image("assets\\howto.png"),
-                                    # height=590,
-                                    # width=1060,
+                                    height=590,
+                                    width=1060,
                                     key="B",
                                 ),
                                 Container(
                                     Image("assets\\end_screen.png"),
-                                    # height=590,
-                                    # width=1060,
+                                    height=590,
+                                    width=1060,
                                     key="C",
                                 ),
                             ],
@@ -230,10 +199,7 @@ def main(page: Page):
                                                 ElevatedButton(
                                                     "Select files",
                                                     icon=icons.FOLDER_OPEN,
-                                                    on_click=lambda _: file_picker.pick_files(
-                                                        allow_multiple=False,
-                                                        file_type=FilePickerFileType.VIDEO,
-                                                        ),
+                                                    on_click=lambda _: file_picker.pick_files(allow_multiple=True),
                                                     bgcolor=colors.INDIGO_ACCENT_700,
                                                     color=colors.WHITE,
                                                     width=260,
@@ -360,7 +326,7 @@ def main(page: Page):
                 print(f'select_file_name: {select_file_name}')
                 print(f"cut out from {start_point}s to {end_point}s and entire time is {video_length}s")
 
-                clip = VideoFileClip('original/original_video.mp4')
+                clip = VideoFileClip('original\\'+select_file_name)
                 clip = clip.subclip(start_point, end_point)
                 clip.write_videofile("trimmed/"+select_file_name)
                 print("success make subclip")
@@ -559,4 +525,4 @@ def main(page: Page):
     page.go(page.route)
 
 
-app(target=main, upload_dir="original", view=AppView.FLET_APP_WEB)
+app(target=main, upload_dir="original", view=AppView.WEB_BROWSER)
