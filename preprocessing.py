@@ -100,14 +100,19 @@ def make_subclip(start, end):
     start_point = int(start)
     end_point = int(end)
 
-    if start_point//60 > 10:
-        start_time = "00:" + str(start_point//60) + ":" + str(start_point%60)
-    elif start_point//60 > 1:
-        start_time = "00:0" + str(start_point//60) + ":" + str(start_point%60)
-    elif start_point%60 < 10:
-        start_time = "00:00:0" + str(start_point%60)
-    else:
-        start_time = "00:00:" + str(start_point%60)
+    start_min = start_point // 60
+    start_sec = start_point % 60
+    end_min = end_point // 60
+    end_sec = end_point % 60
+
+    for t in [start_min, start_sec, end_min, end_sec]:
+        if t >= 10:
+            t = str(t)
+        else:
+            t = '0' + str(t)
+
+    start_time = "00:" + start_min + ":" + start_sec
+    end_time = "00:" + end_min + ":" + end_sec
 
     if end_point//60 > 10:
         end_time = "00:" + str(end_point//60) + ":" + str(end_point%60)

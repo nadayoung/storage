@@ -62,6 +62,7 @@ def main(page: Page):
 
 
             def upload_files(e):
+                global select_file_name
                 uf = []
                 if file_picker.result is not None and file_picker.result.files is not None:
                     for f in file_picker.result.files:
@@ -73,6 +74,7 @@ def main(page: Page):
                         )
                     file_picker.upload(uf)
                     pr_visible()
+                    select_file_name=f.name
                 print("upload to original folder")
                 sleep(0.5)
                 github_check()
