@@ -318,9 +318,7 @@ def main(page: Page):
                 print(f'select_file_name: {select_file_name}')
                 print(f"cut out from {start_point}s to {end_point}s and entire time is {video_length}s")
 
-                clip = VideoFileClip('original\\'+select_file_name)
-                clip = clip.subclip(start_point, end_point)
-                clip.write_videofile("trimmed/"+select_file_name)
+                pre.make_subclip(start_point, end_point, 'original/original_video.mp4')
                 print("success make subclip")
                 pre.extract_audio_from_video('trimmed/'+select_file_name, 'trimmed/audio.wav')
                 pre.reduce_noise('trimmed/audio.wav', 'trimmed/denoised_audio.wav')
