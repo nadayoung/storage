@@ -2,9 +2,13 @@ from flet import *
 from moviepy.editor import *
 from urllib.request import urlopen
 from urllib.error import HTTPError
-from typing import Dict
+from typing import Dict, List
 import preprocessing as pre
 from time import sleep
+from fastapi import FastAPI, Response, File, UploadFile
+from fastapi.responses import FileResponse
+import aiofiles
+import uvicorn
 
 global select_file_name
 select_file_name = ""
@@ -59,8 +63,39 @@ def main(page: Page):
 
             file_picker = FilePicker(on_result=file_picker_result, on_upload=on_upload_progress)
 
+            def save_picker_result(e: FilePickerResultEvent):
+                global select_file_name
+                upload_button.current.disabled = True if e.files is None else False
+                if e.files is not None:
+                    for f in e.files:
+                        prog = ProgressRing(value=0, bgcolor="#eeeeee", width=20, height=20)
+                        files_content = files.current.controls if files.current else []
+                        files_content.append(Row([prog, Text(f.name)]))
+                        if files.current:
+                            files.current.controls = files_content
+                        else:
+                            files.current = Column(controls=files_content)
+                        select_file_name = f.name
+                page.update()
+
+            save_picker = FilePicker(on_result=save_picker_result, on_upload=on_upload_progress)
 
             def upload_files(e):
+                uf = []
+                if file_picker.result is not None and file_picker.result.files is not None:
+                    for f in file_picker.result.files:
+                        uf.append(
+                            FilePickerUploadFile(
+                                f.name,
+                                upload_url=page.get_upload_url(f.name, 600),
+                            )
+                        )
+                    file_picker.upload(uf)
+                    pr_visible()
+                print("upload to original folder")
+                upload_github_check()
+
+            def save_files(e):
                 uf = []
                 if file_picker.result is not None and file_picker.result.files is not None:
                     for f in file_picker.result.files:
@@ -454,9 +489,20 @@ def main(page: Page):
                 on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
             )
 
+            def execute_multiple_actions():
+                save_picker_result()
+                save_files()
+
+
             def save_trimmed_file(e):
                 global select_file_name
                 pre.save_video_url("https://github.com/nadayoung/storage/raw/main/finish/"+select_file_name, select_file_name)
+
+            app = FastAPI()
+
+            @app.get("trimmed/"+select_file_name)
+            def download_file():
+                return FileResponse(path="https://github.com/nadayoung/storage/tree/main/trimmed/"+select_file_name, filename="complete_video.mp4")
 
             page.views.append(
                 View( # 변형된 화면
@@ -486,7 +532,7 @@ def main(page: Page):
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
-                                                ElevatedButton("Save file", icon=icons.SAVE, on_click=save_trimmed_file, width=250),
+                                                ElevatedButton("Save file", icon=icons.SAVE, on_click=execute_multiple_actions, width=250),
                                             ]
                                         ),
                                         Container(),
