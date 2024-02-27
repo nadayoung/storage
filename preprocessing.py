@@ -119,6 +119,8 @@ def make_subclip(start, end):
     print(start_time, end_time)
     cut_cmd = "ffmpeg -y -i original/original_video.mp4 -ss " + start_time + " -to " + end_time + " -async 1 trimmed/output.mp4"
     system(cut_cmd)
+    print(start_point, end_point)
+    print(start_time, end_time)
 
 # 비디오와 audio를 합쳐서 저장
 def rebuild_video(video_file_path, audio_file_path):
