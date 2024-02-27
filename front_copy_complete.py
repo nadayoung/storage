@@ -115,7 +115,8 @@ def main(page: Page):
             page.views.append(
                 View("/", 
                     [
-                AppBar(title=Text("Welcome to TAT!"), bgcolor=colors.INDIGO_ACCENT_700),
+                AppBar(title=Text("Welcome to TAT!"), bgcolor=colors.GREEN_ACCENT_700, color=colors.WHITE),
+                # teal, cyan,
                 Row(
                     [
                         Column(
@@ -385,7 +386,7 @@ def main(page: Page):
                 View(
                     "/select",
                     [
-                        AppBar(title = Text("Modifying Selection Page"), bgcolor=colors.INDIGO_ACCENT_700),
+                        AppBar(title = Text("Modifying Selection Page"), bgcolor=colors.TEAL_ACCENT_700),
                         # video := Video(
                         #     expand=True,
                         #     playlist=original_media,
@@ -474,7 +475,7 @@ def main(page: Page):
                 View( # 변형된 화면
                     "/modified",
                     [
-                        AppBar(title=Text("Modified Video Page"), bgcolor=colors.INDIGO_ACCENT_700),
+                        AppBar(title=Text("Modified Video Page"), bgcolor=colors.CYAN_ACCENT_700),
                         # video := Video(
                         #     expand=True,
                         #     playlist=modified_media,
