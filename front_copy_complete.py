@@ -85,11 +85,6 @@ def main(page: Page):
                         )
                     file_picker.upload(uf)
                     pr_visible()
-                    # video_path = 'original/' + select_file_name
-                    # print(video_path)
-                    # clip=VideoFileClip(video_path)
-                    # clip.write_videofile('original/original_video.mp4')
-                    # clip.close()
                 print("upload to original folder")
 
                 upload_github_check()

@@ -14,6 +14,7 @@ import scipy.io as sio
 import scipy.io.wavfile
 import matplotlib.pyplot as plt
 import sounddevice as sd
+from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 def extract_audio_from_video(video_file_path, audio_file_path):
     # mp4 등 비디오 파일 불러오기
@@ -87,14 +88,15 @@ def make_subclip(start, end):
     # print(3)
     # clip.close()
     # print("success make subclip")
-    print(1)
-    clip = VideoFileClip("original/original_video.mp4", fps_source=30)
-    print(2)
-    clip = clip.subclip(start, end)
-    print(3)
-    # clip.ipython_display(width = 360)
-    print(4)
-    clip.write_videofile("trimmed/video.mp4")
+    # print(1)
+    # clip = VideoFileClip("original/original_video.mp4", fps_source=30)
+    # print(2)
+    # clip = clip.subclip(start, end)
+    # print(3)
+    # # clip.ipython_display(width = 360)
+    # print(4)
+    # clip.write_videofile("trimmed/video.mp4")
+    ffmpeg_extract_subclip("original\original_video.mp4", start, end, targetname="trimmed/output_video.mp4")
 
 
 # 비디오와 audio를 합쳐서 저장
