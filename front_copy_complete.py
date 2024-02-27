@@ -226,7 +226,7 @@ def main(page: Page):
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
-                                                pr,
+                                                # pr,
                                                 ElevatedButton(
                                                     "선택완료",
                                                     ref=next_button,
