@@ -5,6 +5,7 @@ from urllib.error import HTTPError
 from typing import Dict
 import preprocessing as pre
 from time import sleep
+from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 global select_file_name
 select_file_name = ""
@@ -319,7 +320,7 @@ def main(page: Page):
                 print(f'select_file_name: {select_file_name}')
                 print(f"cut out from {start_point}s to {end_point}s and entire time is {video_length}s")
 
-                pre.make_subclip(start_point, end_point)
+                ffmpeg_extract_subclip("original\original_video.mp4", start_point, end_point, targetname="trimmed/output.mp4")
                 print("success make subclip")
                 pre.extract_audio_from_video('trimmed/video.mp4', 'trimmed/audio.wav')
                 pre.reduce_noise('trimmed/audio.wav', 'trimmed/denoised_audio.wav')
