@@ -89,33 +89,26 @@ def make_subclip(start, end):
     # print(3)
     # clip.close()
     # print("success make subclip")
-    # print(1)
-    # clip = VideoFileClip("original/original_video.mp4", fps_source=30)
-    # print(2)
-    # clip = clip.subclip(start, end)
-    # print(3)
-    # # clip.ipython_display(width = 360)
-    # print(4)
-    # clip.write_videofile("trimmed/video.mp4")
     start_point = int(start)
     end_point = int(end)
+    print(start_point, end_point)
 
     start_min = start_point // 60
     start_sec = start_point % 60
     end_min = end_point // 60
     end_sec = end_point % 60
 
+    time=[]
     for t in [start_min, start_sec, end_min, end_sec]:
         if t >= 10:
-            t = str(t)
+            time.append(':' + str(t))
         else:
-            t = '0' + str(t)
-
-    start_time = "00:" + start_min + ":" + start_sec
-    end_time = "00:" + end_min + ":" + end_sec
+            time.append(':0' + str(t)) 
+    print(time)
     
-    print(start_point, end_point)
-    print(start_time, end_time)
+    start_time = "00" + time[0]  + time[1]
+    end_time = "00" + time[2] + time[3]
+
     cut_cmd = "ffmpeg -y -i original/original_video.mp4 -ss " + start_time + " -to " + end_time + " -async 1 trimmed/output.mp4"
     system(cut_cmd)
     print(start_point, end_point)
@@ -175,7 +168,8 @@ def main():
     # set_video_length(video_file)
     # set_audio_length(audio_file_dn)
 
-    rebuild_video('original\demo_video.mp4', audio_file_dn)
+    # rebuild_video('original\demo_video.mp4', audio_file_dn)
+    make_subclip(10.222, 73.44)
 
 
 if __name__ == "__main__":
