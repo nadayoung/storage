@@ -1,5 +1,5 @@
 from flet import *
-from moviepy.editor import *
+from moviepy.editor import VideoFileClip, AudioFileClip
 from urllib.request import urlopen
 from urllib.error import HTTPError
 from typing import Dict
