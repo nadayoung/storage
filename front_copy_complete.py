@@ -64,6 +64,7 @@ def main(page: Page):
                         else:
                             files.current = Column(controls=files_content)
                         select_file_name = f.name
+                print(e.files)
                 page.update()
 
             def on_upload_progress(e: FilePickerUploadEvent):
@@ -199,7 +200,10 @@ def main(page: Page):
                                                 ElevatedButton(
                                                     "Select files",
                                                     icon=icons.FOLDER_OPEN,
-                                                    on_click=lambda _: file_picker.pick_files(allow_multiple=True),
+                                                    on_click=lambda _: file_picker.pick_files(
+                                                        allow_multiple=False,
+                                                        file_type=FilePickerFileType.VIDEO,
+                                                        ),
                                                     bgcolor=colors.INDIGO_ACCENT_700,
                                                     color=colors.WHITE,
                                                     width=260,
@@ -525,4 +529,4 @@ def main(page: Page):
     page.go(page.route)
 
 
-app(target=main, upload_dir="original", view=AppView.WEB_BROWSER)
+app(target=main, upload_dir="original", view=AppView.FLET_APP_WEB)
