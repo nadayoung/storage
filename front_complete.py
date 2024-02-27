@@ -1,11 +1,11 @@
 from flet import *
 from moviepy.editor import *
 from urllib.request import urlopen
-from urllib.request import urlretrieve
 from urllib.error import HTTPError
 from typing import Dict
 import preprocessing as pre
 from time import sleep
+import ffmpeg
 
 global select_file_name
 select_file_name = ""
@@ -455,14 +455,9 @@ def main(page: Page):
                 on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
             )
 
-            def save_video_url(video_url, path):
-                urlretrieve(video_url+select_file_name, path)
-                print(f"save video_url: {video_url}")
-                print("save by url success")
-
             def save_trimmed_file(e):
                 global select_file_name
-                save_video_url("https://github.com/nadayoung/storage/raw/main/finish/", select_file_name)
+                pre.save_video_url("https://github.com/nadayoung/storage/raw/main/finish/"+select_file_name, select_file_name)
 
             page.views.append(
                 View( # 변형된 화면
