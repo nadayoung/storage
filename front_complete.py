@@ -333,7 +333,7 @@ def main(page: Page):
                 pre.upload_github()
 
             def execute_multiple_functions():
-                subclip()
+                subclip(start_point,end_point)
                 page.go("/modified")
 
             pr = ProgressRing(width=20, height=20, visible=False)
