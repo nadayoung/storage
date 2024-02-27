@@ -315,7 +315,7 @@ def main(page: Page):
                 pre.make_subclip(start_point, end_point)
                 # ffmpeg_extract_subclip("original\original_video.mp4", start_point, end_point, targetname="trimmed/output.mp4")
                 print("success make subclip")
-                pre.extract_audio_from_video('trimmed/video.mp4', 'trimmed/audio.wav')
+                pre.extract_audio_from_video()
                 pre.reduce_noise('trimmed/audio.wav', 'trimmed/denoised_audio.wav')
                 pre.rebuild_video('trimmed/video.mp4', 'trimmed/denoised_audio.wav')
                 pre.upload_github()
