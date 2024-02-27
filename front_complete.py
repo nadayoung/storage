@@ -5,7 +5,6 @@ from urllib.error import HTTPError
 from typing import Dict
 import preprocessing as pre
 from time import sleep
-import ffmpeg
 
 global select_file_name
 select_file_name = ""
@@ -125,7 +124,7 @@ def main(page: Page):
                                     key="A",
                                 ),
                                 Container(
-                                    Image("assets\\howto_changed.png"),
+                                    Image("assets\\howto_screen_completed.png"),
                                     height=590,
                                     width=1060,
                                     key="B",

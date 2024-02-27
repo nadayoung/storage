@@ -7,14 +7,14 @@ from urllib.error import HTTPError
 from time import sleep
 from pydub import AudioSegment
 import ffmpeg
-from moviepy.video.fx.accel_decel import accel_decel
+# from moviepy.video.fx.accel_decel import accel_decel
 import wave
 import numpy as np
 import scipy.io as sio
 import scipy.io.wavfile
 import matplotlib.pyplot as plt
 import sounddevice as sd
-from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
+# from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 def extract_audio_from_video(video_file_path, audio_file_path):
     # mp4 등 비디오 파일 불러오기
