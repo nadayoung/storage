@@ -434,7 +434,8 @@ def main(page: Page):
 
             def save_trimmed_file():
                 global select_file_name
-                pre.save_video_url("https://github.com/nadayoung/storage/raw/main/finish/output_video.mp4", select_file_name)
+                file_name_save = select_file_name.replace(" ", "_")
+                pre.save_video_url("https://github.com/nadayoung/storage/raw/main/finish/output_video.mp4", file_name_save)
 
             page.views.append(
                 View( # 변형된 화면
