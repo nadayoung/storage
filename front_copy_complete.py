@@ -95,16 +95,7 @@ def main(page: Page):
             
             def upload_github_check():
                 global upload_complete, video_length, select_file_name
-                pre.upload_github()
-                try:
-                    res = urlopen("https://github.com/nadayoung/storage/tree/main/original/"+select_file_name)
-                    print(f"res.status: {res.status}")
-                except HTTPError as e:
-                    err = e.read()
-                    code = e.getcode()
-                    print(f"error code: {code}")
-                    print("try again to upload github")
-                    pre.upload_github()
+                pre.upload_github_check('original/'+select_file_name)
                 upload_complete = True
                 next_button.current.disabled = True if upload_complete is False else False
                 video_length = pre.set_video_length('original/'+select_file_name)
