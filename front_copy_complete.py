@@ -364,7 +364,7 @@ def main(page: Page):
                 View(
                     "/select",
                     [
-                        AppBar(title = Text("Video Modifying Selection"), bgcolor=colors.GREEN_ACCENT_700),
+                        AppBar(title = Text("Video Modifying Selection"), bgcolor=colors.CYAN_ACCENT_700, color=colors.WHITE),
                         Row(
                             controls=[
                                 video,
@@ -433,13 +433,13 @@ def main(page: Page):
 
             def save_trimmed_file(e):
                 global select_file_name
-                pre.save_video_url("https://github.com/nadayoung/storage/raw/main/finish/"+select_file_name, select_file_name)
+                pre.save_video_url("https://github.com/nadayoung/storage/raw/main/finish/output_video.mp4")
 
             page.views.append(
                 View( # 변형된 화면
                     "/modified",
                     [
-                        AppBar(title=Text("Modified Video Save"), bgcolor=colors.GREEN_ACCENT_700),
+                        AppBar(title=Text("Modified Video Save"), bgcolor=colors.CYAN_ACCENT_700, color=colors.WHITE),
                         Row(
                             controls=[
                                 video,
