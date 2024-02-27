@@ -412,7 +412,7 @@ def main(page: Page):
         if page.route == "/modified":
             modified_media = [
                 VideoMedia(
-                    "https://github.com/nadayoung/storage/raw/main/trimmed/"+select_file_name,
+                    "https://github.com/nadayoung/storage/raw/main/finish/output_video.mp4",
                 ),
             ]
 
@@ -431,9 +431,9 @@ def main(page: Page):
                 on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
             )
 
-            def save_trimmed_file(e):
+            def save_trimmed_file():
                 global select_file_name
-                pre.save_video_url("https://github.com/nadayoung/storage/raw/main/finish/output_video.mp4")
+                pre.save_video_url("https://github.com/nadayoung/storage/raw/main/finish/output_video.mp4", select_file_name)
 
             page.views.append(
                 View( # 변형된 화면

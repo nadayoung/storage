@@ -67,8 +67,8 @@ def upload_github_check(file_path):
     print("upload github sucess")
 
 # video url로 로컬 파일에 video 저장하기
-def save_video_url(video_url):
-    urlretrieve(video_url)
+def save_video_url(video_url, file_name):
+    urlretrieve(video_url, 'saved/' + file_name)
     print(f"save video_url: {video_url}")
     print("save by url success")
 
