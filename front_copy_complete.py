@@ -346,7 +346,7 @@ def main(page: Page):
 
             original_media = [
                 VideoMedia(
-                    "https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,
+                    "https://github.com/nadayoung/storage/raw/main/original/original_video.mp4",
                 ),
             ]
 
