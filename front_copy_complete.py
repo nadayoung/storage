@@ -304,6 +304,40 @@ def main(page: Page):
                 video.seek(int(float(end_point)*1000))
                 page.update()
                 print(f"Video.seek_end: {end_point}")
+
+            def make_subclip2(start, end):
+                # clip = VideoFileClip('original/' + file_name)
+                # print(1)
+                # clip = clip.subclip(start, end)
+                # print(2)
+                # clip.write_videofile("trimmed/"+file_name)
+                # print(3)
+                # clip.close()
+                # print("success make subclip")
+                start_point = int(start)
+                end_point = int(end)
+                print(start_point, end_point)
+
+                start_min = start_point // 60
+                start_sec = start_point % 60
+                end_min = end_point // 60
+                end_sec = end_point % 60
+
+                time=[]
+                for t in [start_min, start_sec, end_min, end_sec]:
+                    if t >= 10:
+                        time.append(':' + str(t))
+                    else:
+                        time.append(':0' + str(t)) 
+                print(time)
+                
+                start_time = "00" + time[0]  + time[1]
+                end_time = "00" + time[2] + time[3]
+
+                cut_cmd = "ffmpeg -y -i original/original_video.mp4 -ss " + start_time + " -to " + end_time + " -async 1 trimmed/output.mp4"
+                os.system(cut_cmd)
+                print(start_point, end_point)
+                print(start_time, end_time)
             
             def make_subclip():
                 pr.visible=True
@@ -312,7 +346,7 @@ def main(page: Page):
                 global start_point, end_point, video_length, select_file_name
                 print(f'select_file_name: {select_file_name}')
                 print(f"cut out from {start_point}s to {end_point}s and entire time is {video_length}s")
-                pre.make_subclip(start_point, end_point)
+                make_subclip2(start_point, end_point)
                 # ffmpeg_extract_subclip("original\original_video.mp4", start_point, end_point, targetname="trimmed/output.mp4")
                 print("success make subclip")
                 pre.extract_audio_from_video('trimmed/video.mp4', 'trimmed/audio.wav')
