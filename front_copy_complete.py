@@ -39,19 +39,6 @@ def main(page: Page):
 
             pr = ProgressRing(width=20, height=20, visible=False)
 
-            # def file_picker_result(e: FilePickerResultEvent):
-            #     global select_file_name
-            #     upload_button.current.disabled = True if e.files is None else False
-            #     prog_bars.clear()
-            #     files.current.controls.clear()
-            #     if e.files is not None:
-            #         for f in e.files:
-            #             prog = ProgressRing(value=0, bgcolor="#eeeeee", width=20, height=20)
-            #             prog_bars[f.name] = prog
-            #             files.current.controls.append(Row([prog, Text(f.name)]))
-            #             select_file_name = f.name
-            #     page.update()
-
             def file_picker_result(e: FilePickerResultEvent):
                 global select_file_name
                 upload_button.current.disabled = True if e.files is None else False
@@ -109,7 +96,8 @@ def main(page: Page):
             page.views.append(
                 View("/", 
                     [
-                AppBar(title=Text("안녕하수꽈!"), bgcolor=colors.BLUE_200),
+                AppBar(title=Text("Welcome to TAT!"), bgcolor=colors.GREEN_ACCENT_700, color=colors.WHITE),
+                # teal, cyan,
                 Row(
                     [
                         Column(
@@ -130,13 +118,13 @@ def main(page: Page):
                                     key="A",
                                 ),
                                 Container(
-                                    Image("assets\\howto.png"),
+                                    Image("assets\\howto_changed.png"),
                                     height=590,
                                     width=1060,
                                     key="B",
                                 ),
                                 Container(
-                                    Image("assets\\end_screen.png"),
+                                    Image("assets\\about_TAT.png"),
                                     height=590,
                                     width=1060,
                                     key="C",
@@ -163,7 +151,7 @@ def main(page: Page):
                                         on_click=lambda _: cl.scroll_to(key="B", duration=500),
                                     ),
                                     TextButton(
-                                        "About TAT",
+                                        "About Us",
                                         width=130,
                                         on_click=lambda _: cl.scroll_to(key="C", duration=500),
                                     ),
@@ -190,6 +178,7 @@ def main(page: Page):
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
+                                                # pr,
                                                 ElevatedButton(
                                                     "Select files",
                                                     icon=icons.FOLDER_OPEN,
@@ -219,7 +208,7 @@ def main(page: Page):
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
-                                                pr,
+                                                # pr,
                                                 ElevatedButton(
                                                     "선택완료",
                                                     ref=next_button,
@@ -231,32 +220,33 @@ def main(page: Page):
                                                 ),
                                             ]
                                         ),
-                                        Container(height=20),
+                                        Container(height=30),
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
                                                 Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
                                                 Text("1. 자연스러운 사투리 구사하고 싶은 사람!"),
+                                                Container(width=8),
                                             ]
                                         ),
-                                        Container(height=15),
+                                        Container(height=10),
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
                                                 Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
-                                                Text("2. 여기다 뭘 써야할까!?"),
-                                                Container(width=105),
+                                                Text("2. 사투리로 말하는 내 목소리가 궁금한 사람!"),
+                                                # Container(width=40),
                                             ]
                                         ),
-                                        Container(height=15),
-                                        Row(
-                                            alignment=MainAxisAlignment.CENTER,
-                                            controls=[
-                                                Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
-                                                Text("3. 3개이상 쓸 게 있을까!?"),
-                                                Container(width=95),
-                                            ]
-                                        ),
+                                        # Container(height=10),
+                                        # Row(
+                                        #     alignment=MainAxisAlignment.CENTER,
+                                        #     controls=[
+                                        #         Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
+                                        #         Text("3. 3개이상 쓸 게 있을까!?"),
+                                        #         Container(width=95),
+                                        #     ]
+                                        # ),
                                     ]
                                 )
                             )
@@ -376,7 +366,7 @@ def main(page: Page):
                 View(
                     "/select",
                     [
-                        AppBar(title = Text("변환할 부분 선택"), bgcolor=colors.SURFACE_VARIANT),
+                        AppBar(title = Text("Video Modifying Selection"), bgcolor=colors.GREEN_ACCENT_700),
                         # video := Video(
                         #     expand=True,
                         #     playlist=original_media,
@@ -459,13 +449,13 @@ def main(page: Page):
 
             def save_trimmed_file(e):
                 global select_file_name
-                pre.save_video_url("https://github.com/nadayoung/storage/raw/main/trimmed/"+select_file_name, select_file_name)
+                pre.save_video_url("https://github.com/nadayoung/storage/raw/main/finish/"+select_file_name, select_file_name)
 
             page.views.append(
                 View( # 변형된 화면
                     "/modified",
                     [
-                        AppBar(title=Text("변환 완료"), bgcolor=colors.SURFACE_VARIANT),
+                        AppBar(title=Text("Modified Video Save"), bgcolor=colors.GREEN_ACCENT_700),
                         # video := Video(
                         #     expand=True,
                         #     playlist=modified_media,
