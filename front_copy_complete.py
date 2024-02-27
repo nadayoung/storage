@@ -316,8 +316,8 @@ def main(page: Page):
                 # print("success make subclip")
                 print('start')
                 print(type(start))
-                start_point = int(start)
-                end_point = int(end)
+                start_point = int(float(start))
+                end_point = int(float(end))
                 print(start_point, end_point)
 
                 start_min = start_point // 60
