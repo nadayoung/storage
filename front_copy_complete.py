@@ -95,7 +95,8 @@ def main(page: Page):
             
             def upload_github_check():
                 global upload_complete, video_length, select_file_name
-                pre.upload_github_check('original/'+select_file_name)
+                file_name_github = select_file_name.replace(" ", "%20")
+                pre.upload_github_check('original/'+file_name_github)
                 upload_complete = True
                 next_button.current.disabled = True if upload_complete is False else False
                 video_length = pre.set_video_length('original/'+select_file_name)
