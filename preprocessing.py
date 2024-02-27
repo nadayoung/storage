@@ -57,7 +57,7 @@ def upload_github():
 # github upload하고, 확인해서 올라가지 않은 경우 재업로드
 def upload_github_check(file_path):
     upload_github()
-    check_url = "https://github.com/nadayoung/storage/blob/main/" + file_path
+    check_url = "https://github.com/nadayoung/storage/tree/main/" + file_path
     print(f"checking url: {check_url}")
     try:
         res = urlopen(check_url)
