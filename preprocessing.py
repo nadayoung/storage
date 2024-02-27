@@ -88,11 +88,11 @@ def make_subclip(start, end):
     # clip.close()
     # print("success make subclip")
     print(1)
-    clip = VideoFileClip("original/original_video.mp4")
+    clip = VideoFileClip("original/original_video.mp4", fps_source=30)
     print(2)
     clip = clip.subclip(start, end)
     print(3)
-    clip.ipython_display(width = 360)
+    # clip.ipython_display(width = 360)
     print(4)
     clip.write_videofile("trimmed/video.mp4")
 
