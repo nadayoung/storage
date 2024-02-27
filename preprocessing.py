@@ -96,8 +96,8 @@ def make_subclip(start, end):
     # # clip.ipython_display(width = 360)
     # print(4)
     # clip.write_videofile("trimmed/video.mp4")
-    start_point = int(start_point)
-    end_point = int(end_point)
+    start_point = int(start)
+    end_point = int(end)
 
     if start_point//60 > 10:
         start_time = "00:" + str(start_point//60) + ":" + str(start_point%60)
