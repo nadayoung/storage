@@ -1,6 +1,7 @@
 from flet import *
 from moviepy.editor import *
 from urllib.request import urlopen
+from urllib.request import urlretrieve
 from urllib.error import HTTPError
 from typing import Dict
 import preprocessing as pre
@@ -102,7 +103,7 @@ def main(page: Page):
             page.views.append(
                 View("/", 
                     [
-                AppBar(title=Text("Welcome to TAT!"), bgcolor=colors.GREEN_ACCENT_700, color=colors.WHITE),
+                AppBar(title=Text("Welcome to TAT!"), bgcolor=colors.CYAN_ACCENT_700, color=colors.WHITE),
                 # teal, cyan,
                 Row(
                     [
@@ -373,7 +374,7 @@ def main(page: Page):
                 View(
                     "/select",
                     [
-                        AppBar(title = Text("Video Modifying Selection"), bgcolor=colors.GREEN_ACCENT_700),
+                        AppBar(title = Text("Video Modifying Selection"), bgcolor=colors.CYAN_ACCENT_700),
                         # video := Video(
                         #     expand=True,
                         #     playlist=original_media,
@@ -454,15 +455,20 @@ def main(page: Page):
                 on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
             )
 
+            def save_video_url(video_url, path):
+                urlretrieve(video_url+select_file_name, path)
+                print(f"save video_url: {video_url}")
+                print("save by url success")
+
             def save_trimmed_file(e):
                 global select_file_name
-                pre.save_video_url("https://github.com/nadayoung/storage/raw/main/finish/"+select_file_name, select_file_name)
+                save_video_url("https://github.com/nadayoung/storage/raw/main/finish/", select_file_name)
 
             page.views.append(
                 View( # 변형된 화면
                     "/modified",
                     [
-                        AppBar(title=Text("Modified Video Save"), bgcolor=colors.GREEN_ACCENT_700),
+                        AppBar(title=Text("Modified Video Save"), bgcolor=colors.CYAN_ACCENT_700),
                         # video := Video(
                         #     expand=True,
                         #     playlist=modified_media,
