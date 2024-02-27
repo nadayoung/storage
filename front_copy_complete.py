@@ -115,7 +115,7 @@ def main(page: Page):
             page.views.append(
                 View("/", 
                     [
-                AppBar(title=Text("Welcome to TAT!"), bgcolor=colors.BLUE_200),
+                AppBar(title=Text("Welcome to TAT!"), bgcolor=colors.INDIGO_ACCENT_700),
                 Row(
                     [
                         Column(
@@ -196,7 +196,7 @@ def main(page: Page):
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
-                                                pr,
+                                                # pr,
                                                 ElevatedButton(
                                                     "Select files",
                                                     icon=icons.FOLDER_OPEN,
@@ -244,7 +244,7 @@ def main(page: Page):
                                             controls=[
                                                 Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
                                                 Text("1. 자연스러운 사투리 구사하고 싶은 사람!"),
-                                                Container(width=10),
+                                                Container(width=8),
                                             ]
                                         ),
                                         Container(height=10),
@@ -385,7 +385,7 @@ def main(page: Page):
                 View(
                     "/select",
                     [
-                        AppBar(title = Text("변환할 부분 선택"), bgcolor=colors.SURFACE_VARIANT),
+                        AppBar(title = Text("Modifying Selection Page"), bgcolor=colors.INDIGO_ACCENT_700),
                         # video := Video(
                         #     expand=True,
                         #     playlist=original_media,
@@ -474,7 +474,7 @@ def main(page: Page):
                 View( # 변형된 화면
                     "/modified",
                     [
-                        AppBar(title=Text("변환 완료"), bgcolor=colors.SURFACE_VARIANT),
+                        AppBar(title=Text("Modified Video Page"), bgcolor=colors.INDIGO_ACCENT_700),
                         # video := Video(
                         #     expand=True,
                         #     playlist=modified_media,
