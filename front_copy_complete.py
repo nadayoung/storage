@@ -5,6 +5,7 @@ from urllib.error import HTTPError
 from typing import Dict
 import preprocessing as pre
 from time import sleep
+import os
 
 global select_file_name
 select_file_name = ""
@@ -64,7 +65,20 @@ def main(page: Page):
                         else:
                             files.current = Column(controls=files_content)
                         select_file_name = f.name
-                print(e.files)
+                # video_path = e.files[0].path
+                # video_name = e.files[0].name
+                # video_name_ffmpeg = video_name.replace(" ", "_")
+                # print(f'path: {video_path}')
+                # print(f'name: {video_name}')
+
+                # video_clip = VideoFileClip(video_path)
+                # audio_clip = AudioFileClip(video_path)
+                # video_clip.write_videofile('original/' + video_name_ffmpeg, fps=30, codec='libx264', audio=False)
+                # audio_clip.write_audiofile('original/audio.mp3', audio_codec='aac')
+                # video_clip.close()
+                # audio_clip.close()
+                # cmd_merge = 'ffmpeg -y -i original/audio.mp3 -r 30 -i original/' + video_name_ffmpeg + ' -filter:a aresample=async=1 -c:a flac -c:v copy  original/original_video.mp4'  
+                # os.system(cmd_merge)
                 page.update()
 
             def on_upload_progress(e: FilePickerUploadEvent):
@@ -86,6 +100,7 @@ def main(page: Page):
                         )
                     file_picker.upload(uf)
                     pr_visible()
+                    video_path = file_picker.result.path
                 print("upload to original folder")
                 upload_github_check()
             
