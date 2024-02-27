@@ -308,13 +308,6 @@ def main(page: Page):
                 video.seek(int(float(end_point)*1000))
                 page.update()
                 print(f"Video.seek_end: {end_point}")
-
-            def subclip(start, end):
-                start_point = int(start)
-                end_point = int(end)
-                input_file = ffmpeg.input(select_file_name)
-                output_file = ffmpeg.output(input_file.trim(start_point,end_point), "finish/"+select_file_name)
-                ffmpeg.run(output_file)
             
             def make_subclip():
                 pr.visible=True
@@ -333,7 +326,7 @@ def main(page: Page):
                 pre.upload_github()
 
             def execute_multiple_functions():
-                subclip(start_point,end_point)
+                make_subclip()
                 page.go("/modified")
 
             pr = ProgressRing(width=20, height=20, visible=False)
