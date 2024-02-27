@@ -38,19 +38,6 @@ def main(page: Page):
 
             pr = ProgressRing(width=20, height=20, visible=False)
 
-            # def file_picker_result(e: FilePickerResultEvent):
-            #     global select_file_name
-            #     upload_button.current.disabled = True if e.files is None else False
-            #     prog_bars.clear()
-            #     files.current.controls.clear()
-            #     if e.files is not None:
-            #         for f in e.files:
-            #             prog = ProgressRing(value=0, bgcolor="#eeeeee", width=20, height=20)
-            #             prog_bars[f.name] = prog
-            #             files.current.controls.append(Row([prog, Text(f.name)]))
-            #             select_file_name = f.name
-            #     page.update()
-
             def file_picker_result(e: FilePickerResultEvent):
                 global select_file_name
                 upload_button.current.disabled = True if e.files is None else False
@@ -386,7 +373,7 @@ def main(page: Page):
                 View(
                     "/select",
                     [
-                        AppBar(title = Text("Modifying Selection Page"), bgcolor=colors.TEAL_ACCENT_700),
+                        AppBar(title = Text("Video Modifying Selection"), bgcolor=colors.GREEN_ACCENT_700),
                         # video := Video(
                         #     expand=True,
                         #     playlist=original_media,
@@ -469,13 +456,13 @@ def main(page: Page):
 
             def save_trimmed_file(e):
                 global select_file_name
-                pre.save_video_url("https://github.com/nadayoung/storage/raw/main/trimmed/"+select_file_name, select_file_name)
+                pre.save_video_url("https://github.com/nadayoung/storage/raw/main/finish/"+select_file_name, select_file_name)
 
             page.views.append(
                 View( # 변형된 화면
                     "/modified",
                     [
-                        AppBar(title=Text("Modified Video Page"), bgcolor=colors.CYAN_ACCENT_700),
+                        AppBar(title=Text("Modified Video Save"), bgcolor=colors.GREEN_ACCENT_700),
                         # video := Video(
                         #     expand=True,
                         #     playlist=modified_media,
