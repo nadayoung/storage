@@ -57,7 +57,7 @@ def upload_github():
 # github upload하고, 확인해서 올라가지 않은 경우 재업로드
 def upload_github_check(file_path):
     upload_github()
-    check_url = "https://github.com/nadayoung/storage/blob/main/" + file_path
+    check_url = "https://github.com/nadayoung/storage/tree/main/" + file_path
     print(f"checking url: {check_url}")
     try:
         res = urlopen(check_url)
@@ -78,15 +78,20 @@ def save_video_url(video_url, path):
     print("save by url success")
 
 # video clip을 저장
-def make_subclip(start, end, file_name):
-    clip = VideoFileClip('original/' + file_name)
-    print(1)
+def make_subclip(start, end):
+    # clip = VideoFileClip('original/' + file_name)
+    # print(1)
+    # clip = clip.subclip(start, end)
+    # print(2)
+    # clip.write_videofile("trimmed/"+file_name)
+    # print(3)
+    # clip.close()
+    # print("success make subclip")
+    clip = VideoFileClip("original/original_video.mp4")
     clip = clip.subclip(start, end)
-    print(2)
-    clip.write_videofile("trimmed/"+file_name)
-    print(3)
-    clip.close()
-    print("success make subclip")
+    clip.ipython_display(width = 360)
+    clip.write_videofile("trimmed/video.mp4")
+
 
 # 비디오와 audio를 합쳐서 저장
 def rebuild_video(video_file_path, audio_file_path):

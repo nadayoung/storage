@@ -318,10 +318,11 @@ def main(page: Page):
                 print(f'select_file_name: {select_file_name}')
                 print(f"cut out from {start_point}s to {end_point}s and entire time is {video_length}s")
 
-                pre.make_subclip(start_point, end_point, 'original/original_video.mp4')
+                pre.make_subclip(start_point, end_point)
                 print("success make subclip")
-                pre.extract_audio_from_video('trimmed/'+select_file_name, 'trimmed/audio.wav')
+                pre.extract_audio_from_video('trimmed/video.mp4', 'trimmed/audio.wav')
                 pre.reduce_noise('trimmed/audio.wav', 'trimmed/denoised_audio.wav')
+                pre.rebuild_video('trimmed/video.mp4', 'trimmed/denoised_audio.wav')
                 pre.upload_github()
 
             def execute_multiple_functions():
