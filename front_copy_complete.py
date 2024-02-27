@@ -5,12 +5,9 @@ from urllib.error import HTTPError
 from typing import Dict
 import preprocessing as pre
 from time import sleep
-from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 global select_file_name
 select_file_name = ""
-global upload_complete
-upload_complete = False
 
 global start_point, end_point, video_length
 start_point = 0
@@ -19,7 +16,7 @@ video_length = 0
 
 def main(page: Page):
     page.theme_mode = ThemeMode.LIGHT
-    page.title = "TAT"
+    page.title = "Project: TAT"
     page.window_width = 500
     page.spacing = 20
     page.horizontal_alignment = CrossAxisAlignment.CENTER
@@ -62,6 +59,7 @@ def main(page: Page):
 
 
             def upload_files(e):
+                global select_file_name
                 uf = []
                 if file_picker.result is not None and file_picker.result.files is not None:
                     for f in file_picker.result.files:
@@ -73,6 +71,7 @@ def main(page: Page):
                         )
                     file_picker.upload(uf)
                     pr_visible()
+                    select_file_name=f.name
                 print("upload to original folder")
                 sleep(0.5)
                 github_check()
@@ -84,10 +83,8 @@ def main(page: Page):
             
             def github_check():
                 global video_length, select_file_name
-                # file_name_github = select_file_name.replace(" ", "%20")
                 pre.upload_github_check('original/original_video.mp4')
                 sleep(0.5)
-                print(upload_complete)
                 next_button.current.disabled = False
                 video_length = pre.set_video_length('original/original_video.mp4')
                 pr.visible = False
@@ -97,7 +94,7 @@ def main(page: Page):
             page.views.append(
                 View("/", 
                     [
-                AppBar(title=Text("Welcome to TAT!"), bgcolor=colors.GREEN_ACCENT_700, color=colors.WHITE),
+                AppBar(title=Text("Welcome to TAT!"), bgcolor=colors.CYAN_ACCENT_700, color=colors.WHITE),
                 # teal, cyan,
                 Row(
                     [
@@ -119,7 +116,7 @@ def main(page: Page):
                                     key="A",
                                 ),
                                 Container(
-                                    Image("assets\\howto_changed.png"),
+                                    Image("assets\\howto_screen_completed.png"),
                                     height=590,
                                     width=1060,
                                     key="B",
@@ -305,7 +302,8 @@ def main(page: Page):
             
             def make_subclip():
                 pr.visible=True
-                subclip_slider.current.disabled = False if pr.visible is False else True
+                subclip_slider.current.disabled = True
+                next_button.current.disabled = True
                 page.update()
                 global start_point, end_point, video_length, select_file_name
                 print(f'select_file_name: {select_file_name}')
@@ -313,7 +311,7 @@ def main(page: Page):
                 pre.make_subclip(start_point, end_point)
                 # ffmpeg_extract_subclip("original\original_video.mp4", start_point, end_point, targetname="trimmed/output.mp4")
                 print("success make subclip")
-                pre.extract_audio_from_video('trimmed/video.mp4', 'trimmed/audio.wav')
+                pre.extract_audio_from_video()
                 pre.reduce_noise('trimmed/audio.wav', 'trimmed/denoised_audio.wav')
                 pre.rebuild_video('trimmed/video.mp4', 'trimmed/denoised_audio.wav')
                 pre.upload_github()
@@ -332,9 +330,9 @@ def main(page: Page):
                 end_value=video_length,
                 divisions=50,
                 width=280,
-                inactive_color=colors.GREEN_300,
-                active_color=colors.GREEN_700,
-                overlay_color=colors.GREEN_100,
+                inactive_color=colors.BLUE_ACCENT_100,
+                active_color=colors.BLUE_ACCENT_700,
+                overlay_color=colors.BLUE_ACCENT_100,
                 label="{value}초",
                 on_change_start=slider_change_start,
                 on_change=slider_is_changing,
@@ -344,7 +342,7 @@ def main(page: Page):
 
             original_media = [
                 VideoMedia(
-                    "https://github.com/nadayoung/storage/raw/main/original/"+select_file_name,
+                    "https://github.com/nadayoung/storage/raw/main/original/original_video.mp4",
                 ),
             ]
 
@@ -367,21 +365,7 @@ def main(page: Page):
                 View(
                     "/select",
                     [
-                        AppBar(title = Text("Video Modifying Selection"), bgcolor=colors.GREEN_ACCENT_700),
-                        # video := Video(
-                        #     expand=True,
-                        #     playlist=original_media,
-                        #     playlist_mode=PlaylistMode.SINGLE,
-                        #     fill_color=colors.BLACK,
-                        #     aspect_ratio=16/9,
-                        #     volume=100,
-                        #     autoplay=False,
-                        #     filter_quality=FilterQuality.HIGH,
-                        #     muted=False,
-                        #     on_loaded=lambda e: print("Video loaded successfully!"),
-                        #     on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
-                        #     on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
-                        # ),
+                        AppBar(title = Text("Video Modifying Selection"), bgcolor=colors.CYAN_ACCENT_700, color=colors.WHITE),
                         Row(
                             controls=[
                                 video,
@@ -429,7 +413,7 @@ def main(page: Page):
         if page.route == "/modified":
             modified_media = [
                 VideoMedia(
-                    "https://github.com/nadayoung/storage/raw/main/trimmed/"+select_file_name,
+                    "https://github.com/nadayoung/storage/raw/main/finish/output_video.mp4",
                 ),
             ]
 
@@ -448,29 +432,16 @@ def main(page: Page):
                 on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
             )
 
-            def save_trimmed_file(e):
+            def save_trimmed_file():
                 global select_file_name
-                pre.save_video_url("https://github.com/nadayoung/storage/raw/main/finish/"+select_file_name, select_file_name)
+                file_name_save = select_file_name.replace(" ", "_")
+                pre.save_video_url("https://github.com/nadayoung/storage/raw/main/finish/output_video.mp4", file_name_save)
 
             page.views.append(
                 View( # 변형된 화면
                     "/modified",
                     [
-                        AppBar(title=Text("Modified Video Save"), bgcolor=colors.GREEN_ACCENT_700),
-                        # video := Video(
-                        #     expand=True,
-                        #     playlist=modified_media,
-                        #     playlist_mode=PlaylistMode.SINGLE,
-                        #     fill_color=colors.BLACK,
-                        #     aspect_ratio=16/9,
-                        #     volume=100,
-                        #     autoplay=False,
-                        #     filter_quality=FilterQuality.HIGH,
-                        #     muted=False,
-                        #     on_loaded=lambda e: print("Video loaded successfully!"),
-                        #     on_enter_fullscreen=lambda e: print("Video entered fullscreen!"),
-                        #     on_exit_fullscreen=lambda e: print("Video exited fullscreen!"),
-                        # ),
+                        AppBar(title=Text("Modified Video Save"), bgcolor=colors.CYAN_ACCENT_700, color=colors.WHITE),
                         Row(
                             controls=[
                                 video,
@@ -480,7 +451,7 @@ def main(page: Page):
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
-                                                ElevatedButton("Save file", icon=icons.SAVE, on_click=save_trimmed_file, width=250),
+                                                ElevatedButton("Save file", icon=icons.SAVE, on_click=save_trimmed_file(), width=250),
                                             ]
                                         ),
                                         Container(),

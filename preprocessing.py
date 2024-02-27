@@ -7,14 +7,14 @@ from urllib.error import HTTPError
 from time import sleep
 from pydub import AudioSegment
 import ffmpeg
-# from moviepy.video.fx.accel_decel import accel_decel
+from moviepy.video.fx.accel_decel import accel_decel
 import wave
 import numpy as np
 import scipy.io as sio
 import scipy.io.wavfile
 import matplotlib.pyplot as plt
 import sounddevice as sd
-# from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
+from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 def extract_audio_from_video(video_file_path, audio_file_path):
     # mp4 등 비디오 파일 불러오기
@@ -30,8 +30,8 @@ def reduce_noise(audio_file_path, audio_file_path_dn):
     print("success reducing a noise.")
 
 # 영상에서 음성 추출하고 간단한 노이즈를 제거함
-def make_clear_audio(file_name):
-    extract_audio_from_video('trimmed/'+file_name, 'trimmed/audio.wav')
+def make_clear_audio():
+    extract_audio_from_video()
     reduce_noise('trimmed/audio.wav', 'trimmed/denoised_audio.wav')
 
 # video의 영상 길이를 확인
@@ -74,8 +74,8 @@ def upload_github_check(file_path):
     print("upload github sucess")
 
 # video url로 로컬 파일에 video 저장하기
-def save_video_url(video_url, path):
-    urlretrieve(video_url, path)
+def save_video_url(video_url, file_name):
+    urlretrieve(video_url, 'saved/' + file_name)
     print(f"save video_url: {video_url}")
     print("save by url success")
 
@@ -89,36 +89,27 @@ def make_subclip(start, end):
     # print(3)
     # clip.close()
     # print("success make subclip")
-    # print(1)
-    # clip = VideoFileClip("original/original_video.mp4", fps_source=30)
-    # print(2)
-    # clip = clip.subclip(start, end)
-    # print(3)
-    # # clip.ipython_display(width = 360)
-    # print(4)
-    # clip.write_videofile("trimmed/video.mp4")
-    start_point = int(start)
-    end_point = int(end)
+    start_point = int(float(start))
+    end_point = int(float(end))
+    print(start_point, end_point)
 
-    if start_point//60 > 10:
-        start_time = "00:" + str(start_point//60) + ":" + str(start_point%60)
-    elif start_point//60 > 1:
-        start_time = "00:0" + str(start_point//60) + ":" + str(start_point%60)
-    elif start_point%60 < 10:
-        start_time = "00:00:0" + str(start_point%60)
-    else:
-        start_time = "00:00:" + str(start_point%60)
+    start_min = start_point // 60
+    start_sec = start_point % 60
+    end_min = end_point // 60
+    end_sec = end_point % 60
 
-    if end_point//60 > 10:
-        end_time = "00:" + str(end_point//60) + ":" + str(end_point%60)
-    elif end_point//60 > 1:
-        end_time = "00:0" + str(end_point//60) + ":" + str(end_point%60)
-    elif end_point%60 < 10:
-        end_time = "00:00:0" + str(end_point%60)
-    else:
-        end_time = "00:00:" + str(end_point%60)
-    print(start_time, end_time)
-    cut_cmd = "ffmpeg -y -i original/original_video.mp4 -ss " + start_time + " -to " + end_time + " -async 1 trimmed/output.mp4"
+    time=[]
+    for t in [start_min, start_sec, end_min, end_sec]:
+        if t >= 10:
+            time.append(':' + str(t))
+        else:
+            time.append(':0' + str(t)) 
+    print(time)
+    
+    start_time = "00" + time[0]  + time[1]
+    end_time = "00" + time[2] + time[3]
+
+    cut_cmd = "ffmpeg -y -i original/original_video.mp4 -ss " + start_time + " -to " + end_time + " -async 1 trimmed/cut_video.mp4"
     system(cut_cmd)
     print(start_point, end_point)
     print(start_time, end_time)
@@ -126,12 +117,12 @@ def make_subclip(start, end):
 # 비디오와 audio를 합쳐서 저장
 def rebuild_video(video_file_path, audio_file_path):
     audio_length = set_audio_length(audio_file_path)
-    video_length = set_video_length(video_file_path)
+    video_length = set_video_length('trimmed/cut_video.mp4')
     rate = float(audio_length/float(video_length))
     print(f'speed rate: {rate}')
-    cmd_rate = 'ffmpeg -i ' + video_file_path + ' -filter:v "setpts=' + str(rate) + '*PTS" trimmed/rate_change.mp4'
+    cmd_rate = 'ffmpeg -y -i trimmed/cut_video.mp4 -filter:v "setpts=' + str(rate) + '*PTS" trimmed/rate_change.mp4'
     system(cmd_rate)
-    cmd_merge = 'ffmpeg -y -i ' + audio_file_path + ' -r 30 -i trimmed/rate_change.mp4 -filter:a aresample=async=1 -c:a flac -c:v copy  finish/output.mp4'  
+    cmd_merge = 'ffmpeg -y -i ' + audio_file_path + ' -r 30 -i trimmed/rate_change.mp4 -filter:a aresample=async=1 -c:a flac -c:v copy  finish/output_video.mp4'  
     system(cmd_merge)
     print("rebuild the video complete")
 
@@ -177,7 +168,10 @@ def main():
     # set_video_length(video_file)
     # set_audio_length(audio_file_dn)
 
-    rebuild_video('original\demo_video.mp4', audio_file_dn)
+    # rebuild_video('original\demo_video.mp4', audio_file_dn)
+    # make_subclip(10.222, 73.44)
+    # make_clear_audio()
+    save_video_url("https://github.com/nadayoung/storage/raw/main/finish/output_video.mp4", 'test.mp4')
 
 
 if __name__ == "__main__":
