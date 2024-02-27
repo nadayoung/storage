@@ -302,7 +302,8 @@ def main(page: Page):
             
             def make_subclip():
                 pr.visible=True
-                subclip_slider.current.disabled = False if pr.visible is False else True
+                subclip_slider.current.disabled = True
+                next_button.current.disabled = True
                 page.update()
                 global start_point, end_point, video_length, select_file_name
                 print(f'select_file_name: {select_file_name}')
@@ -449,7 +450,7 @@ def main(page: Page):
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
-                                                ElevatedButton("Save file", icon=icons.SAVE, on_click=save_trimmed_file, width=250),
+                                                ElevatedButton("Save file", icon=icons.SAVE, on_click=save_trimmed_file(), width=250),
                                             ]
                                         ),
                                         Container(),
