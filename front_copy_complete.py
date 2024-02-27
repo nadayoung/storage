@@ -333,6 +333,7 @@ def main(page: Page):
                     end_time = "00:0" + str(end_point//60) + ":" + str(end_point%60)
                 else:
                     end_time = "00:00:" + str(end_point%60)
+                print(start_time, end_time)
                 cut_cmd = "ffmpeg -i original/original_video.mp4 -ss " + start_time + " -t " + end_time + " -async 1 trimmed/output.mp4"
                 os.system(cut_cmd)
                 # ffmpeg_extract_subclip("original\original_video.mp4", start_point, end_point, targetname="trimmed/output.mp4")
