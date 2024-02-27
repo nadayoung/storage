@@ -101,6 +101,7 @@ def main(page: Page):
                     file_picker.upload(uf)
                     pr_visible()
                     video_path = file_picker.result.path
+                    print(video_path)
                 print("upload to original folder")
                 upload_github_check()
             
