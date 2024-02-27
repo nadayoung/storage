@@ -84,7 +84,7 @@ def main(page: Page):
             
             def github_check():
                 global upload_complete, video_length, select_file_name
-                file_name_github = select_file_name.replace(" ", "%20")
+                # file_name_github = select_file_name.replace(" ", "%20")
                 pre.upload_github_check('original/original_video.mp4')
                 sleep(0.5)
                 upload_complete = True

@@ -68,9 +68,10 @@ def upload_github_check(file_path):
         code = e.getcode()
         print(f"error code: {code}")
         print("try again to upload github")
-        sleep(2)
+        sleep(1)
         upload_github_check(file_path)
         # upload_github()
+    print("upload github sucess")
 
 # video url로 로컬 파일에 video 저장하기
 def save_video_url(video_url, path):
