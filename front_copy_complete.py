@@ -92,6 +92,7 @@ def main(page: Page):
                 uf = []
                 if file_picker.result is not None and file_picker.result.files is not None:
                     for f in file_picker.result.files:
+                        print(file_picker.result.files)
                         uf.append(
                             FilePickerUploadFile(
                                 f.name,
