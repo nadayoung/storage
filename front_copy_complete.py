@@ -319,23 +319,7 @@ def main(page: Page):
                 global start_point, end_point, video_length, select_file_name
                 print(f'select_file_name: {select_file_name}')
                 print(f"cut out from {start_point}s to {end_point}s and entire time is {video_length}s")
-
-                if start_point//60 > 10:
-                    start_time = "00:" + str(start_point//60) + ":" + str(start_point%60)
-                elif start_point//60 > 1:
-                    start_time = "00:0" + str(start_point//60) + ":" + str(start_point%60)
-                else:
-                    start_time = "00:00:" + str(start_point%60)
-
-                if end_point//60 > 10:
-                    end_time = "00:" + str(end_point//60) + ":" + str(end_point%60)
-                elif end_point//60 > 1:
-                    end_time = "00:0" + str(end_point//60) + ":" + str(end_point%60)
-                else:
-                    end_time = "00:00:" + str(end_point%60)
-                print(start_time, end_time)
-                cut_cmd = "ffmpeg -i original/original_video.mp4 -ss " + start_time + " -t " + end_time + " -async 1 trimmed/output.mp4"
-                os.system(cut_cmd)
+                pre.make_subclip(start_point, end_point)
                 # ffmpeg_extract_subclip("original\original_video.mp4", start_point, end_point, targetname="trimmed/output.mp4")
                 print("success make subclip")
                 pre.extract_audio_from_video('trimmed/video.mp4', 'trimmed/audio.wav')

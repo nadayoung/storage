@@ -96,8 +96,29 @@ def make_subclip(start, end):
     # # clip.ipython_display(width = 360)
     # print(4)
     # clip.write_videofile("trimmed/video.mp4")
-    print(start, end)
-    ffmpeg_extract_subclip("original/original_video.mp4", int(start), int(end), targetname="output_video.mp4")
+    start_point = int(start_point)
+    end_point = int(end_point)
+
+    if start_point//60 > 10:
+        start_time = "00:" + str(start_point//60) + ":" + str(start_point%60)
+    elif start_point//60 > 1:
+        start_time = "00:0" + str(start_point//60) + ":" + str(start_point%60)
+    elif start_point%60 < 10:
+        start_time = "00:00:0" + str(start_point%60)
+    else:
+        start_time = "00:00:" + str(start_point%60)
+
+    if end_point//60 > 10:
+        end_time = "00:" + str(end_point//60) + ":" + str(end_point%60)
+    elif end_point//60 > 1:
+        end_time = "00:0" + str(end_point//60) + ":" + str(end_point%60)
+    elif end_point%60 < 10:
+        end_time = "00:00:0" + str(end_point%60)
+    else:
+        end_time = "00:00:" + str(end_point%60)
+    print(start_time, end_time)
+    cut_cmd = "ffmpeg -y -i original/original_video.mp4 -ss " + start_time + " -to " + end_time + " -async 1 trimmed/output.mp4"
+    system(cut_cmd)
 
 # 비디오와 audio를 합쳐서 저장
 def rebuild_video(video_file_path, audio_file_path):
