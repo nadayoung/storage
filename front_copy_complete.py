@@ -115,7 +115,7 @@ def main(page: Page):
             page.views.append(
                 View("/", 
                     [
-                AppBar(title=Text("안녕하수꽈!"), bgcolor=colors.BLUE_200),
+                AppBar(title=Text("Welcome to TAT!"), bgcolor=colors.BLUE_200),
                 Row(
                     [
                         Column(
@@ -136,13 +136,13 @@ def main(page: Page):
                                     key="A",
                                 ),
                                 Container(
-                                    Image("assets\\howto.png"),
+                                    Image("assets\\howto_changed.png"),
                                     height=590,
                                     width=1060,
                                     key="B",
                                 ),
                                 Container(
-                                    Image("assets\\end_screen.png"),
+                                    Image("assets\\about_TAT.png"),
                                     height=590,
                                     width=1060,
                                     key="C",
@@ -169,7 +169,7 @@ def main(page: Page):
                                         on_click=lambda _: cl.scroll_to(key="B", duration=500),
                                     ),
                                     TextButton(
-                                        "About TAT",
+                                        "About Us",
                                         width=130,
                                         on_click=lambda _: cl.scroll_to(key="C", duration=500),
                                     ),
@@ -196,6 +196,7 @@ def main(page: Page):
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
+                                                pr,
                                                 ElevatedButton(
                                                     "Select files",
                                                     icon=icons.FOLDER_OPEN,
@@ -237,32 +238,33 @@ def main(page: Page):
                                                 ),
                                             ]
                                         ),
-                                        Container(height=20),
+                                        Container(height=30),
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
                                                 Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
                                                 Text("1. 자연스러운 사투리 구사하고 싶은 사람!"),
+                                                Container(width=10),
                                             ]
                                         ),
-                                        Container(height=15),
+                                        Container(height=10),
                                         Row(
                                             alignment=MainAxisAlignment.CENTER,
                                             controls=[
                                                 Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
-                                                Text("2. 여기다 뭘 써야할까!?"),
-                                                Container(width=105),
+                                                Text("2. 사투리로 말하는 내 목소리가 궁금한 사람!"),
+                                                # Container(width=40),
                                             ]
                                         ),
-                                        Container(height=15),
-                                        Row(
-                                            alignment=MainAxisAlignment.CENTER,
-                                            controls=[
-                                                Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
-                                                Text("3. 3개이상 쓸 게 있을까!?"),
-                                                Container(width=95),
-                                            ]
-                                        ),
+                                        # Container(height=10),
+                                        # Row(
+                                        #     alignment=MainAxisAlignment.CENTER,
+                                        #     controls=[
+                                        #         Icon(name=icons.CHECK_BOX_OUTLINED, color=colors.GREEN),
+                                        #         Text("3. 3개이상 쓸 게 있을까!?"),
+                                        #         Container(width=95),
+                                        #     ]
+                                        # ),
                                     ]
                                 )
                             )
