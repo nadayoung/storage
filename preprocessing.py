@@ -14,6 +14,7 @@ import scipy.io as sio
 import scipy.io.wavfile
 import matplotlib.pyplot as plt
 import sounddevice as sd
+from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 def extract_audio_from_video(video_file_path, audio_file_path):
     # mp4 등 비디오 파일 불러오기
@@ -67,9 +68,10 @@ def upload_github_check(file_path):
         code = e.getcode()
         print(f"error code: {code}")
         print("try again to upload github")
-        sleep(2)
+        sleep(1)
         upload_github_check(file_path)
         # upload_github()
+    print("upload github sucess")
 
 # video url로 로컬 파일에 video 저장하기
 def save_video_url(video_url, path):
@@ -78,15 +80,48 @@ def save_video_url(video_url, path):
     print("save by url success")
 
 # video clip을 저장
-def make_subclip(start, end, file_name):
-    clip = VideoFileClip('original/' + file_name)
-    print(1)
-    clip = clip.subclip(start, end)
-    print(2)
-    clip.write_videofile("trimmed/"+file_name)
-    print(3)
-    clip.close()
-    print("success make subclip")
+def make_subclip(start, end):
+    # clip = VideoFileClip('original/' + file_name)
+    # print(1)
+    # clip = clip.subclip(start, end)
+    # print(2)
+    # clip.write_videofile("trimmed/"+file_name)
+    # print(3)
+    # clip.close()
+    # print("success make subclip")
+    # print(1)
+    # clip = VideoFileClip("original/original_video.mp4", fps_source=30)
+    # print(2)
+    # clip = clip.subclip(start, end)
+    # print(3)
+    # # clip.ipython_display(width = 360)
+    # print(4)
+    # clip.write_videofile("trimmed/video.mp4")
+    start_point = int(start)
+    end_point = int(end)
+
+    if start_point//60 > 10:
+        start_time = "00:" + str(start_point//60) + ":" + str(start_point%60)
+    elif start_point//60 > 1:
+        start_time = "00:0" + str(start_point//60) + ":" + str(start_point%60)
+    elif start_point%60 < 10:
+        start_time = "00:00:0" + str(start_point%60)
+    else:
+        start_time = "00:00:" + str(start_point%60)
+
+    if end_point//60 > 10:
+        end_time = "00:" + str(end_point//60) + ":" + str(end_point%60)
+    elif end_point//60 > 1:
+        end_time = "00:0" + str(end_point//60) + ":" + str(end_point%60)
+    elif end_point%60 < 10:
+        end_time = "00:00:0" + str(end_point%60)
+    else:
+        end_time = "00:00:" + str(end_point%60)
+    print(start_time, end_time)
+    cut_cmd = "ffmpeg -y -i original/original_video.mp4 -ss " + start_time + " -to " + end_time + " -async 1 trimmed/output.mp4"
+    system(cut_cmd)
+    print(start_point, end_point)
+    print(start_time, end_time)
 
 # 비디오와 audio를 합쳐서 저장
 def rebuild_video(video_file_path, audio_file_path):

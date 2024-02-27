@@ -5,6 +5,7 @@ from urllib.error import HTTPError
 from typing import Dict
 import preprocessing as pre
 from time import sleep
+from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 global select_file_name
 select_file_name = ""
@@ -67,26 +68,28 @@ def main(page: Page):
                         uf.append(
                             FilePickerUploadFile(
                                 f.name,
-                                upload_url=page.get_upload_url(f.name, 600),
+                                upload_url=page.get_upload_url('original_video.mp4', 600),
                             )
                         )
                     file_picker.upload(uf)
                     pr_visible()
                 print("upload to original folder")
-                upload_github_check()
+                sleep(0.5)
+                github_check()
             
             def pr_visible():
                 sleep(0.7)
                 pr.visible=True
                 page.update()
             
-            def upload_github_check():
-                global upload_complete, video_length, select_file_name
-                file_name_github = select_file_name.replace(" ", "%20")
-                pre.upload_github_check('original/'+file_name_github)
-                upload_complete = True
-                next_button.current.disabled = True if upload_complete is False else False
-                video_length = pre.set_video_length('original/'+select_file_name)
+            def github_check():
+                global video_length, select_file_name
+                # file_name_github = select_file_name.replace(" ", "%20")
+                pre.upload_github_check('original/original_video.mp4')
+                sleep(0.5)
+                print(upload_complete)
+                next_button.current.disabled = False
+                video_length = pre.set_video_length('original/original_video.mp4')
                 pr.visible = False
                 page.update()
 
@@ -307,11 +310,12 @@ def main(page: Page):
                 global start_point, end_point, video_length, select_file_name
                 print(f'select_file_name: {select_file_name}')
                 print(f"cut out from {start_point}s to {end_point}s and entire time is {video_length}s")
-
-                pre.make_subclip(start_point, end_point, 'original/original_video.mp4')
+                pre.make_subclip(start_point, end_point)
+                # ffmpeg_extract_subclip("original\original_video.mp4", start_point, end_point, targetname="trimmed/output.mp4")
                 print("success make subclip")
-                pre.extract_audio_from_video('trimmed/'+select_file_name, 'trimmed/audio.wav')
+                pre.extract_audio_from_video('trimmed/video.mp4', 'trimmed/audio.wav')
                 pre.reduce_noise('trimmed/audio.wav', 'trimmed/denoised_audio.wav')
+                pre.rebuild_video('trimmed/video.mp4', 'trimmed/denoised_audio.wav')
                 pre.upload_github()
 
             def execute_multiple_functions():
