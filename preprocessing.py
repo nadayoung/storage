@@ -163,7 +163,8 @@ def main():
 
     # rebuild_video('original\demo_video.mp4', audio_file_dn)
     # make_subclip(10.222, 73.44)
-    make_clear_audio()
+    # make_clear_audio()
+    save_video_url("https://github.com/nadayoung/storage/raw/main/finish/output_video.mp4", 'test.mp4')
 
 
 if __name__ == "__main__":
