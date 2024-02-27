@@ -101,7 +101,19 @@ def main(page: Page):
                     file_picker.upload(uf)
                     pr_visible()
                     video_path = file_picker.result.files[0].path
-                    print(video_path)
+                    # video_name_ffmpeg = select_file_name.replace(" ", "_")
+                    # video_clip = VideoFileClip(video_path, audio=False)
+                    # audio_clip = AudioFileClip(video_path)
+                    # print("load")
+                    # video_clip.write_videofile('original/' + video_name_ffmpeg, temp_audiofile="temp-audio.m4a", fps=30, remove_temp=True, codec = 'libx264', audio_codec='aac')
+                    # video_clip.write_videofile('original/' + video_name_ffmpeg, fps=30, codec = 'libx264')
+                    # print("video_file_save")
+                    # audio_clip.write_audiofile('original/audio.mp3', codec='pcm_s32le')
+                    # print("audio_file save")
+                    # video_clip.close()
+                    # audio_clip.close()
+                    cmd_video = "ffmpeg -i " + video_path + "-acodec copy -vcodec copy original/original_video.mp4"
+                    os.system(cmd_video)
                 print("upload to original folder")
                 upload_github_check()
             
@@ -140,6 +152,8 @@ def main(page: Page):
                         
                     Container(
                         cl := Column(
+                            # width=1060,
+                            # height=590,
                             width=1060,
                             height=590,
                             alignment=MainAxisAlignment.START,
@@ -148,20 +162,20 @@ def main(page: Page):
                             controls=[
                                 Container(
                                     Image("assets\\home_screen.png"),
-                                    height=590,
-                                    width=1060,
+                                    # height=590,
+                                    # width=1060,
                                     key="A",
                                 ),
                                 Container(
                                     Image("assets\\howto.png"),
-                                    height=590,
-                                    width=1060,
+                                    # height=590,
+                                    # width=1060,
                                     key="B",
                                 ),
                                 Container(
                                     Image("assets\\end_screen.png"),
-                                    height=590,
-                                    width=1060,
+                                    # height=590,
+                                    # width=1060,
                                     key="C",
                                 ),
                             ],
