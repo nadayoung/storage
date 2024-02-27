@@ -112,7 +112,7 @@ def main(page: Page):
                     # print("audio_file save")
                     # video_clip.close()
                     # audio_clip.close()
-                    cmd_video = "ffmpeg -i " + video_path + " -acodec copy -vcodec copy original/original_video.mp4"
+                    cmd_video = "ffmpeg -i " + video_path + " -acodec aac copy -vcodec libx264 copy original/original_video.mp4"
                     os.system(cmd_video)
                 print("upload to original folder")
                 upload_github_check()
