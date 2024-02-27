@@ -16,12 +16,15 @@ import matplotlib.pyplot as plt
 import sounddevice as sd
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
-def extract_audio_from_video(video_file_path, audio_file_path):
-    # mp4 등 비디오 파일 불러오기
-    video = VideoFileClip(video_file_path)
-    # 오디오를 추출하여 mp3 파일로 저장
-    video.audio.write_audiofile(audio_file_path, codec='pcm_s16le')
-    # video = VideoFileClip(video_file_path[:9]+"extract_audio_" + video_file_path[9:])
+# def extract_audio_from_video(video_file_path, audio_file_path):
+def extract_audio_from_video():
+    # # mp4 등 비디오 파일 불러오기
+    # video = VideoFileClip(video_file_path)
+    # # 오디오를 추출하여 mp3 파일로 저장
+    # video.audio.write_audiofile(audio_file_path, codec='pcm_s16le')
+    # # video = VideoFileClip(video_file_path[:9]+"extract_audio_" + video_file_path[9:])
+    extract_cmd = "ffmpeg -y -i trimmed/cut_video.mp4 -q:a 0 -map a trimmed/audio.wav"
+    system(extract_cmd)
     print("extract audio from video.")
 
 def reduce_noise(audio_file_path, audio_file_path_dn):
@@ -30,8 +33,8 @@ def reduce_noise(audio_file_path, audio_file_path_dn):
     print("success reducing a noise.")
 
 # 영상에서 음성 추출하고 간단한 노이즈를 제거함
-def make_clear_audio(file_name):
-    extract_audio_from_video('trimmed/'+file_name, 'trimmed/audio.wav')
+def make_clear_audio():
+    extract_audio_from_video()
     reduce_noise('trimmed/audio.wav', 'trimmed/denoised_audio.wav')
 
 # video의 영상 길이를 확인
@@ -89,8 +92,8 @@ def make_subclip(start, end):
     # print(3)
     # clip.close()
     # print("success make subclip")
-    start_point = int(start)
-    end_point = int(end)
+    start_point = int(float(start))
+    end_point = int(float(end))
     print(start_point, end_point)
 
     start_min = start_point // 60
@@ -109,7 +112,7 @@ def make_subclip(start, end):
     start_time = "00" + time[0]  + time[1]
     end_time = "00" + time[2] + time[3]
 
-    cut_cmd = "ffmpeg -y -i original/original_video.mp4 -ss " + start_time + " -to " + end_time + " -async 1 trimmed/output.mp4"
+    cut_cmd = "ffmpeg -y -i original/original_video.mp4 -ss " + start_time + " -to " + end_time + " -async 1 trimmed/cut_video.mp4"
     system(cut_cmd)
     print(start_point, end_point)
     print(start_time, end_time)
@@ -117,12 +120,12 @@ def make_subclip(start, end):
 # 비디오와 audio를 합쳐서 저장
 def rebuild_video(video_file_path, audio_file_path):
     audio_length = set_audio_length(audio_file_path)
-    video_length = set_video_length(video_file_path)
+    video_length = set_video_length('trimmed/cut_video.mp4')
     rate = float(audio_length/float(video_length))
     print(f'speed rate: {rate}')
-    cmd_rate = 'ffmpeg -i ' + video_file_path + ' -filter:v "setpts=' + str(rate) + '*PTS" trimmed/rate_change.mp4'
+    cmd_rate = 'ffmpeg -y -i trimmed/cut_video.mp4 -filter:v "setpts=' + str(rate) + '*PTS" trimmed/rate_change.mp4'
     system(cmd_rate)
-    cmd_merge = 'ffmpeg -y -i ' + audio_file_path + ' -r 30 -i trimmed/rate_change.mp4 -filter:a aresample=async=1 -c:a flac -c:v copy  finish/output.mp4'  
+    cmd_merge = 'ffmpeg -y -i ' + audio_file_path + ' -r 30 -i trimmed/rate_change.mp4 -filter:a aresample=async=1 -c:a flac -c:v copy  finish/output_video.mp4'  
     system(cmd_merge)
     print("rebuild the video complete")
 
@@ -169,7 +172,8 @@ def main():
     # set_audio_length(audio_file_dn)
 
     # rebuild_video('original\demo_video.mp4', audio_file_dn)
-    make_subclip(10.222, 73.44)
+    # make_subclip(10.222, 73.44)
+    make_clear_audio()
 
 
 if __name__ == "__main__":
