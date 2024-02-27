@@ -314,6 +314,7 @@ def main(page: Page):
                 # print(3)
                 # clip.close()
                 # print("success make subclip")
+                print('start')
                 start_point = int(start)
                 end_point = int(end)
                 print(start_point, end_point)
