@@ -74,18 +74,19 @@ def main(page: Page):
                     file_picker.upload(uf)
                     pr_visible()
                 print("upload to original folder")
-
-                upload_github_check()
+                sleep(0.5)
+                github_check()
             
             def pr_visible():
                 sleep(0.7)
                 pr.visible=True
                 page.update()
             
-            def upload_github_check():
+            def github_check():
                 global upload_complete, video_length, select_file_name
                 file_name_github = select_file_name.replace(" ", "%20")
                 pre.upload_github_check('original/original_video.mp4')
+                sleep(0.5)
                 upload_complete = True
                 next_button.current.disabled = True if upload_complete is False else False
                 video_length = pre.set_video_length('original/'+select_file_name)
