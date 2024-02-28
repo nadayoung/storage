@@ -181,7 +181,7 @@ def main(page: Page):
                                                 ElevatedButton(
                                                     "Select files",
                                                     icon=icons.FOLDER_OPEN,
-                                                    on_click=lambda _: file_picker.pick_files(allow_multiple=True),
+                                                    on_click=lambda _: file_picker.pick_files(allow_multiple=False, file_type=FilePickerFileType.VIDEO),
                                                     bgcolor=colors.INDIGO_ACCENT_700,
                                                     color=colors.WHITE,
                                                     width=260,
