@@ -56,9 +56,9 @@ def upload_github():
     print('success github upload!')
 
 # github upload하고, 확인해서 올라가지 않은 경우 재업로드
-def upload_github_check(file_path):
+def upload_github_check(file_name):
     upload_github()
-    check_url = "https://github.com/nadayoung/storage/tree/main/" + file_path
+    check_url = "https://github.com/nadayoung/storage/tree/main/" + file_name + ".txt"
     print(f"checking url: {check_url}")
     try:
         res = urlopen(check_url)
@@ -69,7 +69,7 @@ def upload_github_check(file_path):
         print(f"error code: {code}")
         print("try again to upload github")
         sleep(1)
-        upload_github_check(file_path)
+        upload_github_check(file_name)
         # upload_github()
     print("upload github sucess")
 

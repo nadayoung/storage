@@ -50,6 +50,8 @@ def main(page: Page):
                         else:
                             files.current = Column(controls=files_content)
                         select_file_name = f.name
+                        t = open(select_file_name+".txt", "w")
+                        t.close()
                 page.update()
 
             def on_upload_progress(e: FilePickerUploadEvent):
@@ -84,7 +86,7 @@ def main(page: Page):
             
             def github_check():
                 global video_length, select_file_name
-                pre.upload_github_check('original/original_video.mp4')
+                pre.upload_github_check(select_file_name)
                 sleep(0.5)
                 next_button.current.disabled = False
                 video_length = pre.set_video_length('original/original_video.mp4')
