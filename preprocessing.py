@@ -83,7 +83,7 @@ def make_subclip(start, end):
     # clip.close()
     # print("success make subclip")
     start_point = int(float(start))
-    end_point = int(float(end))
+    end_point = int(float(end)+1)
     print(start_point, end_point)
 
     start_min = start_point // 60

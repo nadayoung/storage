@@ -108,26 +108,26 @@ def main(page: Page):
                     Container(
                         cl := Column(
                             width=1060,
-                            height=590,
+                            height=550,
                             alignment=MainAxisAlignment.START,
                             expand=True,
                             scroll=ScrollMode.ALWAYS,
                             controls=[
                                 Container(
                                     Image("assets\\home_screen.png"),
-                                    height=590,
+                                    height=550,
                                     width=1060,
                                     key="A",
                                 ),
                                 Container(
                                     Image("assets\\howto_screen_completed.png"),
-                                    height=590,
+                                    height=550,
                                     width=1060,
                                     key="B",
                                 ),
                                 Container(
                                     Image("assets\\about_TAT.png"),
-                                    height=590,
+                                    height=550,
                                     width=1060,
                                     key="C",
                                 ),
