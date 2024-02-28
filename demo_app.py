@@ -88,6 +88,7 @@ def main(page: Page):
                 sleep(0.5)
                 next_button.current.disabled = False
                 video_length = pre.set_video_length('original/original_video.mp4')
+                sleep(1)
                 pr.visible = False
                 page.update()
 
