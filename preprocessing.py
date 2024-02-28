@@ -115,7 +115,7 @@ def rebuild_video():
     print(f'speed rate: {rate}')
     cmd_rate = 'ffmpeg -y -i trimmed/cut_video.mp4 -filter:v "setpts=' + str(rate) + '*PTS" trimmed/rate_change.mp4'
     system(cmd_rate)
-    cmd_merge = 'ffmpeg -y -i trimmed/output_audio.wav -r 30 -i trimmed/rate_change.mp4 -filter:a aresample=async=1 -c:a flac -c:v copy  finish/output_video.mp4'  
+    cmd_merge = 'ffmpeg -y -i trimmed/rate_change.mp4 -i trimmed/output_audio.wav -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 ./finish/output_video.mp4'  
     system(cmd_merge)
     print("rebuild the video complete")
 
@@ -164,8 +164,8 @@ def main():
     # rebuild_video('original\demo_video.mp4', audio_file_dn)
     # make_subclip(10.222, 73.44)
     # make_clear_audio()
-    save_video_url("https://github.com/nadayoung/storage/raw/main/finish/output_video.mp4", 'test.mp4')
-
+    # save_video_url("https://github.com/nadayoung/storage/raw/main/finish/output_video.mp4", 'test.mp4')
+    rebuild_video()
 
 if __name__ == "__main__":
     main()
