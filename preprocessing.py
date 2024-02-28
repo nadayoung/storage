@@ -108,14 +108,14 @@ def make_subclip(start, end):
     print(start_time, end_time)
 
 # 비디오와 audio를 합쳐서 저장
-def rebuild_video(video_file_path, audio_file_path):
-    audio_length = set_audio_length(audio_file_path)
+def rebuild_video():
+    audio_length = set_audio_length('trimmed/output_audio.wav')
     video_length = set_video_length('trimmed/cut_video.mp4')
     rate = float(audio_length/float(video_length))
     print(f'speed rate: {rate}')
     cmd_rate = 'ffmpeg -y -i trimmed/cut_video.mp4 -filter:v "setpts=' + str(rate) + '*PTS" trimmed/rate_change.mp4'
     system(cmd_rate)
-    cmd_merge = 'ffmpeg -y -i ' + audio_file_path + ' -r 30 -i trimmed/rate_change.mp4 -filter:a aresample=async=1 -c:a flac -c:v copy  finish/output_video.mp4'  
+    cmd_merge = 'ffmpeg -y -i trimmed/output_audio.wav -r 30 -i trimmed/rate_change.mp4 -filter:a aresample=async=1 -c:a flac -c:v copy  finish/output_video.mp4'  
     system(cmd_merge)
     print("rebuild the video complete")
 

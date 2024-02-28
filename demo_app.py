@@ -321,7 +321,9 @@ def main(page: Page):
                 cmd_modelRun = "C:/Users/Administrator/AppData/Local/Programs/Python/Python38/python.exe c:/dev/all_model/model_run.py"
                 os.system(cmd_modelRun)
                 pre.rebuild_video()
-                pre.upload_github()
+                t = open(select_file_name+"complete.txt", "w")
+                t.close()
+                pre.upload_github_check(select_file_name+"complete")
 
             def execute_multiple_functions():
                 make_subclip()
